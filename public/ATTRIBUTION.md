@@ -15,9 +15,9 @@ Source OBJ comments mention an older CC BY-SA 2.1 Japan license. The official cu
 
 BodyParts3D represents an adult male reference anatomy based on TARO MRI and anatomical illustration refinements. It is not a complete model of every possible human anatomical structure or variation. This interface is educational and is not a clinical tool.
 
-## Historical assets (not included in the current release)
+## Female anatomy
 
-Earlier repository revisions included female reference anatomy: Kristen Browne and Heidi Schlehlein, Human Reference Atlas / HuBMAP, *3D Reference Organ Set for Female v1.5* (2023). CC BY 4.0. Geometry adapted for this viewer.
+Female reference anatomy: Kristen Browne and Heidi Schlehlein, Human Reference Atlas / HuBMAP, *3D Reference Organ Set for Female v1.5* (2023). CC BY 4.0. Geometry adapted for this viewer.
 
 - Source DOI: https://doi.org/10.48539/HBM352.BTSQ.586
 - Dataset: https://lod.humanatlas.io/ref-organ/united-female/v1.5
@@ -27,3 +27,11 @@ Earlier repository revisions included female reference anatomy: Kristen Browne a
 Adaptations: translated native meter/Y-up coordinates onto the stage, coincident vertices welded and source normals averaged, geometry simplified with a 0.2% per-structure relative error bound, and normals quantized. Colors and display systems are curated for this interface. All 888 source meshes are represented, with 1,073 source nodes available as selectable individual or compound concepts.
 
 This is a reference assembly with whole-body surface and selected organs, including female reproductive anatomy. Its skeleton and muscle coverage is partial. It is not a complete model of every human structure or a single-person scan. Eight placenta/umbilical structures are classified under Pregnancy reference and hidden by default.
+
+## Female study prototype
+
+`atlas-female-reconstructed.json` retains 2,181 BodyParts3D 4.0 meshes (source topology unchanged) and adds 62 adapted HRA female meshes (8 pelvis, 38 reproductive, 16 breast). Both sources retain the CC BY 4.0 attribution above. The original male and HRA female atlases remain available separately.
+
+Adaptations: the HRA female pelvis (compact bone shells, sacrum, coccyx) is affinely fitted to the male hip bone envelope and replaces the male hip bones and sacrum; the two breast fat bodies are regenerated as feathered heightfields on the chest wall from the HRA adipose thickness profile; female reproductive geometry is affinely placed using the HRA and BodyParts3D bladder bounds as alignment proxies; the breast assembly is placed at the fourth intercostal level and draped onto the chest wall with a stored depth-shift grid. The whole assembly, retained BodyParts3D meshes included, is then reshaped by one smooth whole-body morph toward estimated female proportions (stature, shoulders, thorax, waist, pelvis, skull). Normals use the inverse-transpose Jacobian, bounds are recomputed, and all geometry is packed into `female-base-*.bin` chunks. Male-specific geometry and selected pelvic-floor structures are excluded from the new manifest.
+
+This is an experimental study model with estimated proportions, not independently validated female anatomy. Original source IDs and adaptation notes are preserved on every part. Morph parameters, the drape grid, placement transforms, landmarks, and exclusions are recorded in `models/female-fit-report.json`; the builder is `scripts/build-female-reconstruction.py`.

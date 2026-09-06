@@ -86,3 +86,13 @@ h1 .edition{font-family:inherit;font-weight:500;font-size:10px;letter-spacing:.0
 @media(max-width:767px){body:has(.detail-sheet) .view-controls{visibility:hidden}}
 
 @media(max-height:600px) and (orientation:landscape){body:has(.detail-sheet) .bottom-dock{left:12px;right:324px;width:auto;transform:none;max-width:none;margin:0}}
+
+/* Reserve space for the model choice and the female reference's scope. */
+.coverage-note{font-size:11px;line-height:1.4;color:#667481;margin:7px 0 0;max-width:245px}
+.anatomy-choice [data-slot=select-trigger]{min-height:44px}
+@media(max-width:767px) and (orientation:portrait){
+ .view-controls{top:max(190px,calc(env(safe-area-inset-top) + 172px))}
+ .search-panel{top:max(184px,calc(env(safe-area-inset-top) + 166px))}
+ .coverage-note{font-size:10px;max-width:240px}
+ .anatomy-search-results{max-height:min(360px,calc(100dvh - 295px))!important}
+}
