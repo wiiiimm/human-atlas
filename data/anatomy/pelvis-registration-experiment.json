@@ -2,7 +2,7 @@
   "issue": "SWR-513",
   "status": "Rejected for production: geometry-only correspondences, no reviewed anatomical landmarks or attachment constraints",
   "method": "Mean nearest-surface correspondence displacements from three source proximity patches, equally weighted by region, translation capped at 5 mm. Uniform translation preserves pelvis internal shape, but does not validate registration.",
-  "sourceAuditSha256": "7e20ec124a05aec548a1e51e6f6908d9f4497d445957600b90ce220ff5f62945",
+  "sourceAuditSha256": "118af6735bad5becf8fb2657d4e5b3dd3cf3b3f4fc4ca3678875bfce6429c482",
   "anchorSuggestions": [
     {
       "name": "Right femur / hip envelope",

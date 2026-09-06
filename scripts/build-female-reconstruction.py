@@ -15,13 +15,17 @@ are recorded in the fit report and re-applied by scripts/validate-atlas.mjs to v
 with estimated female proportions, not an anatomically validated female atlas.
 """
 from pathlib import Path
-import copy, glob, gzip, json, os, re
+import argparse, copy, glob, gzip, json, os, re
 import numpy as np
 
 ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/'public/models'
-male=json.loads((OUT/'atlas.json').read_text())
-female=json.loads((OUT/'atlas-female.json').read_text())
+INPUT=ROOT/'public/models'
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--output-dir',type=Path,default=INPUT,help='Write a candidate to a separate directory before publishing it.')
+OUT=parser.parse_args().output_dir.resolve()
+OUT.mkdir(parents=True,exist_ok=True)
+male=json.loads((INPUT/'atlas.json').read_text())
+female=json.loads((INPUT/'atlas-female.json').read_text())
 mp={p['id']:p for p in male['parts']}
 fp={p['id']:p for p in female['parts']}
 male_buffers=[(ROOT/('public'+c['url'])).read_bytes() for c in male['chunks']]
@@ -192,7 +196,12 @@ for m in breast:
     # Keep ducts, lobes and ligaments under the outer contour. Only the nipple and
     # areolar surface should emerge; all structures remain selectable individually.
     external=any(k in m['part']['id'] for k in ('nipple','areola'))
-    inset=0. if external else -.008
+    # Independent containment screening found the extra 8 mm shift buried internal
+    # tissue behind the envelope. A 3 mm inset improves each lobe/duct group without
+    # creating anterior sinus exits. Supports keep their prior placement; this remains
+    # a partial geometric correction, not anatomically validated tissue registration.
+    internal=any(k in m['part']['id'] for k in ('mammary_lobes','main_lactiferous_ducts','main_lactiferous_sinuses'))
+    inset=0. if external else -.003 if internal else -.008
     tissue_insets[m['part']['id']]=inset
     m['pos']=m['pos'].copy();m['pos'][:,2]+=bilinear(drape_grid,m['pos'])+inset
     tri=m['idx'].reshape(-1,3);pos=m['pos'];n=np.zeros_like(pos)
