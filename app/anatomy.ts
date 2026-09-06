@@ -14,7 +14,7 @@ export const SYSTEMS: {id:SystemId;name:string;color:string;description:string}[
  {id:'endocrine',name:'Endocrine',color:'#c5a09a',description:'Endocrine organs release hormones into the blood to coordinate processes such as metabolism, growth, stress responses, and reproduction.'},
  {id:'reproductive',name:'Reproductive',color:'#bda098',description:'The male reproductive structures represented here contribute to sperm production, maturation, transport, and the production of sex hormones.'},
  {id:'integumentary',name:'Body surface',color:'#ba9b7d',description:'The body surface provides an outer anatomical reference. The integumentary system forms a protective barrier and contributes to sensation and temperature regulation.'},
- {id:'mammary',name:'Breast tissue',color:'#c4876f',description:'Female breast reference structures include mammary tissue, ducts, supporting tissues, and nipples.'},
+ {id:'mammary',name:'Breast tissue',color:'#dcc185',description:'Female breast reference structures include mammary tissue, ducts, supporting tissues, and nipples.'},
  {id:'pregnancy',name:'Pregnancy reference',color:'#b88380',description:'Placenta and umbilical reference structures, separate from the default adult anatomy.'},
  {id:'connective',name:'Connective tissue',color:'#aec3bb',description:'Cartilage, ligaments, and other connective tissues support, connect, and separate structures. Their roles include stabilizing joints and distributing mechanical loads.'},
 ];

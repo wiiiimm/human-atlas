@@ -54,13 +54,21 @@ if(reconstructed){
    const reference=femaleParts.get(p.id);assert.ok(reference);
    assert.equal(p.provenance.source,'HRA united-female v1.5');
    const entry=report.added.find(a=>a.id===p.id);assert.ok(entry,`${p.id}: not in fit report`);assert.equal(entry.system,p.system);
-   assert.ok(['reproductive','mammary','skeletal'].includes(p.system));
+   assert.ok(['reproductive','mammary','skeletal','integumentary'].includes(p.system));
    const transform=report.transforms[entry.transform];assert.ok(transform);
    if(report.regenerated.includes(p.id)){
     // Regenerated breast fat: a closed heightfield body, every edge shared by exactly two triangles.
     const indices=new Uint32Array(files[p.chunk].buffer,files[p.chunk].byteOffset+p.indices,p.indexCount),edges=new Map();
     for(let t=0;t<indices.length;t+=3)for(let k=0;k<3;k++){const a=indices[t+k],b=indices[t+(k+1)%3],key=a<b?`${a}:${b}`:`${b}:${a}`;edges.set(key,(edges.get(key)??0)+1);}
     for(const count of edges.values())assert.equal(count,2,`${p.id}: breast fat body is not a closed surface`);
+    const directions=new Map();let volume=0;
+    for(let t=0;t<indices.length;t+=3){
+     const ia=indices[t]*3,ib=indices[t+1]*3,ic=indices[t+2]*3;
+     volume+=positions[ia]*(positions[ib+1]*positions[ic+2]-positions[ib+2]*positions[ic+1])+positions[ia+1]*(positions[ib+2]*positions[ic]-positions[ib]*positions[ic+2])+positions[ia+2]*(positions[ib]*positions[ic+1]-positions[ib+1]*positions[ic]);
+     for(let k=0;k<3;k++){const a=indices[t+k],b=indices[t+(k+1)%3],key=a<b?`${a}:${b}`:`${b}:${a}`;directions.set(key,(directions.get(key)??0)+(a<b?1:-1));}
+    }
+    assert.ok(volume>0,`${p.id}: inverted outer surface`);
+    for(const direction of directions.values())assert.equal(direction,0,`${p.id}: inconsistent surface winding`);
     assert.ok(p.bounds[0][1]>1.0&&p.bounds[1][1]<1.4&&Math.abs(p.bounds[0][2])<.2,`${p.id}: breast fat outside the chest`);
    } else {
     assert.equal(p.vertexCount,reference.vertexCount);assert.equal(p.indexCount,reference.indexCount);
@@ -68,7 +76,7 @@ if(reconstructed){
     const expected=new Float32Array(original.length);
     for(let i=0;i<original.length;i+=3){
      let x=original[i]*transform.scale[0]+transform.offset[0],y=original[i+1]*transform.scale[1]+transform.offset[1],z=original[i+2]*transform.scale[2]+transform.offset[2];
-     if(p.system==='mammary')z+=drapeShift(x,y);
+     if(entry.transform==='mammary')z+=drapeShift(x,y)+(report.tissueInsets?.[p.id]??0);
      const q=apply(x,y,z);expected[i]=q[0];expected[i+1]=q[1];expected[i+2]=q[2];
     }
     check(expected,positions,p.id);
@@ -92,6 +100,8 @@ if(reconstructed){
  assert.equal(new Set(atlas.concepts.map(c=>c.id)).size,atlas.concepts.length);
  assert.ok(report.checks.minimumTransformDeterminant>0);assert.ok(report.checks.minimumMorphJacobian>0,'Morph folds space');
  assert.ok(report.checks.breastWallMaxResidualM<.002,'Breast tissue floats off the chest wall');
+ assert.equal(atlas.parts.filter(p=>p.system==='integumentary').length,6,'Expected six optional breast surface structures');
+ for(const p of atlas.parts.filter(p=>/VH_F_(nipple|areola)/.test(p.id)))assert.equal(p.system,'integumentary',`${p.id}: surface structure in exposed tissue layer`);
  const l=report.landmarks;assert.ok(l.stature.after<l.stature.before&&l.biacromialWidth.after<l.biacromialWidth.before&&l.biIliacWidth.after>l.biacromialWidth.after*.9,'Female proportions not applied');
  console.log(`Every retained mesh keeps its source topology and follows the recorded female morph (max deviation ${(maxError*1000).toFixed(3)} mm); fitted female meshes match their transforms and drape; male-specific anatomy is excluded.`);
 }

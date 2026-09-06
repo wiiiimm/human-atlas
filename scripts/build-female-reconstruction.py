@@ -72,15 +72,15 @@ pelvic_scale=(target[1]-target[0])/(hi-lo)
 pelvic_offset=target[0]-lo*pelvic_scale
 # Breast assembly: keep HRA size, place the nipple line near the fourth intercostal space of the
 # base chest (about 71% of stature, matching its relative height in the HRA body).
-breast_scale=np.array([1.03,1.,1.])
-breast_offset=np.array([.009,.045,.115])
+breast_scale=np.array([1.03,.8,.35])
+breast_offset=np.array([.009,.284,.115])
 # Female pelvis: hip bone envelope matched to the male hip bone envelope so the acetabula meet
 # the retained femoral heads and the iliac crests keep their height.
 hip_ids=[i for k in ('FJ3152','FJ3288') for i in replacements[k]]
 pelvis_scale,pelvis_offset=bounds_fit([fp[i] for i in hip_ids],[mp['FJ3152'],mp['FJ3288']])
 transforms={
  'reproductive':dict(scale=pelvic_scale.tolist(),offset=pelvic_offset.tolist(),basis='HRA bladder bounds aligned to retained BodyParts3D bladder bounds'),
- 'mammary':dict(scale=breast_scale.tolist(),offset=breast_offset.tolist(),basis='HRA breast size retained; nipple line placed at the base chest fourth intercostal level, then draped onto the chest wall'),
+ 'mammary':dict(scale=breast_scale.tolist(),offset=breast_offset.tolist(),basis='HRA tissue compressed in height and depth, then fitted beneath the reference-guided breast contour'),
  'pelvis':dict(scale=pelvis_scale.tolist(),offset=pelvis_offset.tolist(),basis='HRA hip bone bounds aligned to BodyParts3D hip bone bounds; sacrum and coccyx share the transform')
 }
 pelvis_ids=[i for ids in replacements.values() for i in ids]
@@ -161,60 +161,74 @@ def max_filter(grid,radius):
         for dx in range(-radius,radius+1):
             out=np.fmax(out,np.roll(grid,(dy,dx),axis=(0,1)))
     return out
-drape_grid=blur(max_filter(fill_nearest(shift),2),1.5)
+# Reference-guided surface: a broad lower mound and a longer, shallow upper slope.
+# These are artistic contour estimates, not measured anatomy from the stock illustrations.
+X,Y=np.meshgrid(GX0+np.arange(NX)*CELL,GY0+np.arange(NY)*CELL)
+profile=dict(centerX=.094,centerY=1.235,radiusX=.075,upperRadius=.100,lowerRadius=.060,projection=.043)
+U=(np.abs(X)-profile['centerX'])/profile['radiusX']
+V=(Y-profile['centerY'])/np.where(Y>profile['centerY'],profile['upperRadius'],profile['lowerRadius'])
+R2=U*U+V*V
+thickness=profile['projection']*np.maximum(0,1-R2)**1.3
+# Use a smooth chest base so small rib and muscle ridges do not imprint on the mound.
+base_wall=blur(wall,6.)
+blend=np.maximum(0,1-R2)**2
+# Keep the exposed contour in front of the chest, then bring its narrow rim
+# back to the wall. A smooth maximum avoids sharp muscle-shaped intersections.
+contour=base_wall+thickness
+clearance=wall+.0015
+delta=contour-clearance
+outer=.5*(contour+clearance+np.sqrt(delta*delta+.004**2))
+rim=smoothstep(.86,1.,np.sqrt(R2))
+surface=outer*(1-rim)+clearance*rim
+# Place the source areola near the surface and carry ducts/lobes with it. Its source
+# depth is shared on both sides; the nipple remains slightly proud of the adipose shell.
+drape_grid=surface-(.081*breast_scale[2]+breast_offset[2])
 def bilinear(grid,pos):
     fx=np.clip((pos[:,0]-GX0)/CELL,0,NX-1.000001);fy=np.clip((pos[:,1]-GY0)/CELL,0,NY-1.000001)
     x0=np.floor(fx).astype(int);y0=np.floor(fy).astype(int);tx=fx-x0;ty=fy-y0
     return (grid[y0,x0]*(1-tx)*(1-ty)+grid[y0,x0+1]*tx*(1-ty)+grid[y0+1,x0]*(1-tx)*ty+grid[y0+1,x0+1]*tx*ty)
+tissue_insets={}
 for m in breast:
-    m['pos']=m['pos'].copy();m['pos'][:,2]+=bilinear(drape_grid,m['pos'])
+    # Keep ducts, lobes and ligaments under the outer contour. Only the nipple and
+    # areolar surface should emerge; all structures remain selectable individually.
+    external=any(k in m['part']['id'] for k in ('nipple','areola'))
+    inset=0. if external else -.008
+    tissue_insets[m['part']['id']]=inset
+    m['pos']=m['pos'].copy();m['pos'][:,2]+=bilinear(drape_grid,m['pos'])+inset
+    tri=m['idx'].reshape(-1,3);pos=m['pos'];n=np.zeros_like(pos)
+    fn=np.cross(pos[tri[:,1]]-pos[tri[:,0]],pos[tri[:,2]]-pos[tri[:,0]])
+    for k in range(3):np.add.at(n,tri[:,k],fn)
+    lengths=np.linalg.norm(n,axis=1,keepdims=True)
+    m['nrm']=np.where(lengths>1e-15,n/np.maximum(lengths,1e-20),m['nrm'])
 drape=dict(cell=CELL,origin=[GX0,GY0],columns=NX,rows=NY,embed=EMBED,values=np.round(drape_grid,6).tolist())
 
-# Regenerate each breast fat body as a heightfield that grows out of the chest wall. The HRA
-# interlobar fat keeps its real thickness profile (front minus back per column), but its edge is
-# feathered over ~2.5 cm and dips below the wall, so the mound rises from the pectoral surface
-# instead of sitting on it as a separate blob. The glandular structures stay inside it.
-FEATHER=6;STANDOFF=.003;UNDERCUT=.002
-def closing(mask,r):
-    grow=mask.copy()
-    for _ in range(r):grow=grow|np.roll(grow,1,0)|np.roll(grow,-1,0)|np.roll(grow,1,1)|np.roll(grow,-1,1)
-    for _ in range(r):grow=grow&np.roll(grow,1,0)&np.roll(grow,-1,0)&np.roll(grow,1,1)&np.roll(grow,-1,1)
-    return grow
-def distance_outside(mask,limit):
-    dist=np.where(mask,0,np.inf);frontier=mask.copy()
-    for step in range(1,limit+1):
-        grown=frontier|np.roll(frontier,1,0)|np.roll(frontier,-1,0)|np.roll(frontier,1,1)|np.roll(frontier,-1,1)
-        dist=np.where(grown&~frontier,step,dist);frontier=grown
-    return dist
-def heightfield_mesh(mask,front,back):
-    full=mask[:-1,:-1]&mask[1:,:-1]&mask[:-1,1:]&mask[1:,1:]
-    xs=GX0+np.arange(NX)*CELL;ys=GY0+np.arange(NY)*CELL
-    fid=np.full((NY,NX),-1);bid=np.full((NY,NX),-1);verts=[]
-    def vid(table,j,i,z):
-        if table[j,i]<0:table[j,i]=len(verts);verts.append([xs[i],ys[j],z[j,i]])
-        return table[j,i]
-    tris=[]
-    for j,i in zip(*np.nonzero(full)):
-        a,b,c,d=[(j,i),(j,i+1),(j+1,i+1),(j+1,i)]
-        fa,fb,fc,fd=[vid(fid,*q,front) for q in (a,b,c,d)];ba,bb,bc,bd=[vid(bid,*q,back) for q in (a,b,c,d)]
-        tris+=[[fa,fb,fc],[fa,fc,fd],[ba,bc,bb],[ba,bd,bc]]
-    padded=np.pad(full,1)
-    for j in range(NY):
-        for i in range(NX-1):  # edge (j,i)-(j,i+1): cells below (j-1) and above (j)
-            above=padded[j+1,i+1];below=padded[j,i+1]
-            if above==below:continue
-            f0,f1=vid(fid,j,i,front),vid(fid,j,i+1,front);b0,b1=vid(bid,j,i,back),vid(bid,j,i+1,back)
-            quad=[[f0,f1,b1],[f0,b1,b0]]  # normal +y
-            tris+=quad if below and not above else [t[::-1] for t in quad]
-    for i in range(NX):
-        for j in range(NY-1):  # edge (j,i)-(j+1,i): cells left (i-1) and right (i)
-            right=padded[j+1,i+1];left=padded[j+1,i]
-            if right==left:continue
-            f0,f1=vid(fid,j,i,front),vid(fid,j+1,i,front);b0,b1=vid(bid,j,i,back),vid(bid,j+1,i,back)
-            quad=[[f0,b1,f1],[f0,b0,b1]]  # normal +x
-            tris+=quad if left and not right else [t[::-1] for t in quad]
-    pos=np.array(verts);idx=np.array(tris,dtype=np.uint32)
-    n=np.zeros_like(pos);fn=np.cross(pos[idx[:,1]]-pos[idx[:,0]],pos[idx[:,2]]-pos[idx[:,0]])
+# Generate a closed outer adipose envelope with its back embedded in the chest.
+# Internal HRA structures retain their topology and follow the recorded displacement grid.
+UNDERCUT=.004
+def breast_surface_mesh(side,front,back):
+    # Concentric rings give a smooth perimeter rather than a staircase cut from a grid.
+    rings=40;segments=128;cx=profile['centerX']*(1 if side=='left' else -1)
+    xy=[[cx,profile['centerY'],0.]]
+    for ring in range(1,rings+1):
+        r=ring/rings
+        for j in range(segments):
+            t=2*np.pi*j/segments;v=np.sin(t)
+            xy.append([cx+profile['radiusX']*r*np.cos(t),profile['centerY']+r*v*(profile['upperRadius'] if v>=0 else profile['lowerRadius']),0.])
+    xy=np.array(xy);f=xy.copy();b=xy.copy()
+    f[:,2]=bilinear(front,xy);b[:,2]=bilinear(back,xy);count=len(f)
+    pos=np.concatenate([f,b]);tri=[]
+    for j in range(segments):tri.append([0,1+j,1+(j+1)%segments])
+    for ring in range(1,rings):
+        for j in range(segments):
+            a=1+(ring-1)*segments+j;b=1+(ring-1)*segments+(j+1)%segments
+            c=b+segments;d=a+segments;tri.extend([[a,c,b],[a,d,c]])
+    tri += [[c+count,b+count,a+count] for a,b,c in tri.copy()]
+    start=1+(rings-1)*segments
+    for j in range(segments):
+        a=start+j;b=start+(j+1)%segments
+        tri.extend([[a,a+count,b+count],[a,b+count,b]])
+    idx=np.array(tri,dtype=np.uint32);n=np.zeros_like(pos)
+    fn=np.cross(pos[idx[:,1]]-pos[idx[:,0]],pos[idx[:,2]]-pos[idx[:,0]])
     for k in range(3):np.add.at(n,idx[:,k],fn)
     n/=np.maximum(np.linalg.norm(n,axis=1,keepdims=True),1e-20)
     return pos,n,idx.reshape(-1)
@@ -222,24 +236,15 @@ regenerated=[]
 for m in breast:
     if 'Interlobar adipose' not in m['part']['name']:continue
     side='left' if m['part']['id'].endswith('_L') else 'right'
-    # Envelope of the whole draped breast assembly on this side (the interlobar fat alone has
-    # cavities where the lobes sit). The nipple and areolar tubercles stay proud of the surface.
-    assembly=[dict(pos=b['pos'],idx=b['idx']) for b in breast if b['part']['id'].endswith('_L' if side=='left' else '_R')]
-    for b,src in zip(assembly,[b for b in breast if b['part']['id'].endswith('_L' if side=='left' else '_R')]):b['part']=src['part']
-    outer=[b for b in assembly if not any(k in b['part']['id'] for k in ('nipple','areolar_tubercles'))]
-    F=project(outer,max);B=project(assembly,min);footprint=closing(~np.isnan(F),2)
-    T=np.where(~np.isnan(F),F-B,np.nan);T=np.where(footprint,fill_nearest(T),0.)
-    T=blur(max_filter(np.where(footprint,T,0.),2),1.5)+.002
-    d=distance_outside(footprint,FEATHER);feather=1-smoothstep(0,FEATHER,np.minimum(d,FEATHER))
-    T=T*feather;standoff=STANDOFF*feather-UNDERCUT*(1-feather)
-    front=wall+T+standoff;back=wall-UNDERCUT
-    mask=(front-wall>=-UNDERCUT*.5)&(d<=FEATHER)
-    pos,nrm,idx=heightfield_mesh(mask,front,back)
+    side_mask=X>0 if side=='left' else X<0
+    front=surface;back=np.minimum(surface,wall)-UNDERCUT
+    mask=(R2<.99)&side_mask
+    pos,nrm,idx=breast_surface_mesh(side,front,back)
     m.update(pos=pos,nrm=nrm,idx=idx)
     m['part']['name']=f'Adipose tissue of {side} breast'
-    m['provenance']['adaptation']='Regenerated from the HRA interlobar adipose thickness profile as a feathered heightfield on the chest wall; reshaped by the shared female body morph'
+    m['provenance']['adaptation']='Reference-guided smooth breast contour on the chest wall, replacing the HRA adipose envelope; estimated shape reshaped by the shared female body morph'
     regenerated.append(m['part']['id'])
-gap_before=float(np.nanmedian(shift));residual=np.where(covered,wall-EMBED-(envelope+drape_grid),np.nan);gap_after=float(np.nanmedian(residual));gap_max=float(np.nanmax(residual))
+gap_before=float(np.nanmedian(shift));residual=np.where(covered,wall-EMBED-(envelope+drape_grid),np.nan);gap_after=float(np.median((back-wall)[R2<.99]));gap_max=float(np.max((back-wall)[R2<.99]))
 
 # ---------------------------------------------------------------- 4. whole-body morph
 # Lateral width factor by height (base frame, before stature scaling). Between knots the
@@ -303,6 +308,7 @@ for m in meshes:
     if len(blob)>4_000_000:flush()
     pos=m['pos'].astype('<f4');nrm=np.rint(m['nrm']*32767).astype('<i2');idx=m['idx'].astype('<u4')
     p=copy.deepcopy(m['part'])
+    if m.get('group')=='mammary' and any(k in p['id'] for k in ('nipple','areola')):p['system']='integumentary'
     p.update(chunk=len(chunks),vertexCount=len(pos),indexCount=len(idx),positions=append(pos),normals=append(nrm),indices=append(idx),bounds=[pos.min(axis=0).tolist(),pos.max(axis=0).tolist()],provenance=m['provenance'])
     atlas['parts'].append(p)
     if p['provenance']['source']!='BodyParts3D 4.0':p['group']=m['group'];added.append(p)
@@ -339,7 +345,7 @@ landmarks=dict(
  headWidth=span(['Left parietal bone','Right parietal bone'],0),
  chestDepth=extent('Body of sternum',2),
 )
-report=dict(method='BodyParts3D framework with fitted and draped HRA female structures, reshaped by one smooth whole-body morph',reviewStatus='Experimental; proportions estimated, organ placement unreviewed',transforms=transforms,morph=MORPH,drape=drape,regenerated=regenerated,replacements=replacements,landmarks=landmarks,retained=[p['id'] for p in retained],added=[dict(id=p['id'],name=p['name'],system=p['system'],transform=p['group']) for p in added],excluded=excluded,checks=dict(retainedGeometryUnchanged=False,limbProportionsUnchanged=False,minimumMorphJacobian=min_det,minimumTransformDeterminant=float(min(np.prod(t['scale']) for t in transforms.values())),breastWallGapBeforeDrapeM=gap_before,breastWallGapAfterDrapeM=gap_after,breastWallMaxResidualM=gap_max),parts=len(atlas['parts']),concepts=len(atlas['concepts']),triangles=atlas['triangles'])
+report=dict(method='BodyParts3D framework with fitted and draped HRA female structures, reshaped by one smooth whole-body morph',reviewStatus='Experimental; proportions estimated, organ placement unreviewed',transforms=transforms,morph=MORPH,drape=drape,breastProfile=profile,tissueInsets=tissue_insets,regenerated=regenerated,replacements=replacements,landmarks=landmarks,retained=[p['id'] for p in retained],added=[dict(id=p['id'],name=p['name'],system=p['system'],transform=p['group']) for p in added],excluded=excluded,checks=dict(retainedGeometryUnchanged=False,limbProportionsUnchanged=False,minimumMorphJacobian=min_det,minimumTransformDeterminant=float(min(np.prod(t['scale']) for t in transforms.values())),breastWallGapBeforeDrapeM=gap_before,breastWallGapAfterDrapeM=gap_after,breastWallMaxResidualM=gap_max),parts=len(atlas['parts']),concepts=len(atlas['concepts']),triangles=atlas['triangles'])
 for p in atlas['parts']:p.pop('group',None)
 (OUT/'atlas-female-reconstructed.json').write_text(json.dumps(atlas,separators=(',',':')))
 (OUT/'female-fit-report.json').write_text(json.dumps(report,indent=2))

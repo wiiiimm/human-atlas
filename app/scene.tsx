@@ -49,18 +49,39 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
   const isBreastTissue=(p:Part)=>p.system==='integumentary'&&p.id.startsWith('VH_F_')&&p.id!=='VH_F_skin';
   const isBodySurface=(p:Part)=>p.system==='integumentary'&&!isBreastTissue(p);
   const materialFor=(system:string,surface=system==='integumentary')=>{
-   const m=new T.MeshStandardMaterial({color:SYSTEMS.find(s=>s.id===system)?.color??'#aebbb8',metalness:.08,roughness:.53,side:T.DoubleSide,transparent:surface,opacity:surface?.1:1,depthWrite:!surface});
+   const adipose=system==='adipose';
+   const m=new T.MeshStandardMaterial({color:adipose?'#dcc185':SYSTEMS.find(s=>s.id===system)?.color??'#aebbb8',metalness:adipose?0:.08,roughness:adipose?.88:.53,side:T.DoubleSide,transparent:surface,opacity:surface?.1:1,depthWrite:!surface});
+   m.customProgramCacheKey=()=>adipose?'exposed-adipose-v1':'atlas-standard';
    m.onBeforeCompile=shader=>{
     shader.uniforms.partState={value:partTexture};shader.uniforms.selectionState={value:selectionTexture};shader.uniforms.stateWidth={value:width};
     shader.vertexShader='attribute float partIndex; uniform sampler2D partState; uniform sampler2D selectionState; uniform float stateWidth; varying float partVisible; varying float partSelected;\n'+shader.vertexShader;
     shader.vertexShader=shader.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\nvec2 stateUv = vec2((partIndex + 0.5) / stateWidth, 0.5); vec4 state = texture2D(partState, stateUv); transformed += state.xyz; partVisible = state.w; partSelected = texture2D(selectionState, stateUv).r;');
     shader.fragmentShader='varying float partVisible; varying float partSelected;\n'+shader.fragmentShader;
     shader.fragmentShader=shader.fragmentShader.replace('#include <clipping_planes_fragment>','#include <clipping_planes_fragment>\nif (partVisible < 0.5) discard;');
+    if(adipose){
+     // Illustrative lobular/septal shading, anchored to the mesh before explosion.
+     // This is a tissue cue, not a map of muscle fibers or measured gland anatomy.
+     shader.vertexShader='varying vec3 tissuePosition;\n'+shader.vertexShader;
+     shader.vertexShader=shader.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\ntissuePosition = position;');
+     shader.fragmentShader='varying vec3 tissuePosition;\n'+shader.fragmentShader;
+     shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>
+      vec2 tissueQ=vec2((abs(tissuePosition.x)-0.101)/0.065,(tissuePosition.y-1.166)/0.085);
+      float tissueR=length(tissueQ);
+      float tissueA=atan(tissueQ.y,tissueQ.x);
+      float septa=pow(0.5+0.5*cos(tissueA*12.0+tissueR*4.5+sin(tissueA*3.0)*0.8),18.0);
+      float striae=pow(0.5+0.5*cos(tissueA*48.0+tissueR*18.0+sin(tissueA*3.0)*3.2),12.0);
+      float lobules=sin(tissueQ.x*37.0+sin(tissueQ.y*23.0))*sin(tissueQ.y*33.0+sin(tissueQ.x*21.0));
+      float tissueFade=smoothstep(0.09,0.35,tissueR);
+      diffuseColor.rgb*=1.0+lobules*0.055-septa*tissueFade*0.42-striae*tissueFade*0.16;
+      diffuseColor.rgb=mix(diffuseColor.rgb,vec3(0.88,0.80,0.60),septa*tissueFade*0.12);
+     `);
+    }
     shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>','#include <color_fragment>\ndiffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.42, 0.85, 0.78), partSelected * 0.75);');
    };materials.push(m);return m;
   };
   const mats=new Map<string,T.Material>(SYSTEMS.map(s=>[s.id,materialFor(s.id)]));
   mats.set('breast',materialFor('integumentary',false));
+  mats.set('adipose',materialFor('adipose',false));
   let loaded=0;
   const loadChunk=async(ci:number)=>{
    const chunk=atlas.chunks[ci],compressed=!!chunk.gzip&&typeof DecompressionStream!=='undefined';const response=await fetch(compressed?chunk.gzip!:chunk.url,{signal:abort.signal});const buffer=await decodeModelResponse(response,chunk.bytes,compressed);if(disposed)return;
@@ -72,7 +93,7 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
     g.setAttribute('normal',new T.BufferAttribute(new Int16Array(buffer,p.normals,p.vertexCount*3),3,true));g.setIndex(new T.BufferAttribute(new Uint32Array(buffer,p.indices,p.indexCount),1));
     g.boundingBox=bounds[i].clone();g.computeBoundingSphere();const pick=new T.Mesh(g);pick.matrixAutoUpdate=false;pickers[i]=pick;geometries.push(g);
     g.setAttribute('partIndex',new T.BufferAttribute(new Float32Array(p.vertexCount).fill(i),1));
-    const category=isBreastTissue(p)?'breast':p.system;const list=groups.get(category)??[];list.push(g);groups.set(category,list);
+    const category=p.system==='mammary'&&/^VH_F_fat_[LR]$/.test(p.id)?'adipose':isBreastTissue(p)?'breast':p.system;const list=groups.get(category)??[];list.push(g);groups.set(category,list);
    });
    groups.forEach((gs,system)=>{const geometry=mergeGeometries(gs,false);if(!geometry)throw new Error('Could not assemble anatomy geometry.');geometries.push(geometry);const mesh=new T.Mesh(geometry,mats.get(system));mesh.frustumCulled=false;scene.add(mesh);});
    lastState=null;loaded++;onProgress(Math.round(loaded/atlas.chunks.length*100));dirty=true;
