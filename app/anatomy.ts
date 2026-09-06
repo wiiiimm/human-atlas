@@ -14,7 +14,7 @@ export const SYSTEMS: {id:SystemId;name:string;color:string;description:string}[
  {id:'endocrine',name:'Endocrine',color:'#c5a09a',description:'Endocrine organs release hormones into the blood to coordinate processes such as metabolism, growth, stress responses, and reproduction.'},
  {id:'reproductive',name:'Reproductive',color:'#bda098',description:'The male reproductive structures represented here contribute to sperm production, maturation, transport, and the production of sex hormones.'},
  {id:'integumentary',name:'Body surface',color:'#ba9b7d',description:'The body surface provides an outer anatomical reference. The integumentary system forms a protective barrier and contributes to sensation and temperature regulation.'},
- {id:'mammary',name:'Breast tissue',color:'#b9695b',description:'Female breast reference structures include mammary tissue, ducts, supporting tissues, and nipples.'},
+ {id:'mammary',name:'Breast tissue',color:'#d8bd82',description:'Breast tissue includes adipose tissue, mammary glands, ducts, and connective supports. It lies over the pectoral muscles and does not act as a skeletal muscle to move the shoulder. Colors distinguish tissue types; they do not show activation or fiber direction.'},
  {id:'pregnancy',name:'Pregnancy reference',color:'#b88380',description:'Placenta and umbilical reference structures, separate from the default adult anatomy.'},
  {id:'connective',name:'Connective tissue',color:'#aec3bb',description:'Cartilage, ligaments, and other connective tissues support, connect, and separate structures. Their roles include stabilizing joints and distributing mechanical loads.'},
 ];
@@ -25,6 +25,8 @@ export type View = 'three-quarter'|'front'|'back'|'side';
 export interface SceneState {inspectorOpen?:boolean;explode:number;visible:SystemId[];selected:string[];isolate:boolean;view:View;rotate:boolean;reset:number}
 export const DEFAULT_VISIBLE:SystemId[] = ['cardiac','sensory','skeletal','muscular','arterial','venous','nervous','respiratory','digestive','urinary','lymphatic','endocrine','reproductive','connective','mammary'];
 export const EXPLANATIONS:Record<string,string> = {
+ 'adipose tissue of left breast':'Fat contributes to breast volume and contour, surrounding the mammary glands and ducts. It lies superficial to the pectoral muscles and does not contract to move the shoulder.',
+ 'adipose tissue of right breast':'Fat contributes to breast volume and contour, surrounding the mammary glands and ducts. It lies superficial to the pectoral muscles and does not contract to move the shoulder.',
  'heart':'A muscular pump in the chest. Its right side sends blood to the lungs; its left side sends blood through the systemic circulation.',
  'liver':'A large organ beneath the right side of the diaphragm. It processes absorbed nutrients, produces bile, and synthesizes many proteins carried in the blood.',
  'brain':'The central organ of the nervous system. Its interconnected regions support perception, movement, memory, language, and the regulation of bodily functions.',
