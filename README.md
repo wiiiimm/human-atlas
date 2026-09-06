@@ -6,7 +6,7 @@ An interactive 3D anatomy explorer built with React, Three.js, and shadcn/ui. Ex
 
 ## Explore
 
-- Switch between male and female reference anatomy.
+- Switch between male reference anatomy and the experimental female study model.
 - Orbit, zoom, and select structures directly on the body.
 - Toggle individual systems or use skeleton and organ presets.
 - Move from assembled anatomy to a spaced inventory of every visible piece.
@@ -44,9 +44,13 @@ The male viewer uses **BodyParts3D 4.0**, an adult male reference anatomy, licen
 
 Geometry is simplified for browser performance while retaining every source mesh. The packaged model contains 2,288,268 triangles and downloads approximately 33 MB of compressed geometry. Full credits, source links, and adaptation details are in [ATTRIBUTION.md](public/ATTRIBUTION.md).
 
-> **The female model is a derived study model, not a scanned reference.** The male atlas is BodyParts3D, an actual adult male reference model. There is no equivalent complete female source, so the female model diverges from the male one: it reuses the male skeleton, muscles, and shared organs, swaps in the HRA female pelvis and reproductive organs, adds an illustrated breast body, and reshapes everything with an estimated whole-body morph. Its proportions are estimates guided by ecorché illustrations, not measurements of a real body.
+> **The female model is a derived study model, not a scanned reference.** The male atlas is BodyParts3D, an actual adult male reference model. This project has not integrated a complete validated female source. The female model reuses the male skeleton, muscles, and shared organs, swaps in the HRA female pelvis and reproductive organs, adds an illustrated breast body, and reshapes everything with an estimated whole-body morph. Its proportions are estimates guided by ecorché illustrations, not measurements of a real body.
 
-The female option retains **2,181 BodyParts3D meshes** with their source topology, adds **62 fitted HRA female meshes** (the female pelvis in place of the male one, reproductive organs, and breast tissue draped onto the chest wall with a regenerated fat body), and reshapes the whole assembly with one smooth morph toward estimated female proportions: about 1.62 m stature, narrower shoulders, a wider pelvis, and a smaller skull. Male-specific anatomy is omitted. Proportions are estimates and organ placement is experimental, with visible source provenance. It downloads approximately 35 MB of compressed geometry. See [the reconstruction documentation](docs/female-anatomy.md) for the pipeline, exclusions, and limitations.
+The female option retains **2,181 BodyParts3D meshes** with their source topology, adds **62 fitted HRA female meshes** (the female pelvis in place of the male one, reproductive organs, and breast tissue draped onto the chest wall with a regenerated fat body), and reshapes the whole assembly with one smooth morph toward estimated female proportions: about 1.62 m stature, narrower shoulders, a wider pelvis, and a smaller skull. Male-specific structures and selected shared pelvic-floor structures are omitted. Those shared structures remain unresolved coverage gaps. Proportions are artistic estimates, bounding-box fits do not validate joint or muscle attachments, and organ placement is experimental, with visible source provenance. It downloads approximately 35 MB of compressed geometry. See [the reconstruction documentation](docs/female-anatomy.md) for the pipeline, exclusions, and limitations.
+
+The current female model supports static exploration of displayed structures. It has no validated pose, muscle activation or movement-mechanics system for yoga/Pilates instruction. The [coverage report](docs/anatomy-coverage.md) and [female documentation](docs/female-anatomy.md) describe unresolved anatomy and proportion assumptions.
+
+`npm run validate:female-readiness` is a separate teaching-release gate and currently **must fail**: independent anatomy and movement reviews are outstanding. It checks atlas integrity, current target discoverability, revision-bound review artifacts and declared teaching scope. `npm run test:female-readiness` verifies the gate itself; passing tests do not approve anatomy. See the [review evidence instructions](data/anatomy/reviews/README.md).
 
 This is an educational explorer, not a diagnostic or surgical tool.
 

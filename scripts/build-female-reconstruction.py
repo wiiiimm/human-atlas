@@ -7,11 +7,11 @@ Pipeline
 2. Fit HRA female reproductive organs and breast tissue into the base pelvis and chest.
 3. Drape the breast assembly onto the retained chest wall so it rests on the pectoral muscles.
 4. Apply one smooth whole-body morph (stature, shoulders, thorax, waist, pelvis, head) to
-   every mesh, so bones, muscles, vessels, and fitted organs deform together and stay attached.
+   every mesh, so bones, muscles, vessels, and fitted organs share one deformation field.
 
-The morph is a continuous displacement field with a positive Jacobian everywhere, so no mesh
-tears and attachments are preserved. Its parameters are recorded in the fit report and are
-re-applied by scripts/validate-atlas.mjs to verify every vertex. This is a study prototype
+The morph is a continuous displacement field whose Jacobian is checked on a finite sample
+grid. This checks for sampled foldovers, not anatomical attachment correctness. Parameters
+are recorded in the fit report and re-applied by scripts/validate-atlas.mjs to verify every vertex. This is a study prototype
 with estimated female proportions, not an anatomically validated female atlas.
 """
 from pathlib import Path
@@ -74,8 +74,8 @@ pelvic_offset=target[0]-lo*pelvic_scale
 # base chest (about 71% of stature, matching its relative height in the HRA body).
 breast_scale=np.array([1.03,.8,.35])
 breast_offset=np.array([.009,.284,.115])
-# Female pelvis: hip bone envelope matched to the male hip bone envelope so the acetabula meet
-# the retained femoral heads and the iliac crests keep their height.
+# Female pelvis: match hip bone envelopes as an initial placement proxy.
+# This does not establish acetabular contact, landmark alignment, or muscle attachments.
 hip_ids=[i for k in ('FJ3152','FJ3288') for i in replacements[k]]
 pelvis_scale,pelvis_offset=bounds_fit([fp[i] for i in hip_ids],[mp['FJ3152'],mp['FJ3288']])
 transforms={
