@@ -23,7 +23,7 @@ npm ci
 npm run dev
 ```
 
-Open http://localhost:3016. To build the static site, run `npm run build`; the output is in `dist/`.
+Open http://localhost:3016 for the model-selection landing page. Go directly to http://localhost:3016/female or http://localhost:3016/male to load that model. The landing page does not load the 3D viewer or anatomy data. To build the static site, run `npm run build`; the output is in `dist/`.
 
 ## Validate
 
@@ -66,7 +66,7 @@ Rebuild the experimental female additions with `python3 scripts/build-female-rec
 
 ## Deploy
 
-Import this repository into Vercel as a Vite project. The included `vercel.json` configures `npm ci`, `npm run build`, and the `dist` output directory. It can also be served by a static host.
+Import this repository into Vercel as a Vite project. The included `vercel.json` configures `npm ci`, `npm run build`, and the `dist` output directory. The configuration rewrites `/female` and `/male` to the app entry so direct links and refreshes work. Other static hosts need the same two rewrites to `/index.html`.
 
 ## License
 

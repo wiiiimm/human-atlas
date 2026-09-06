@@ -96,3 +96,20 @@ h1 .edition{font-family:inherit;font-weight:500;font-size:10px;letter-spacing:.0
  .coverage-note{font-size:10px;max-width:240px}
  .anatomy-search-results{max-height:min(360px,calc(100dvh - 295px))!important}
 }
+
+/* The home page loads independently of the 3D viewer. */
+.atlas-home-link{pointer-events:auto;text-decoration:none;border-radius:4px}
+.atlas-landing{height:100%;overflow-y:auto;padding:40px max(24px,calc((100vw - 1040px)/2));background:radial-gradient(ellipse at 10% 20%,#e6eeec,transparent 60%),#f3f4f4}
+.landing-brand{font-size:22px;letter-spacing:-.6px}.landing-brand>span{font-size:11px;letter-spacing:.06em;margin-left:6px;color:#68727d}
+.landing-intro{margin:76px 0 38px;max-width:760px}.landing-eyebrow{font-size:11px;letter-spacing:.18em;color:#536e6a}
+.landing-intro h1{display:block;font-size:clamp(36px,5vw,60px);line-height:1.12;letter-spacing:-2px;margin:20px 0}
+.landing-intro>p:last-child{font-size:17px;line-height:1.6;color:#65717b;max-width:530px}
+.model-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.model-card{display:flex;flex-direction:column;align-items:flex-start;min-height:270px;padding:30px;border:1px solid #25384a20;border-radius:16px;text-decoration:none;background:#ffffffad;transition:border-color .18s,background .18s}
+.model-card:hover{border-color:#688c85;background:#fff}.female-card{border-top:3px solid #a76c61}.male-card{border-top:3px solid #5d7f8c}
+.model-card-label{font-size:10px;letter-spacing:.2em;color:#68727d}.model-card h2{font-size:28px;font-weight:400;letter-spacing:-.7px;margin:22px 0 10px}
+.model-card p{font-size:14px;line-height:1.6;color:#65717b;max-width:340px;margin:0 0 28px}
+.model-card-action{margin-top:auto;font-size:14px;display:flex;justify-content:space-between;width:100%;gap:12px}.model-card-action>span{font-size:20px}
+.landing-footer{font-size:12px;color:#65717b;margin:30px 0 12px;line-height:1.5}
+.route-loading{height:100%;display:flex;flex-direction:column;gap:20px;align-items:center;justify-content:center;padding:24px;text-align:center}
+@media(max-width:600px){.atlas-landing{padding:28px 22px}.landing-intro{margin:50px 0 28px}.landing-intro h1{letter-spacing:-1.2px}.landing-intro>p:last-child{font-size:15px}.model-cards{grid-template-columns:1fr;gap:16px}.model-card{min-height:240px;padding:24px}.landing-footer{margin-top:24px}}

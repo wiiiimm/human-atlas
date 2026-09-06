@@ -15,11 +15,7 @@ type AnatomySex='male'|'female';
 type AnatomyModel=AnatomySex|'female-reference';
 const defaultVisible=(model:AnatomyModel):SystemId[]=>model==='female-reference'?[...DEFAULT_VISIBLE,'integumentary']:[...DEFAULT_VISIBLE];
 const initial:SceneState={explode:0,visible:DEFAULT_VISIBLE,selected:[],isolate:false,view:'three-quarter',rotate:false,reset:0};
-export default function Home(){
- const [model,setModel]=useState<AnatomyModel>('male');
- return <AtlasViewer key={model} model={model} onModelChange={setModel}/>;
-}
-function AtlasViewer({model,onModelChange}:{model:AnatomyModel;onModelChange:(model:AnatomyModel)=>void}){
+export default function AtlasViewer({model,onModelChange}:{model:AnatomyModel;onModelChange:(model:AnatomyModel)=>void}){
  const sex:AnatomySex=model==='male'?'male':'female';
  const reconstructed=model==='female';
  const source=reconstructed?'BodyParts3D + HRA':sex==='female'?'Human Reference Atlas':'BodyParts3D';
@@ -46,7 +42,7 @@ function AtlasViewer({model,onModelChange}:{model:AnatomyModel;onModelChange:(mo
  return <main className="studio">
   {atlas&&<AnatomyScene atlas={atlas} state={{...state,inspectorOpen:details&&selectedParts.length>0}} onSelect={choosePart} onProgress={n=>{setProgress(n);if(n===100)setError('');}} onError={setError}/>}
   <div className="vignette"/>
-  <header className="identity"><div className="eyebrow"><span className="status-dot"/> INTERACTIVE ANATOMY</div><h1>Human Atlas<Badge variant="outline" className="edition">3D</Badge></h1><div className="identity-meta">{atlas?atlas.parts.length.toLocaleString():reconstructed?'2,243':sex==='female'?'888':'2,234'} modeled pieces <span>·</span> {source}</div><div className="anatomy-choice"><Select value={model} onValueChange={value=>{if(value==='male'||value==='female')onModelChange(value);}} items={[{value:'male',label:'Male anatomy'},{value:'female',label:'Female anatomy'}]}><SelectTrigger aria-label="Choose male or female anatomy"><SelectValue/></SelectTrigger><SelectContent className="anatomy-choice-menu"><SelectItem value="male">Male anatomy</SelectItem><SelectItem value="female">Female anatomy</SelectItem></SelectContent></Select></div>{sex==='female'&&<p className="coverage-note">{reconstructed?'Female study model · estimated proportions':'Partial skeleton & muscle coverage'}</p>}</header>
+  <header className="identity"><div className="eyebrow"><span className="status-dot"/> INTERACTIVE ANATOMY</div><h1><a className="atlas-home-link" href="/" aria-label="Human Atlas home">Human Atlas</a><Badge variant="outline" className="edition">3D</Badge></h1><div className="identity-meta">{atlas?atlas.parts.length.toLocaleString():reconstructed?'2,243':sex==='female'?'888':'2,234'} modeled pieces <span>·</span> {source}</div><div className="anatomy-choice"><Select value={model} onValueChange={value=>{if(value==='male'||value==='female')onModelChange(value);}} items={[{value:'male',label:'Male anatomy'},{value:'female',label:'Female anatomy'}]}><SelectTrigger aria-label="Choose male or female anatomy"><SelectValue/></SelectTrigger><SelectContent className="anatomy-choice-menu"><SelectItem value="male">Male anatomy</SelectItem><SelectItem value="female">Female anatomy</SelectItem></SelectContent></Select></div>{sex==='female'&&<p className="coverage-note">{reconstructed?'Female study model · estimated proportions':'Partial skeleton & muscle coverage'}</p>}</header>
   <nav className="top-actions" aria-label="Explorer panels"><Button variant="ghost" className={panel==='search'?'active':''} onClick={()=>openPanel('search')} aria-label="Search anatomy"><Search size={18}/><span>Find a structure</span><kbd>/</kbd></Button><Button variant="ghost" className="icon-button" aria-label="About this atlas" onClick={()=>{setDetails(false);setPanel(null);setAbout(true);}}><Info size={18}/></Button></nav>
   <section className={`layers-panel glass ${panel==='layers'?'mobile-open':''}`} aria-label="Anatomical layers">
    <div className="panel-heading"><span>Systems</span><Button variant="ghost" className="mobile-only icon-button" onClick={()=>setPanel(null)} aria-label="Close systems"><X size={18}/></Button><Badge variant="secondary" className="desktop-only small-number">{activeSystems.length}</Badge></div>
