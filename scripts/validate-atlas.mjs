@@ -17,12 +17,28 @@ if(reconstructed){
  // Re-apply the recorded whole-body morph and breast drape (same definitions as the builder).
  const morph=report.morph,drape=report.drape;
  const smoothstep=(a,b,t)=>{const u=Math.min(1,Math.max(0,(t-a)/(b-a)));return u*u*(3-2*u);};
- const lateral=y=>{const k=morph.lateralKnots;if(y<k[0][0])return k[0][1];for(let i=0;i<k.length-1;i++){const [y0,s0]=k[i],[y1,s1]=k[i+1];if(y>=y0&&y<y1)return s0+(s1-s0)*smoothstep(y0,y1,y);}return k[k.length-1][1];};
- const apply=(x,y,z)=>{
+ const lateral=(y,k=morph.lateralKnots)=>{if(y<k[0][0])return k[0][1];for(let i=0;i<k.length-1;i++){const [y0,s0]=k[i],[y1,s1]=k[i+1];if(y>=y0&&y<y1)return s0+(s1-s0)*smoothstep(y0,y1,y);}return k[k.length-1][1];};
+ const apply=(x,y,z,partId)=>{
   const R=morph.lateralRadius,t=morph.thoraxDepth,h=morph.head;
-  const dx=Math.sign(x)*(lateral(y)-1)*R*Math.tanh(Math.abs(x)/R);
+  let dx=Math.sign(x)*(lateral(y)-1)*R*Math.tanh(Math.abs(x)/R);
+  const blend=morph.lateralBlend;
+  if(blend){
+   const reference=lateral(y,blend.referenceKnots),factor=lateral(y),weight=smoothstep(blend.innerRadius,blend.outerRadius,Math.abs(x)),r=blend.heightRamp;
+   const outer=Math.sign(x)*blend.outerTranslation*smoothstep(r[0],r[1],y)*(1-smoothstep(r[2],r[3],y));
+   dx=(reference-1)*R*Math.tanh(x/R)+(1-weight)*(factor-reference)*R*Math.tanh(x/R)+weight*outer;
+  }
+  const waist=morph.waistRefinement;
+  if(waist){const r=waist.heightRamp;const weight=smoothstep(r[0],r[1],y)*(1-smoothstep(r[1],r[2],y))*(1-smoothstep(...waist.radialRamp,Math.abs(x)));dx+=waist.delta*R*Math.tanh(x/R)*weight;}
   const w=smoothstep(t.ramp[0],t.ramp[1],y)*(1-smoothstep(t.ramp[2],t.ramp[3],y));
   let qx=x+dx,qy=y,qz=z+z*(t.scale-1)*w;
+  const g=morph.gluteProjection;
+  if(g?.partIds?.includes(partId)){
+   const r2=((Math.abs(x)-g.centerX)/g.radiusX)**2+((y-g.centerY)/g.radiusY)**2;
+   let posterior=1-smoothstep(...g.depthRamp,z);
+   if(g.lowerDepth){let low=(1-smoothstep(...g.lowerDepth.heightFade,y))*(1-smoothstep(...g.lowerDepth.depthRamp,z));if(g.lowerDepth.heightRise)low*=smoothstep(...g.lowerDepth.heightRise,y);posterior=posterior+low-posterior*low;}
+   const gate=(1-smoothstep(0,1,r2))*smoothstep(...g.midlineRamp,Math.abs(x))*posterior;qz-=g.amplitude*gate;
+   if(g.inferior){const i=g.inferior,r=i.heightRamp;let weight=smoothstep(...i.midlineRamp,Math.abs(x))*(1-smoothstep(...i.lateralFade,Math.abs(x)))*smoothstep(r[0],r[1],y)*(1-smoothstep(r[2],r[3],y))*(1-smoothstep(...i.depthRamp,z));if(i.posteriorFade)weight*=smoothstep(...i.posteriorFade,z);qy-=i.amplitude*weight;}
+  }
   const n=morph.nose;if(n){const r2=((x-n.center[0])/n.radius[0])**2+((y-n.center[1])/n.radius[1])**2,wn=(1-smoothstep(0,1,r2))*smoothstep(n.plane-n.rampDepth,n.plane+n.rampDepth,z);qz-=wn*(1-n.scale)*(z-n.plane);}
   const wh=smoothstep(h.ramp[0],h.ramp[1],y)*(1-h.scale);
   qx-=wh*(qx-h.center[0]);qy-=wh*(qy-h.center[1]);qz-=wh*(qz-h.center[2]);
@@ -49,7 +65,7 @@ if(reconstructed){
    const indices=new Uint32Array(files[p.chunk].buffer,files[p.chunk].byteOffset+p.indices,p.indexCount);
    assert.deepEqual(indices,originalIndices,`${p.id}: topology changed`);
    const expected=new Float32Array(original.length);
-   for(let i=0;i<original.length;i+=3){const q=apply(original[i],original[i+1],original[i+2]);expected[i]=q[0];expected[i+1]=q[1];expected[i+2]=q[2];}
+   for(let i=0;i<original.length;i+=3){const q=apply(original[i],original[i+1],original[i+2],p.id);expected[i]=q[0];expected[i+1]=q[1];expected[i+2]=q[2];}
    check(expected,positions,p.id);retained++;
   } else {
    const reference=femaleParts.get(p.id);assert.ok(reference);
@@ -78,7 +94,7 @@ if(reconstructed){
     for(let i=0;i<original.length;i+=3){
      let x=original[i]*transform.scale[0]+transform.offset[0],y=original[i+1]*transform.scale[1]+transform.offset[1],z=original[i+2]*transform.scale[2]+transform.offset[2];
      if(entry.transform==='mammary')z+=drapeShift(x,y)+(report.tissueInsets?.[p.id]??0);
-     const q=apply(x,y,z);expected[i]=q[0];expected[i+1]=q[1];expected[i+2]=q[2];
+     const q=apply(x,y,z,p.id);expected[i]=q[0];expected[i+1]=q[1];expected[i+2]=q[2];
     }
     check(expected,positions,p.id);
    }

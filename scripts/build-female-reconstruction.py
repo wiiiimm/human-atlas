@@ -7,7 +7,7 @@ Pipeline
 2. Fit HRA female reproductive organs and breast tissue into the base pelvis and chest.
 3. Drape the breast assembly onto the retained chest wall so it rests on the pectoral muscles.
 4. Apply one smooth whole-body morph (stature, shoulders, thorax, waist, pelvis, head) to
-   every mesh, so bones, muscles, vessels, and fitted organs share one deformation field.
+   every mesh. Separately recorded posterior and inferior contour components apply only to explicitly listed glute meshes; pelvic organs and bones do not receive them.
 
 The morph is a continuous displacement field whose Jacobian is checked on a finite sample
 grid. This checks for sampled foldovers, not anatomical attachment correctness. Parameters
@@ -281,47 +281,94 @@ gap_before=float(np.nanmedian(shift));residual=np.where(covered,wall-EMBED-(enve
 # factor follows a smoothstep so the field is continuous and slopes stay gentle along the arms.
 MORPH=dict(
  stature=.95,
- lateralKnots=[[0.,1.],[.55,1.],[.80,1.05],[.92,1.10],[1.03,1.10],[1.21,.96],[1.29,.95],[1.42,.91],[1.48,.91],[1.60,1.]],
+ # User-reference silhouette pass: broader pelvis/upper hips and narrower shoulder cap.
+ # Artistic proportions, not a population measurement. The Sketchfab/comparison waist pass
+ # keeps the slim waist; a three-view pass rebalances hip width and posterior glute contour.
+ lateralKnots=[[0.,1.],[.55,1.],[.80,1.08],[.92,1.15],[1.03,1.15],[1.12,.955],[1.21,.96],[1.29,.93],[1.42,.88],[1.48,.88],[1.60,1.]],
+ # Retain the existing limb field outside the torso, with a nearly rigid 3 mm inward arm shift.
+ # Blend the new torso silhouette smoothly rather than sending hip widening into the forearms.
+ lateralBlend=dict(referenceKnots=[[0.,1.],[.55,1.],[.80,1.05],[.92,1.10],[1.03,1.10],[1.21,.96],[1.29,.95],[1.42,.91],[1.48,.91],[1.60,1.]],innerRadius=.17,outerRadius=.23,outerTranslation=-.003,heightRamp=[.45,.55,1.48,1.60]),
+ waistRefinement=dict(delta=-.095,heightRamp=[1.03,1.12,1.21],radialRamp=[.14,.17]),
  lateralRadius=.17,  # beyond this |x| the lateral change saturates into a translation, so arms move with the torso instead of being squeezed
  thoraxDepth=dict(scale=.96,ramp=[1.05,1.15,1.35,1.45]),
+ # Posterior and inferior contour for explicitly listed glute muscles and their inferior veins.
+ # Paired lobes fade at the midline and rim. Explicit IDs exclude misplaced pelvic ligaments.
+ # An illustration-guided soft-tissue contour, not a measured female muscle volume.
+ gluteProjection=dict(partIds=['FJ1418','FJ1418M','FJ3513','FJ3606'],scope='BodyParts3D bilateral gluteus maximus and inferior gluteal veins only; posterior/inferior components excluded from bones, pelvic organs, ligaments and lumbar muscles',amplitude=.020,centerX=.070,centerY=.880,radiusX=.100,radiusY=.180,midlineRamp=[.030,.050],depthRamp=[-.120,-.095],lowerDepth=dict(heightRise=[.780,.860],heightFade=[.830,.895],depthRamp=[-.100,-.060]),inferior=dict(amplitude=.022,posteriorFade=[-.120,-.075],midlineRamp=[.006,.020],lateralFade=[.065,.105],heightRamp=[.760,.800,.840,.885],depthRamp=[-.090,-.060])),
  head=dict(scale=.95,center=[0.,1.61,-.03],ramp=[1.44,1.56]),
  # Lower nasal bridge and projection: depth beyond the face plane is compressed inside a smooth
  # window around the nose (nasal bones and cartilages), giving a flatter East Asian profile.
  nose=dict(plane=.062,scale=.52,center=[0.,1.578],radius=[.03,.045],rampDepth=.012),
 )
-def lateral_factor(y):
-    knots=MORPH['lateralKnots'];out=np.full_like(y,knots[-1][1])
+def lateral_factor(y,knots=None):
+    knots=MORPH['lateralKnots'] if knots is None else knots;out=np.full_like(y,knots[-1][1])
     out=np.where(y<knots[0][0],knots[0][1],out)
     for (y0,s0),(y1,s1) in zip(knots,knots[1:]):
         inside=(y>=y0)&(y<y1);out=np.where(inside,s0+(s1-s0)*smoothstep(y0,y1,y),out)
     return out
-def morph(p):
+def morph(p,part_id=None):
     x,y,z=p[:,0],p[:,1],p[:,2];R=MORPH['lateralRadius']
-    dx=np.sign(x)*(lateral_factor(y)-1)*R*np.tanh(np.abs(x)/R)
+    factor=lateral_factor(y);dx=(factor-1)*R*np.tanh(x/R)
+    blend=MORPH.get('lateralBlend')
+    if blend:
+        reference=lateral_factor(y,blend['referenceKnots'])
+        w=smoothstep(blend['innerRadius'],blend['outerRadius'],np.abs(x));r=blend['heightRamp']
+        outer=np.sign(x)*blend['outerTranslation']*smoothstep(r[0],r[1],y)*(1-smoothstep(r[2],r[3],y))
+        dx=(reference-1)*R*np.tanh(x/R)+(1-w)*(factor-reference)*R*np.tanh(x/R)+w*outer
+    waist=MORPH.get('waistRefinement')
+    if waist:
+        r=waist['heightRamp'];weight=smoothstep(r[0],r[1],y)*(1-smoothstep(r[1],r[2],y))
+        weight*=1-smoothstep(*waist['radialRamp'],np.abs(x))
+        dx+=waist['delta']*R*np.tanh(x/R)*weight
     t=MORPH['thoraxDepth'];w=smoothstep(t['ramp'][0],t['ramp'][1],y)*(1-smoothstep(t['ramp'][2],t['ramp'][3],y))
     dz=z*(t['scale']-1)*w
-    q=np.stack([x+dx,y,z+dz],axis=1)
+    dy=np.zeros_like(y)
+    g=MORPH.get('gluteProjection')
+    if g and part_id in g['partIds']:
+        r2=((np.abs(x)-g['centerX'])/g['radiusX'])**2+((y-g['centerY'])/g['radiusY'])**2
+        posterior=1-smoothstep(*g['depthRamp'],z)
+        lower=g.get('lowerDepth')
+        if lower:
+            low=(1-smoothstep(*lower['heightFade'],y))*(1-smoothstep(*lower['depthRamp'],z))
+            if 'heightRise' in lower:low*=smoothstep(*lower['heightRise'],y)
+            posterior=posterior+low-posterior*low
+        gate=(1-smoothstep(0.,1.,r2))*smoothstep(*g['midlineRamp'],np.abs(x))*posterior
+        dz-=g['amplitude']*gate
+        inferior=g.get('inferior')
+        if inferior:
+            r=inferior['heightRamp']
+            weight=smoothstep(*inferior['midlineRamp'],np.abs(x))*(1-smoothstep(*inferior['lateralFade'],np.abs(x)))
+            weight*=smoothstep(r[0],r[1],y)*(1-smoothstep(r[2],r[3],y))*(1-smoothstep(*inferior['depthRamp'],z))
+            if 'posteriorFade' in inferior:weight*=smoothstep(*inferior['posteriorFade'],z)
+            dy-=inferior['amplitude']*weight
+    q=np.stack([x+dx,y+dy,z+dz],axis=1)
     n=MORPH['nose'];r2=((x-n['center'][0])/n['radius'][0])**2+((y-n['center'][1])/n['radius'][1])**2
     wn=(1-smoothstep(0.,1.,r2))*smoothstep(n['plane']-n['rampDepth'],n['plane']+n['rampDepth'],z)
     q[:,2]=q[:,2]-wn*(1-n['scale'])*(z-n['plane'])
     h=MORPH['head'];wh=smoothstep(h['ramp'][0],h['ramp'][1],y)[:,None]
     q=q-wh*(1-h['scale'])*(q-np.array(h['center']))
     return q*MORPH['stature']
-def morph_normals(p,n,h=1e-4):
-    base=morph(p);J=np.empty((len(p),3,3))
+def morph_normals(p,n,part_id=None,h=1e-4):
+    base=morph(p,part_id);J=np.empty((len(p),3,3))
     for axis in range(3):
-        d=np.zeros(3);d[axis]=h;J[:,:,axis]=(morph(p+d)-base)/h
+        d=np.zeros(3);d[axis]=h;J[:,:,axis]=(morph(p+d,part_id)-base)/h
     cof=np.linalg.inv(J).transpose(0,2,1)
     out=np.einsum('nij,nj->ni',cof,n);return out/np.maximum(np.linalg.norm(out,axis=1,keepdims=True),1e-20)
 # Jacobian sanity: sample the field over the body volume.
 grid=np.stack(np.meshgrid(np.linspace(-.35,.35,29),np.linspace(0,1.75,71),np.linspace(-.15,.15,13),indexing='ij'),-1).reshape(-1,3)
-J=np.empty((len(grid),3,3));base=morph(grid)
-for axis in range(3):
-    d=np.zeros(3);d[axis]=1e-4;J[:,:,axis]=(morph(grid+d)-base)/1e-4
-min_det=float(np.linalg.det(J).min());assert min_det>0,min_det
-
+# Screen both base field and the optional glute field. All eligible IDs use the same field.
+min_dets={}
+for label,part_id in [('shared',None),('glute','FJ1418')]:
+    J=np.empty((len(grid),3,3));base=morph(grid,part_id)
+    for axis in range(3):
+        d=np.zeros(3);d[axis]=1e-4;J[:,:,axis]=(morph(grid+d,part_id)-base)/1e-4
+    min_dets[label]=float(np.linalg.det(J).min());assert min_dets[label]>0,min_dets
+min_det=min(min_dets.values())
 for m in meshes:
-    m['nrm']=morph_normals(m['pos'],m['nrm']);m['pos']=morph(m['pos'])
+    part_id=m['part']['id']
+    if part_id in MORPH['gluteProjection']['partIds']:
+        m['provenance']['adaptation']+='; illustration-guided posterior and inferior glute contour (explicit part-ID scope)'
+    m['nrm']=morph_normals(m['pos'],m['nrm'],part_id);m['pos']=morph(m['pos'],part_id)
 
 # ---------------------------------------------------------------- write atlas
 for stale in glob.glob(str(OUT/'female-base-*.bin*')):os.remove(stale)
@@ -364,7 +411,7 @@ for p in atlas['parts']:
         atlas['concepts'].append(dict(id='PART_'+p['id'],name=p['name'],elements=[p['id']]))
 assert len({c['id'] for c in atlas['concepts']})==len(atlas['concepts'])
 atlas['triangles']=sum(p['indexCount']//3 for p in atlas['parts'])
-atlas['optimized']={'method':'Optimized BodyParts3D framework and affine-fitted optimized HRA female meshes, reshaped by one smooth female body morph','preservedMeshes':len(atlas['parts'])}
+atlas['optimized']={'method':'Optimized BodyParts3D framework and affine-fitted optimized HRA female meshes, reshaped by a shared female body morph plus an explicit-ID posterior glute contour','preservedMeshes':len(atlas['parts'])}
 atlas.pop('sourceTriangles',None)
 atlas['reconstructionReport']='/models/female-fit-report.json'
 
@@ -381,7 +428,7 @@ landmarks=dict(
  headWidth=span(['Left parietal bone','Right parietal bone'],0),
  chestDepth=extent('Body of sternum',2),
 )
-report=dict(method='BodyParts3D framework with fitted and draped HRA female structures, reshaped by one smooth whole-body morph',reviewStatus='Experimental; proportions estimated, organ placement unreviewed',transforms=transforms,morph=MORPH,drape=drape,breastProfile=profile,lobules=LOBULE,tissueInsets=tissue_insets,regenerated=regenerated,replacements=replacements,landmarks=landmarks,retained=[p['id'] for p in retained],added=[dict(id=p['id'],name=p['name'],system=p['system'],transform=p['group']) for p in added],excluded=excluded,checks=dict(retainedGeometryUnchanged=False,limbProportionsUnchanged=False,minimumMorphJacobian=min_det,minimumTransformDeterminant=float(min(np.prod(t['scale']) for t in transforms.values())),breastWallGapBeforeDrapeM=gap_before,breastWallGapAfterDrapeM=gap_after,breastWallMaxResidualM=gap_max),parts=len(atlas['parts']),concepts=len(atlas['concepts']),triangles=atlas['triangles'])
+report=dict(method='BodyParts3D framework with fitted and draped HRA female structures, shared whole-body morph plus explicit-ID posterior glute contour',reviewStatus='Experimental; proportions estimated, organ placement unreviewed',transforms=transforms,morph=MORPH,drape=drape,breastProfile=profile,lobules=LOBULE,tissueInsets=tissue_insets,regenerated=regenerated,replacements=replacements,landmarks=landmarks,retained=[p['id'] for p in retained],added=[dict(id=p['id'],name=p['name'],system=p['system'],transform=p['group']) for p in added],excluded=excluded,checks=dict(retainedGeometryUnchanged=False,limbProportionsUnchanged=False,minimumMorphJacobian=min_det,minimumMorphJacobianByField=min_dets,minimumTransformDeterminant=float(min(np.prod(t['scale']) for t in transforms.values())),breastWallGapBeforeDrapeM=gap_before,breastWallGapAfterDrapeM=gap_after,breastWallMaxResidualM=gap_max),parts=len(atlas['parts']),concepts=len(atlas['concepts']),triangles=atlas['triangles'])
 for p in atlas['parts']:p.pop('group',None)
 (OUT/'atlas-female-reconstructed.json').write_text(json.dumps(atlas,separators=(',',':')))
 (OUT/'female-fit-report.json').write_text(json.dumps(report,indent=2))

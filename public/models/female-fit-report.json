@@ -1,5 +1,5 @@
 {
-  "method": "BodyParts3D framework with fitted and draped HRA female structures, reshaped by one smooth whole-body morph",
+  "method": "BodyParts3D framework with fitted and draped HRA female structures, shared whole-body morph plus explicit-ID posterior glute contour",
   "reviewStatus": "Experimental; proportions estimated, organ placement unreviewed",
   "transforms": {
     "reproductive": {
@@ -55,15 +55,19 @@
       ],
       [
         0.8,
-        1.05
+        1.08
       ],
       [
         0.92,
-        1.1
+        1.15
       ],
       [
         1.03,
-        1.1
+        1.15
+      ],
+      [
+        1.12,
+        0.955
       ],
       [
         1.21,
@@ -71,21 +75,86 @@
       ],
       [
         1.29,
-        0.95
+        0.93
       ],
       [
         1.42,
-        0.91
+        0.88
       ],
       [
         1.48,
-        0.91
+        0.88
       ],
       [
         1.6,
         1.0
       ]
     ],
+    "lateralBlend": {
+      "referenceKnots": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.55,
+          1.0
+        ],
+        [
+          0.8,
+          1.05
+        ],
+        [
+          0.92,
+          1.1
+        ],
+        [
+          1.03,
+          1.1
+        ],
+        [
+          1.21,
+          0.96
+        ],
+        [
+          1.29,
+          0.95
+        ],
+        [
+          1.42,
+          0.91
+        ],
+        [
+          1.48,
+          0.91
+        ],
+        [
+          1.6,
+          1.0
+        ]
+      ],
+      "innerRadius": 0.17,
+      "outerRadius": 0.23,
+      "outerTranslation": -0.003,
+      "heightRamp": [
+        0.45,
+        0.55,
+        1.48,
+        1.6
+      ]
+    },
+    "waistRefinement": {
+      "delta": -0.095,
+      "heightRamp": [
+        1.03,
+        1.12,
+        1.21
+      ],
+      "radialRamp": [
+        0.14,
+        0.17
+      ]
+    },
     "lateralRadius": 0.17,
     "thoraxDepth": {
       "scale": 0.96,
@@ -95,6 +164,67 @@
         1.35,
         1.45
       ]
+    },
+    "gluteProjection": {
+      "partIds": [
+        "FJ1418",
+        "FJ1418M",
+        "FJ3513",
+        "FJ3606"
+      ],
+      "scope": "BodyParts3D bilateral gluteus maximus and inferior gluteal veins only; posterior/inferior components excluded from bones, pelvic organs, ligaments and lumbar muscles",
+      "amplitude": 0.02,
+      "centerX": 0.07,
+      "centerY": 0.88,
+      "radiusX": 0.1,
+      "radiusY": 0.18,
+      "midlineRamp": [
+        0.03,
+        0.05
+      ],
+      "depthRamp": [
+        -0.12,
+        -0.095
+      ],
+      "lowerDepth": {
+        "heightRise": [
+          0.78,
+          0.86
+        ],
+        "heightFade": [
+          0.83,
+          0.895
+        ],
+        "depthRamp": [
+          -0.1,
+          -0.06
+        ]
+      },
+      "inferior": {
+        "amplitude": 0.022,
+        "posteriorFade": [
+          -0.12,
+          -0.075
+        ],
+        "midlineRamp": [
+          0.006,
+          0.02
+        ],
+        "lateralFade": [
+          0.065,
+          0.105
+        ],
+        "heightRamp": [
+          0.76,
+          0.8,
+          0.84,
+          0.885
+        ],
+        "depthRamp": [
+          -0.09,
+          -0.06
+        ]
+      }
     },
     "head": {
       "scale": 0.95,
@@ -15076,11 +15206,11 @@
     },
     "biacromialWidth": {
       "before": 0.3329,
-      "after": 0.2944
+      "after": 0.2871
     },
     "biIliacWidth": {
       "before": 0.2896,
-      "after": 0.2975
+      "after": 0.3087
     },
     "headWidth": {
       "before": 0.151,
@@ -17918,7 +18048,11 @@
   "checks": {
     "retainedGeometryUnchanged": false,
     "limbProportionsUnchanged": false,
-    "minimumMorphJacobian": 0.3784111024002714,
+    "minimumMorphJacobian": 0.3771252597161118,
+    "minimumMorphJacobianByField": {
+      "shared": 0.3771252597161118,
+      "glute": 0.3771252597161118
+    },
     "minimumTransformDeterminant": 0.2884,
     "breastWallGapBeforeDrapeM": -0.008373144332610688,
     "breastWallGapAfterDrapeM": -0.0040000000000000036,

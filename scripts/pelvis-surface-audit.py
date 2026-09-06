@@ -98,7 +98,7 @@ class Atlas:
             buf = self.buffers[chunk]
             v = np.frombuffer(buf,'<f4',p['vertexCount']*3,p['positions']).reshape(-1,3).astype(float)
             if transform:
-                v = transform(v)
+                v = transform(v,key)
             f = np.frombuffer(buf,'<u4',p['indexCount'],p['indices']).reshape(-1,3).astype(int)
             vertices.append(v);faces.append(f+offset);offset += len(v)
         return np.concatenate(vertices), np.concatenate(faces)
@@ -107,7 +107,7 @@ def smoothstep(a,b,x):
     t = np.clip((x-a)/(b-a),0,1)
     return t*t*(3-2*t)
 
-def morph(points, settings):
+def morph(points, settings, part_id=None):
     """Reconstruct the documented control warp without importing the mesh builder."""
     x,y,z = points.T
     knots = settings['lateralKnots']
@@ -117,9 +117,44 @@ def morph(points, settings):
         factor = np.where((y>=y0)&(y<y1),s0+(s1-s0)*smoothstep(y0,y1,y),factor)
     radius = settings['lateralRadius']
     dx = np.sign(x)*(factor-1)*radius*np.tanh(abs(x)/radius)
+    blend = settings.get('lateralBlend')
+    if blend:
+        knots = blend['referenceKnots']; reference = np.full_like(y, knots[-1][1])
+        reference[y < knots[0][0]] = knots[0][1]
+        for (y0,s0),(y1,s1) in zip(knots,knots[1:]):
+            reference = np.where((y>=y0)&(y<y1),s0+(s1-s0)*smoothstep(y0,y1,y),reference)
+        weight = smoothstep(blend['innerRadius'],blend['outerRadius'],abs(x))
+        ramp = blend['heightRamp']
+        outer = np.sign(x)*blend['outerTranslation']*smoothstep(ramp[0],ramp[1],y)*(1-smoothstep(ramp[2],ramp[3],y))
+        dx = (reference-1)*radius*np.tanh(x/radius)+(1-weight)*(factor-reference)*radius*np.tanh(x/radius)+weight*outer
+    waist = settings.get('waistRefinement')
+    if waist:
+        ramp=waist['heightRamp']
+        weight=smoothstep(ramp[0],ramp[1],y)*(1-smoothstep(ramp[1],ramp[2],y))
+        weight*=1-smoothstep(*waist['radialRamp'],abs(x))
+        dx+=waist['delta']*radius*np.tanh(x/radius)*weight
     depth = settings['thoraxDepth']; ramp = depth['ramp']
     dz = z*(depth['scale']-1)*smoothstep(ramp[0],ramp[1],y)*(1-smoothstep(ramp[2],ramp[3],y))
-    q = np.stack([x+dx,y,z+dz],axis=1)
+    dy = np.zeros_like(y)
+    glute = settings.get('gluteProjection')
+    if glute and part_id in glute.get('partIds',[]):
+        r2 = ((abs(x)-glute['centerX'])/glute['radiusX'])**2+((y-glute['centerY'])/glute['radiusY'])**2
+        midline = smoothstep(*glute['midlineRamp'],abs(x))
+        posterior = 1-smoothstep(*glute['depthRamp'],z)
+        lower = glute.get('lowerDepth')
+        if lower:
+            low = (1-smoothstep(*lower['heightFade'],y))*(1-smoothstep(*lower['depthRamp'],z))
+            if 'heightRise' in lower:low *= smoothstep(*lower['heightRise'],y)
+            posterior = posterior+low-posterior*low
+        dz -= glute['amplitude']*(1-smoothstep(0,1,r2))*midline*posterior
+        inferior = glute.get('inferior')
+        if inferior:
+            ramp = inferior['heightRamp']
+            weight = smoothstep(*inferior['midlineRamp'],abs(x))*(1-smoothstep(*inferior['lateralFade'],abs(x)))
+            weight *= smoothstep(ramp[0],ramp[1],y)*(1-smoothstep(ramp[2],ramp[3],y))*(1-smoothstep(*inferior['depthRamp'],z))
+            if 'posteriorFade' in inferior:weight *= smoothstep(*inferior['posteriorFade'],z)
+            dy -= inferior['amplitude']*weight
+    q = np.stack([x+dx,y+dy,z+dz],axis=1)
     nose = settings['nose']
     r2 = ((x-nose['center'][0])/nose['radius'][0])**2+((y-nose['center'][1])/nose['radius'][1])**2
     weight = (1-smoothstep(0,1,r2))*smoothstep(nose['plane']-nose['rampDepth'],nose['plane']+nose['rampDepth'],z)
@@ -133,11 +168,27 @@ def stats(distances):
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
-def run(root):
+def run(root,reuse_root=None,reuse_audit=None):
     male = Atlas(root,'atlas.json'); female = Atlas(root,'atlas-female-reconstructed.json')
     fitpath = root/'public/models/female-fit-report.json'
     fit = json.loads(fitpath.read_text())
-    warp = lambda points: morph(points,fit['morph'])
+    warp = lambda points,part_id: morph(points,fit['morph'],part_id)
+    prior = None; reused = []; recomputed = []
+    if reuse_root is not None and reuse_audit is not None:
+        prior = json.loads(reuse_audit.read_text())
+        if (prior.get('schemaVersion'),prior.get('patchThresholdMm'),prior.get('reviewDistanceMm')) != (1,3,5):
+            raise ValueError('Reuse requires current schemaVersion=1, patchThresholdMm=3 and reviewDistanceMm=5')
+        old_male = Atlas(reuse_root,'atlas.json'); old_female = Atlas(reuse_root,'atlas-female-reconstructed.json')
+        old_fitpath = reuse_root/'public/models/female-fit-report.json'
+        expected = [(old_male.path,prior['inputs']['maleManifestSha256']),(old_female.path,prior['inputs']['femaleManifestSha256']),(old_fitpath,prior['inputs']['fitReportSha256'])]
+        expected += [(reuse_root/path,value) for path,value in prior['inputs']['chunks'].items()]
+        for path,value in expected:
+            if sha(path) != value:raise ValueError(f'Reuse input hash mismatch: {path}')
+        old_settings = json.loads(old_fitpath.read_text())['morph']
+        old_warp = lambda points,part_id:morph(points,old_settings,part_id)
+        prior_rows = {row['name']:row for row in prior['results']}
+    def identical_mesh(first,second):
+        return all(np.array_equal(a,b) for a,b in zip(first,second))
     target_cache = {}
     def target(atlas, ids, control=False):
         key = (atlas.path.name,tuple(ids),control)
@@ -166,6 +217,19 @@ def run(root):
         error = float(np.max(np.linalg.norm(a-b,axis=1)))
         if error > 2e-7:
             raise ValueError(f'Control warp does not reproduce retained {source_id}: {error} m')
+        prior_row = prior_rows.get(label) if prior is not None else None
+        matching_ids = prior_row is not None and prior_row.get('kind')==kind and prior_row.get('sourceId')==source_id and prior_row.get('controlTargets')==old_ids and prior_row.get('femaleTargets')==new_ids
+        if matching_ids:
+            old_query = old_male.mesh([source_id],old_warp)
+            old_current_query = old_female.mesh([source_id])
+            unchanged = identical_mesh((a,faces),old_query) and identical_mesh((b,female_faces),old_current_query)
+            unchanged = unchanged and identical_mesh(male.mesh(old_ids,warp),old_male.mesh(old_ids,old_warp))
+            unchanged = unchanged and identical_mesh(female.mesh(new_ids),old_female.mesh(new_ids))
+            if unchanged:
+                results.append(prior_rows[label]);reused.append(label)
+                print(label,'reused after exact query/control/target identity checks',flush=True)
+                continue
+        recomputed.append(label)
         old = target(male,old_ids,True).distances(a)
         new = target(female,new_ids).distances(b)
         patch = old <= .003
@@ -175,12 +239,22 @@ def run(root):
         print(label, 'minimum mm',results[-1]['female']['minMm'],'patch',int(patch.sum()),flush=True)
     # These replacement-only screens cannot claim equivalent point correspondence.
     for label,source_ids,target_ids in [('Right ilium / sacrum',['VH_F_ilium_compact_bone_R'],['VH_F_sacrum']),('Left ilium / sacrum',['VH_F_ilium_compact_bone_L'],['VH_F_sacrum']),('Right / left pubis',['VH_F_pubis_compact_bone_R'],['VH_F_pubis_compact_bone_L'])]:
+        prior_row = prior_rows.get(label) if prior is not None else None
+        matching_ids = prior_row is not None and prior_row.get('kind')=='replacement_surface_screen' and prior_row.get('sourceIds')==source_ids and prior_row.get('femaleTargets')==target_ids
+        if matching_ids and identical_mesh(female.mesh(source_ids),old_female.mesh(source_ids)) and identical_mesh(female.mesh(target_ids),old_female.mesh(target_ids)):
+            results.append(prior_rows[label]);reused.append(label)
+            print(label,'reused after exact source/target identity checks',flush=True)
+            continue
+        recomputed.append(label)
         a,_ = female.mesh(source_ids);surface = target(female,target_ids);distance = surface.distances(a)
         index = int(np.argmin(distance))
         results.append(dict(name=label,kind='replacement_surface_screen',sourceIds=source_ids,femaleTargets=target_ids,vertices=len(a),female=stats(distance),closestFemalePointM=a[index].tolist(),closestTargetPointM=surface.nearest(a[index])[1].tolist()))
     report = dict(schemaVersion=1,issue='SWR-513',status='Screening evidence; anatomical registration remains unvalidated',method='Exact unsigned distance from every query mesh vertex to the nearest target triangle, using an AABB hierarchy. Not vertex-to-vertex distances. Minimum is a sampled upper bound on continuous surface separation.',control='Original BodyParts3D bone and retained mesh geometry transformed with the stored female body morph. Retained vertex correspondence checked to 0.0002 mm.',patchThresholdMm=3,reviewDistanceMm=5,thresholdMeaning='Engineering screening thresholds only; not physiological cartilage, tendon or joint tolerances.',limitations=['Nearest surface is not necessarily an anatomical attachment or articular surface.','Unsigned distances do not diagnose interpenetration; intersecting or nested shells can give misleadingly small distances.','Samples are vertices and are not area-weighted; no continuous-surface Hausdorff or collision claim.','Bone meshes omit cartilage/ligament/tendon contact information; gaps may be physiological or source segmentation differences.','No manually annotated femoral-head center, acetabulum, ASIS/PSIS, sacral endplate, or muscle origin/insertion landmarks are bundled.','The male control itself is not validated; this measures changes introduced by replacement, not ground truth.'],inputs=dict(maleManifestSha256=sha(male.path),femaleManifestSha256=sha(female.path),fitReportSha256=sha(fitpath),chunks={str(atlas.root/'public'/atlas.data['chunks'][key]['url'].lstrip('/')).replace(str(root)+'/',''):hashlib.sha256(value).hexdigest() for atlas in [male,female] for key,value in atlas.buffers.items()}),results=results)
+    if prior is not None:report['verifiedReuse']=dict(sourceAuditSha256=sha(reuse_audit),sourceManifestSha256=prior['inputs']['femaleManifestSha256'],method='Reused only when screen kind and source/target IDs match, and actual indexed query/control/target vertex coordinates and triangle indices are exactly equal in both source frames; prior schema, thresholds and input file hashes verified before use.',reusedScreens=reused,recomputedScreens=recomputed)
     output = root/'data/anatomy/pelvis-surface-audit.json';output.parent.mkdir(parents=True,exist_ok=True);output.write_text(json.dumps(report,indent=2)+'\n')
     return report
 
 if __name__ == '__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--root',type=Path,default=ROOT);args=parser.parse_args();run(args.root)
+    parser=argparse.ArgumentParser();parser.add_argument('--root',type=Path,default=ROOT);parser.add_argument('--reuse-root',type=Path);parser.add_argument('--reuse-audit',type=Path);args=parser.parse_args();
+    if (args.reuse_root is None) != (args.reuse_audit is None):parser.error('--reuse-root and --reuse-audit must be supplied together')
+    run(args.root,args.reuse_root,args.reuse_audit)

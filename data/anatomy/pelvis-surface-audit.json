@@ -17,18 +17,18 @@
   ],
   "inputs": {
     "maleManifestSha256": "c359f4bcd2cba90b7411d66d5e9fc04dc81294d46cd5c1e8b212c824f2e5bbee",
-    "femaleManifestSha256": "44c57151d3ea87badd028def6a9668bd43a39cca601bc29af44363978728cc33",
-    "fitReportSha256": "0709ebc6dbfc860b78dd41dfeaf5a573689464cdd4fb2905eb4d4a3757e67d0b",
+    "femaleManifestSha256": "9b6f0fc90c80e4cd50a7ec65fa9d43ddeb0d6e5d79b6d1b9a78105443610730b",
+    "fitReportSha256": "03d29b70d32e3d407f93d2b47e310386eb04e7c44fb676f0d810a48a6e548035",
     "chunks": {
       "public/models/body-13.bin": "4c51b6be85d5b705d2b52b79b9ad1cdae0b65ad03c9402a2f2673c7633fd94f3",
       "public/models/body-11.bin": "e8c1afe7f30fe710ad164ec9cd2287a32881606e7eb590af47d76b3f84405027",
       "public/models/body-1.bin": "aa077a4675f0d0dd3c9b0af39dc8cf6bcb348c3bf7d283478d4206ce30a5a0de",
       "public/models/body-12.bin": "61a6c8da89bb20df50c575964ac81aa4090eabfc2cb27ad2155aea325f31c6c0",
-      "public/models/female-base-12.bin": "cff2de8e39ce149c55125da427be242f0822f81abeabbe13917013c13096f13f",
-      "public/models/female-base-14.bin": "a3260c36f823968da19cdc0f28c196189a05a34bc097b43f3a5daba2d82664b2",
-      "public/models/female-base-1.bin": "9abbbee6d491fc73807841419b989b2ae84180b69db32b10d87d4aa15b04aa75",
-      "public/models/female-base-15.bin": "0de876171653b36cf7af7a79228b367afd9b63d9b0673d614e9d25fb86a70ae6",
-      "public/models/female-base-11.bin": "603d986ee7e81ea9e2197c08d966a973b319f5b304d96e82679e7243d744ec61"
+      "public/models/female-base-12.bin": "203bbe2ac78e8d37573bb3aa1da65b7fe2969ed0aa297d312abb3fc50e814e0d",
+      "public/models/female-base-14.bin": "ac3ae4d52563fd7fc586c1d9133897981719d22450278a96ae5f3b8033572843",
+      "public/models/female-base-1.bin": "00f0351b3c5fa57b27f538042a03ea4cd60cbd192e3b9a475d92c5155ad0d0f1",
+      "public/models/female-base-15.bin": "7e984ed5edbfd281f60ebb0cbb920986bc7457108625bd51a04c20162dba222d",
+      "public/models/female-base-11.bin": "6fd3a25230b662c8dbfd325594c85315a6b4a5aa26774f28f37ad05857163eb7"
     }
   },
   "results": [
@@ -45,34 +45,34 @@
         "VH_F_pubis_compact_bone_R"
       ],
       "vertices": 480,
-      "retainedWarpMaxResidualMm": 3.000634576240548e-05,
+      "retainedWarpMaxResidualMm": 3.0001253829245027e-05,
       "control": {
-        "minMm": 0.0853,
-        "p05Mm": 2.3787,
-        "medianMm": 89.6219,
-        "p95Mm": 360.3388,
-        "maxMm": 365.3999
+        "minMm": 0.0844,
+        "p05Mm": 2.402,
+        "medianMm": 89.9473,
+        "p95Mm": 360.2111,
+        "maxMm": 365.3819
       },
       "female": {
         "minMm": 0.0091,
-        "p05Mm": 1.8861,
-        "medianMm": 81.9864,
-        "p95Mm": 358.5604,
-        "maxMm": 364.8472
+        "p05Mm": 1.9255,
+        "medianMm": 82.334,
+        "p95Mm": 358.5179,
+        "maxMm": 364.8838
       },
       "closestFemalePointM": [
-        -0.07270896434783936,
+        -0.07579948008060455,
         0.8588372468948364,
         -0.014263110235333443
       ],
       "closestTargetPointM": [
-        -0.07271710273249504,
-        0.8588331953375761,
-        -0.014262241146196957
+        -0.07580747728070605,
+        0.8588330570955838,
+        -0.014262224298090043
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 31,
+        "count": 29,
         "vertexIndices": [
           378,
           380,
@@ -84,7 +84,6 @@
           418,
           434,
           437,
-          438,
           439,
           440,
           441,
@@ -92,7 +91,6 @@
           452,
           453,
           454,
-          455,
           456,
           457,
           458,
@@ -107,18 +105,18 @@
           474
         ],
         "control": {
-          "minMm": 0.0853,
-          "p05Mm": 0.3002,
-          "medianMm": 1.0398,
-          "p95Mm": 2.9791,
-          "maxMm": 2.9898
+          "minMm": 0.0844,
+          "p05Mm": 0.2876,
+          "medianMm": 0.9811,
+          "p95Mm": 2.8372,
+          "maxMm": 2.9842
         },
         "female": {
           "minMm": 0.0091,
-          "p05Mm": 0.1836,
-          "medianMm": 3.3914,
-          "p95Mm": 9.0656,
-          "maxMm": 9.8989
+          "p05Mm": 0.1636,
+          "medianMm": 3.4809,
+          "p95Mm": 9.2742,
+          "maxMm": 10.101
         },
         "femaleOver5Mm": 5
       }
@@ -139,34 +137,34 @@
         "VH_F_coccyx"
       ],
       "vertices": 1328,
-      "retainedWarpMaxResidualMm": 3.0931250129583176e-05,
+      "retainedWarpMaxResidualMm": 3.069614388890657e-05,
       "control": {
-        "minMm": 0.018,
-        "p05Mm": 0.5054,
-        "medianMm": 44.552,
-        "p95Mm": 62.7273,
-        "maxMm": 100.8863
+        "minMm": 0.0182,
+        "p05Mm": 0.5169,
+        "medianMm": 45.4571,
+        "p95Mm": 63.3771,
+        "maxMm": 101.0986
       },
       "female": {
-        "minMm": 0.0744,
-        "p05Mm": 1.6297,
-        "medianMm": 41.1974,
-        "p95Mm": 58.5248,
-        "maxMm": 94.7306
+        "minMm": 0.0746,
+        "p05Mm": 1.6617,
+        "medianMm": 41.8637,
+        "p95Mm": 61.5601,
+        "maxMm": 94.8787
       },
       "closestFemalePointM": [
-        -0.054690491408109665,
+        -0.057107072323560715,
         0.9217063784599304,
         -0.08622332662343979
       ],
       "closestTargetPointM": [
-        -0.054680165076908656,
-        0.9216357063650009,
-        -0.08624430666529218
+        -0.05709713352398148,
+        0.9216355033706518,
+        -0.08624436949259329
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 314,
+        "count": 312,
         "vertexIndices": [
           871,
           873,
@@ -256,9 +254,7 @@
           1010,
           1011,
           1012,
-          1013,
           1014,
-          1016,
           1019,
           1023,
           1024,
@@ -484,20 +480,20 @@
           1327
         ],
         "control": {
-          "minMm": 0.018,
-          "p05Mm": 0.1323,
-          "medianMm": 1.2434,
-          "p95Mm": 2.6894,
-          "maxMm": 2.9626
+          "minMm": 0.0182,
+          "p05Mm": 0.1328,
+          "medianMm": 1.2435,
+          "p95Mm": 2.6488,
+          "maxMm": 2.9674
         },
         "female": {
-          "minMm": 0.0744,
-          "p05Mm": 0.2353,
-          "medianMm": 5.3331,
-          "p95Mm": 25.0968,
-          "maxMm": 32.9077
+          "minMm": 0.0746,
+          "p05Mm": 0.2385,
+          "medianMm": 5.5075,
+          "p95Mm": 25.0972,
+          "maxMm": 32.909
         },
-        "femaleOver5Mm": 173
+        "femaleOver5Mm": 176
       }
     },
     {
@@ -513,34 +509,34 @@
         "VH_F_pubis_compact_bone_R"
       ],
       "vertices": 1129,
-      "retainedWarpMaxResidualMm": 3.07053560310672e-05,
+      "retainedWarpMaxResidualMm": 3.0684386892406926e-05,
       "control": {
-        "minMm": 0.0532,
-        "p05Mm": 0.7646,
-        "medianMm": 15.1483,
-        "p95Mm": 57.4187,
-        "maxMm": 58.3319
+        "minMm": 0.0545,
+        "p05Mm": 0.7677,
+        "medianMm": 15.2465,
+        "p95Mm": 57.6427,
+        "maxMm": 58.5277
       },
       "female": {
-        "minMm": 0.0049,
-        "p05Mm": 0.4236,
-        "medianMm": 16.3651,
-        "p95Mm": 48.3405,
-        "maxMm": 49.2764
+        "minMm": 0.005,
+        "p05Mm": 0.4266,
+        "medianMm": 16.5211,
+        "p95Mm": 48.8718,
+        "maxMm": 49.817
       },
       "closestFemalePointM": [
-        -0.06357007473707199,
+        -0.06635180115699768,
         0.9134071469306946,
         -0.07222061604261398
       ],
       "closestTargetPointM": [
-        -0.06356808238750555,
-        0.9134101693185356,
-        -0.07221734706842348
+        -0.06634981654201806,
+        0.9134102795251283,
+        -0.07221722784163874
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 338,
+        "count": 335,
         "vertexIndices": [
           225,
           272,
@@ -558,11 +554,8 @@
           439,
           440,
           441,
-          459,
           460,
           462,
-          463,
-          464,
           465,
           468,
           469,
@@ -882,20 +875,20 @@
           1128
         ],
         "control": {
-          "minMm": 0.0532,
-          "p05Mm": 0.2672,
-          "medianMm": 1.4948,
-          "p95Mm": 2.6931,
-          "maxMm": 2.9596
+          "minMm": 0.0545,
+          "p05Mm": 0.2767,
+          "medianMm": 1.5055,
+          "p95Mm": 2.6606,
+          "maxMm": 2.9864
         },
         "female": {
-          "minMm": 0.0049,
-          "p05Mm": 0.1377,
-          "medianMm": 2.7842,
-          "p95Mm": 7.6565,
-          "maxMm": 9.8421
+          "minMm": 0.005,
+          "p05Mm": 0.1386,
+          "medianMm": 2.6594,
+          "p95Mm": 7.7855,
+          "maxMm": 10.2194
         },
-        "femaleOver5Mm": 78
+        "femaleOver5Mm": 83
       }
     },
     {
@@ -911,34 +904,34 @@
         "VH_F_pubis_compact_bone_R"
       ],
       "vertices": 1346,
-      "retainedWarpMaxResidualMm": 3.07139039649195e-05,
+      "retainedWarpMaxResidualMm": 3.0659767626517085e-05,
       "control": {
-        "minMm": 0.0026,
-        "p05Mm": 1.7598,
-        "medianMm": 6.1752,
-        "p95Mm": 52.5667,
-        "maxMm": 58.4041
+        "minMm": 0.0055,
+        "p05Mm": 1.7827,
+        "medianMm": 6.3269,
+        "p95Mm": 52.786,
+        "maxMm": 59.0727
       },
       "female": {
         "minMm": 0.0044,
-        "p05Mm": 0.2472,
-        "medianMm": 4.7589,
-        "p95Mm": 43.6597,
-        "maxMm": 48.8534
+        "p05Mm": 0.2521,
+        "medianMm": 4.8912,
+        "p95Mm": 44.1218,
+        "maxMm": 49.1504
       },
       "closestFemalePointM": [
-        -0.07401690632104874,
+        -0.07721342891454697,
         0.897506058216095,
         -0.04386311396956444
       ],
       "closestTargetPointM": [
-        -0.07401628101205238,
-        0.8975027898249633,
-        -0.043865918107364406
+        -0.07721282335030913,
+        0.897502770177672,
+        -0.04386593488972635
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 378,
+        "count": 370,
         "vertexIndices": [
           474,
           492,
@@ -963,29 +956,22 @@
           643,
           660,
           664,
-          674,
           679,
           683,
-          697,
           700,
           705,
           706,
           707,
-          708,
           709,
           710,
           712,
           713,
-          725,
           736,
-          739,
-          741,
           761,
           762,
           767,
           777,
           778,
-          779,
           781,
           782,
           783,
@@ -1183,7 +1169,6 @@
           1126,
           1127,
           1130,
-          1131,
           1133,
           1134,
           1135,
@@ -1320,20 +1305,20 @@
           1314
         ],
         "control": {
-          "minMm": 0.0026,
-          "p05Mm": 0.7493,
-          "medianMm": 2.228,
-          "p95Mm": 2.8505,
-          "maxMm": 2.9964
+          "minMm": 0.0055,
+          "p05Mm": 0.7464,
+          "medianMm": 2.2389,
+          "p95Mm": 2.8087,
+          "maxMm": 2.993
         },
         "female": {
-          "minMm": 0.0331,
-          "p05Mm": 0.208,
-          "medianMm": 1.936,
-          "p95Mm": 6.0871,
-          "maxMm": 7.8391
+          "minMm": 0.0316,
+          "p05Mm": 0.2188,
+          "medianMm": 1.9634,
+          "p95Mm": 6.2843,
+          "maxMm": 8.0423
         },
-        "femaleOver5Mm": 36
+        "femaleOver5Mm": 42
       }
     },
     {
@@ -1349,34 +1334,34 @@
         "VH_F_pubis_compact_bone_R"
       ],
       "vertices": 1475,
-      "retainedWarpMaxResidualMm": 3.0683637782523596e-05,
+      "retainedWarpMaxResidualMm": 3.0555547930608364e-05,
       "control": {
-        "minMm": 0.0018,
-        "p05Mm": 0.2562,
-        "medianMm": 3.0176,
-        "p95Mm": 41.997,
-        "maxMm": 42.7745
+        "minMm": 0.0029,
+        "p05Mm": 0.2572,
+        "medianMm": 3.0596,
+        "p95Mm": 42.1536,
+        "maxMm": 42.9411
       },
       "female": {
-        "minMm": 0.0014,
-        "p05Mm": 0.1244,
-        "medianMm": 2.1953,
-        "p95Mm": 35.3347,
-        "maxMm": 36.3459
+        "minMm": 0.0061,
+        "p05Mm": 0.1316,
+        "medianMm": 2.2086,
+        "p95Mm": 35.5203,
+        "maxMm": 36.5322
       },
       "closestFemalePointM": [
-        -0.10704252123832703,
-        0.9818602800369263,
-        -0.03581395372748375
+        -0.11234764009714127,
+        0.9832510948181152,
+        -0.034957531839609146
       ],
       "closestTargetPointM": [
-        -0.10704202342235984,
-        0.9818612785418109,
-        -0.03581305091045726
+        -0.11234974559767921,
+        0.9832469630531635,
+        -0.034961490581324486
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 737,
+        "count": 733,
         "vertexIndices": [
           0,
           1,
@@ -2049,12 +2034,8 @@
           1212,
           1213,
           1218,
-          1221,
-          1223,
-          1225,
           1226,
           1227,
-          1228,
           1229,
           1230,
           1231,
@@ -2117,18 +2098,18 @@
           1416
         ],
         "control": {
-          "minMm": 0.0018,
-          "p05Mm": 0.081,
-          "medianMm": 1.1112,
-          "p95Mm": 2.836,
-          "maxMm": 2.984
+          "minMm": 0.0029,
+          "p05Mm": 0.0788,
+          "medianMm": 1.1265,
+          "p95Mm": 2.8262,
+          "maxMm": 2.9619
         },
         "female": {
-          "minMm": 0.0014,
-          "p05Mm": 0.0847,
-          "medianMm": 0.8567,
-          "p95Mm": 3.5155,
-          "maxMm": 5.957
+          "minMm": 0.0061,
+          "p05Mm": 0.0817,
+          "medianMm": 0.8587,
+          "p95Mm": 3.5674,
+          "maxMm": 5.9837
         },
         "femaleOver5Mm": 11
       }
@@ -2146,30 +2127,30 @@
         "VH_F_pubis_compact_bone_R"
       ],
       "vertices": 503,
-      "retainedWarpMaxResidualMm": 2.9982686965421338e-05,
+      "retainedWarpMaxResidualMm": 2.995338752374048e-05,
       "control": {
         "minMm": 0.2421,
-        "p05Mm": 3.0055,
-        "medianMm": 86.5845,
-        "p95Mm": 140.5503,
-        "maxMm": 153.0932
+        "p05Mm": 3.02,
+        "medianMm": 86.8257,
+        "p95Mm": 140.5002,
+        "maxMm": 153.0012
       },
       "female": {
-        "minMm": 0.0285,
-        "p05Mm": 1.3868,
-        "medianMm": 78.7317,
-        "p95Mm": 135.6352,
-        "maxMm": 148.7736
+        "minMm": 0.0282,
+        "p05Mm": 1.3906,
+        "medianMm": 78.9085,
+        "p95Mm": 135.5659,
+        "maxMm": 148.6699
       },
       "closestFemalePointM": [
-        -0.02739282324910164,
+        -0.028442561626434326,
         0.8233775496482849,
         0.016127200797200203
       ],
       "closestTargetPointM": [
-        -0.027377820834272818,
-        0.8234006388398654,
-        0.016119817293097652
+        -0.028428140625582802,
+        0.8234006697717655,
+        0.016119834454224397
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
@@ -2203,17 +2184,17 @@
         ],
         "control": {
           "minMm": 0.2421,
-          "p05Mm": 0.2534,
-          "medianMm": 1.8396,
-          "p95Mm": 2.8204,
-          "maxMm": 2.8789
+          "p05Mm": 0.2533,
+          "medianMm": 1.8445,
+          "p95Mm": 2.8289,
+          "maxMm": 2.8858
         },
         "female": {
-          "minMm": 0.0285,
-          "p05Mm": 0.1213,
-          "medianMm": 1.2077,
-          "p95Mm": 3.7382,
-          "maxMm": 3.7382
+          "minMm": 0.0282,
+          "p05Mm": 0.1219,
+          "medianMm": 1.211,
+          "p95Mm": 3.7566,
+          "maxMm": 3.7566
         },
         "femaleOver5Mm": 0
       }
@@ -2231,30 +2212,30 @@
         "VH_F_pubis_compact_bone_R"
       ],
       "vertices": 408,
-      "retainedWarpMaxResidualMm": 3.001235903291923e-05,
+      "retainedWarpMaxResidualMm": 2.987342485057203e-05,
       "control": {
         "minMm": 0.0074,
-        "p05Mm": 0.4178,
-        "medianMm": 124.4775,
-        "p95Mm": 216.0301,
-        "maxMm": 235.2944
+        "p05Mm": 0.4213,
+        "medianMm": 124.5024,
+        "p95Mm": 215.8843,
+        "maxMm": 235.1517
       },
       "female": {
         "minMm": 0.071,
-        "p05Mm": 5.3582,
-        "medianMm": 118.956,
-        "p95Mm": 212.8979,
-        "maxMm": 232.5096
+        "p05Mm": 5.3628,
+        "medianMm": 118.9445,
+        "p95Mm": 212.7793,
+        "maxMm": 232.397
       },
       "closestFemalePointM": [
-        -0.023005420342087746,
+        -0.02388177439570427,
         0.8219344615936279,
         0.025542650371789932
       ],
       "closestTargetPointM": [
-        -0.022988498754824404,
-        0.8219879251491492,
-        0.025499181031580304
+        -0.023865447284264783,
+        0.8219880720971189,
+        0.025499120482520246
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
@@ -2350,17 +2331,17 @@
         ],
         "control": {
           "minMm": 0.0074,
-          "p05Mm": 0.0888,
-          "medianMm": 0.6517,
-          "p95Mm": 1.7649,
-          "maxMm": 2.5181
+          "p05Mm": 0.0896,
+          "medianMm": 0.6574,
+          "p95Mm": 1.7692,
+          "maxMm": 2.5434
         },
         "female": {
-          "minMm": 0.1815,
-          "p05Mm": 0.6189,
-          "medianMm": 7.3358,
-          "p95Mm": 8.0435,
-          "maxMm": 8.3487
+          "minMm": 0.1817,
+          "p05Mm": 0.6198,
+          "medianMm": 7.3449,
+          "p95Mm": 8.0571,
+          "maxMm": 8.3628
         },
         "femaleOver5Mm": 71
       }
@@ -2378,34 +2359,34 @@
         "VH_F_pubis_compact_bone_R"
       ],
       "vertices": 1786,
-      "retainedWarpMaxResidualMm": 3.0033116124759977e-05,
+      "retainedWarpMaxResidualMm": 3.0031424207545885e-05,
       "control": {
         "minMm": 0.0152,
-        "p05Mm": 1.6697,
-        "medianMm": 181.2095,
-        "p95Mm": 347.7924,
-        "maxMm": 354.9985
+        "p05Mm": 1.6706,
+        "medianMm": 181.038,
+        "p95Mm": 347.8256,
+        "maxMm": 355.027
       },
       "female": {
         "minMm": 0.0675,
-        "p05Mm": 6.2162,
-        "medianMm": 177.5572,
-        "p95Mm": 347.5863,
-        "maxMm": 354.6317
+        "p05Mm": 6.2482,
+        "medianMm": 177.3796,
+        "p95Mm": 347.6831,
+        "maxMm": 354.7214
       },
       "closestFemalePointM": [
-        -0.017169026657938957,
+        -0.01777651533484459,
         0.8092519640922546,
         0.004960900172591209
       ],
       "closestTargetPointM": [
-        -0.017172196036285923,
-        0.8093176443441332,
-        0.004945781687027073
+        -0.017779577936833952,
+        0.8093176618063916,
+        0.00494577493848274
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 139,
+        "count": 136,
         "vertexIndices": [
           1325,
           1372,
@@ -2426,8 +2407,6 @@
           1539,
           1540,
           1609,
-          1620,
-          1621,
           1625,
           1626,
           1627,
@@ -2454,7 +2433,6 @@
           1671,
           1672,
           1673,
-          1674,
           1676,
           1677,
           1678,
@@ -2549,19 +2527,19 @@
         ],
         "control": {
           "minMm": 0.0152,
-          "p05Mm": 0.1193,
-          "medianMm": 1.127,
-          "p95Mm": 2.9547,
-          "maxMm": 2.996
+          "p05Mm": 0.1211,
+          "medianMm": 1.1102,
+          "p95Mm": 2.6062,
+          "maxMm": 2.9926
         },
         "female": {
           "minMm": 0.0675,
-          "p05Mm": 0.1605,
-          "medianMm": 5.5784,
-          "p95Mm": 9.4792,
-          "maxMm": 9.7956
+          "p05Mm": 0.1607,
+          "medianMm": 5.6803,
+          "p95Mm": 9.5597,
+          "maxMm": 10.0487
         },
-        "femaleOver5Mm": 75
+        "femaleOver5Mm": 72
       }
     },
     {
@@ -2577,30 +2555,30 @@
         "VH_F_pubis_compact_bone_R"
       ],
       "vertices": 825,
-      "retainedWarpMaxResidualMm": 2.9945138802693662e-05,
+      "retainedWarpMaxResidualMm": 3.0021353857315946e-05,
       "control": {
-        "minMm": 0.3161,
-        "p05Mm": 3.8785,
-        "medianMm": 84.0962,
-        "p95Mm": 96.9419,
-        "maxMm": 97.5998
+        "minMm": 0.3214,
+        "p05Mm": 3.9183,
+        "medianMm": 84.2993,
+        "p95Mm": 97.1692,
+        "maxMm": 97.8155
       },
       "female": {
-        "minMm": 0.0314,
-        "p05Mm": 3.1595,
-        "medianMm": 77.7465,
-        "p95Mm": 91.346,
-        "maxMm": 92.043
+        "minMm": 0.0321,
+        "p05Mm": 3.2122,
+        "medianMm": 77.9461,
+        "p95Mm": 91.4749,
+        "maxMm": 92.1665
       },
       "closestFemalePointM": [
-        -0.020754994824528694,
+        -0.02151310071349144,
         0.8146584033966064,
         0.00618924992159009
       ],
       "closestTargetPointM": [
-        -0.020778286429998977,
-        0.8146454615214556,
-        0.006205774399484249
+        -0.02153652505573496,
+        0.814644816188766,
+        0.0062064747900184136
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
@@ -2636,18 +2614,18 @@
           824
         ],
         "control": {
-          "minMm": 0.3161,
-          "p05Mm": 0.4495,
-          "medianMm": 1.6773,
-          "p95Mm": 2.5609,
-          "maxMm": 2.5728
+          "minMm": 0.3214,
+          "p05Mm": 0.4528,
+          "medianMm": 1.6997,
+          "p95Mm": 2.5867,
+          "maxMm": 2.5987
         },
         "female": {
-          "minMm": 0.0314,
+          "minMm": 0.0321,
           "p05Mm": 0.0616,
-          "medianMm": 1.2801,
-          "p95Mm": 2.0935,
-          "maxMm": 2.6001
+          "medianMm": 1.2978,
+          "p95Mm": 2.1242,
+          "maxMm": 2.6217
         },
         "femaleOver5Mm": 0
       }
@@ -2668,44 +2646,41 @@
         "VH_F_coccyx"
       ],
       "vertices": 511,
-      "retainedWarpMaxResidualMm": 3.00251636538605e-05,
+      "retainedWarpMaxResidualMm": 3.0642475285641026e-05,
       "control": {
-        "minMm": 0.0084,
-        "p05Mm": 0.2883,
-        "medianMm": 3.4283,
-        "p95Mm": 35.1393,
-        "maxMm": 39.4947
+        "minMm": 0.0122,
+        "p05Mm": 0.2977,
+        "medianMm": 3.5017,
+        "p95Mm": 35.3543,
+        "maxMm": 39.815
       },
       "female": {
-        "minMm": 0.9379,
-        "p05Mm": 2.876,
-        "medianMm": 10.9279,
-        "p95Mm": 28.0353,
-        "maxMm": 33.455
+        "minMm": 0.9436,
+        "p05Mm": 2.9053,
+        "medianMm": 10.9386,
+        "p95Mm": 28.4646,
+        "maxMm": 33.9081
       },
       "closestFemalePointM": [
-        -0.0678362250328064,
+        -0.07072018086910248,
         0.8562931418418884,
         -0.0560234971344471
       ],
       "closestTargetPointM": [
-        -0.06751573674680122,
-        0.8557715169959674,
-        -0.055312902563981595
+        -0.07040812136418707,
+        0.8557676174361168,
+        -0.05530458745013499
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 236,
+        "count": 233,
         "vertexIndices": [
-          96,
           100,
           107,
           108,
           109,
           110,
           111,
-          112,
-          113,
           121,
           122,
           123,
@@ -2935,20 +2910,20 @@
           510
         ],
         "control": {
-          "minMm": 0.0084,
-          "p05Mm": 0.16,
-          "medianMm": 1.9057,
-          "p95Mm": 2.903,
-          "maxMm": 2.9981
+          "minMm": 0.0122,
+          "p05Mm": 0.1604,
+          "medianMm": 1.9082,
+          "p95Mm": 2.9299,
+          "maxMm": 2.948
         },
         "female": {
-          "minMm": 0.9379,
-          "p05Mm": 2.253,
-          "medianMm": 10.7282,
-          "p95Mm": 13.2111,
-          "maxMm": 17.8816
+          "minMm": 0.9436,
+          "p05Mm": 2.2673,
+          "medianMm": 10.8844,
+          "p95Mm": 13.3286,
+          "maxMm": 17.9012
         },
-        "femaleOver5Mm": 190
+        "femaleOver5Mm": 187
       }
     },
     {
@@ -2964,34 +2939,34 @@
         "VH_F_pubis_compact_bone_R"
       ],
       "vertices": 1084,
-      "retainedWarpMaxResidualMm": 2.999272510157454e-05,
+      "retainedWarpMaxResidualMm": 3.0042428247874474e-05,
       "control": {
-        "minMm": 0.0029,
-        "p05Mm": 0.1078,
-        "medianMm": 1.4433,
-        "p95Mm": 18.0699,
-        "maxMm": 34.864
+        "minMm": 0.0023,
+        "p05Mm": 0.1081,
+        "medianMm": 1.4757,
+        "p95Mm": 18.306,
+        "maxMm": 35.2199
       },
       "female": {
-        "minMm": 0.0089,
-        "p05Mm": 0.2051,
-        "medianMm": 3.144,
-        "p95Mm": 17.2028,
-        "maxMm": 24.0157
+        "minMm": 0.009,
+        "p05Mm": 0.2057,
+        "medianMm": 3.1623,
+        "p95Mm": 17.5789,
+        "maxMm": 24.1466
       },
       "closestFemalePointM": [
-        -0.04158424958586693,
+        -0.04333740472793579,
         0.8452256321907043,
         0.00250325002707541
       ],
       "closestTargetPointM": [
-        -0.04157867005146787,
-        0.845231742132411,
-        0.0024999257415264176
+        -0.043331914859675115,
+        0.8452319248074583,
+        0.0024998462121419186
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 683,
+        "count": 680,
         "vertexIndices": [
           104,
           113,
@@ -3018,7 +2993,6 @@
           151,
           152,
           153,
-          154,
           155,
           156,
           157,
@@ -3026,7 +3000,6 @@
           159,
           163,
           164,
-          165,
           166,
           167,
           168,
@@ -3165,7 +3138,6 @@
           387,
           388,
           389,
-          393,
           394,
           395,
           396,
@@ -3678,20 +3650,20 @@
           1083
         ],
         "control": {
-          "minMm": 0.0029,
-          "p05Mm": 0.0569,
-          "medianMm": 0.7788,
-          "p95Mm": 2.3722,
-          "maxMm": 2.9752
+          "minMm": 0.0023,
+          "p05Mm": 0.0573,
+          "medianMm": 0.7951,
+          "p95Mm": 2.2684,
+          "maxMm": 2.9543
         },
         "female": {
-          "minMm": 0.0089,
-          "p05Mm": 0.0849,
-          "medianMm": 1.8898,
-          "p95Mm": 9.9322,
-          "maxMm": 13.1441
+          "minMm": 0.009,
+          "p05Mm": 0.0853,
+          "medianMm": 1.9294,
+          "p95Mm": 10.1794,
+          "maxMm": 13.4031
         },
-        "femaleOver5Mm": 144
+        "femaleOver5Mm": 143
       }
     },
     {
@@ -3707,30 +3679,30 @@
         "VH_F_pubis_compact_bone_R"
       ],
       "vertices": 498,
-      "retainedWarpMaxResidualMm": 2.9908678939960268e-05,
+      "retainedWarpMaxResidualMm": 2.9873760177889468e-05,
       "control": {
         "minMm": 0.0176,
-        "p05Mm": 0.2865,
-        "medianMm": 4.9236,
-        "p95Mm": 38.7923,
-        "maxMm": 43.4528
+        "p05Mm": 0.2897,
+        "medianMm": 4.9281,
+        "p95Mm": 39.2116,
+        "maxMm": 43.8819
       },
       "female": {
-        "minMm": 0.0218,
-        "p05Mm": 0.1512,
-        "medianMm": 3.2585,
-        "p95Mm": 30.6812,
-        "maxMm": 34.4726
+        "minMm": 0.0222,
+        "p05Mm": 0.1539,
+        "medianMm": 3.2903,
+        "p95Mm": 30.8205,
+        "maxMm": 34.6403
       },
       "closestFemalePointM": [
-        -0.08152520656585693,
-        0.8107444047927856,
-        -0.040582671761512756
+        -0.02650834247469902,
+        0.8132752776145935,
+        -0.001063905074261129
       ],
       "closestTargetPointM": [
-        -0.08154133825066999,
-        0.8107373583936093,
-        -0.04056973193496157
+        -0.026494845521464274,
+        0.813288151091555,
+        -0.001075980351555704
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
@@ -3967,17 +3939,17 @@
         ],
         "control": {
           "minMm": 0.0176,
-          "p05Mm": 0.2118,
-          "medianMm": 0.7474,
-          "p95Mm": 1.9691,
-          "maxMm": 2.801
+          "p05Mm": 0.2151,
+          "medianMm": 0.7603,
+          "p95Mm": 1.9899,
+          "maxMm": 2.8171
         },
         "female": {
-          "minMm": 0.0231,
-          "p05Mm": 0.1014,
-          "medianMm": 1.1051,
-          "p95Mm": 4.4516,
-          "maxMm": 5.1459
+          "minMm": 0.0222,
+          "p05Mm": 0.1021,
+          "medianMm": 1.1199,
+          "p95Mm": 4.5001,
+          "maxMm": 5.2425
         },
         "femaleOver5Mm": 2
       }
@@ -3995,41 +3967,40 @@
         "VH_F_pubis_compact_bone_R"
       ],
       "vertices": 393,
-      "retainedWarpMaxResidualMm": 3.0069327321386697e-05,
+      "retainedWarpMaxResidualMm": 3.014542971046927e-05,
       "control": {
         "minMm": 0.0018,
-        "p05Mm": 0.2573,
-        "medianMm": 1.633,
-        "p95Mm": 37.762,
-        "maxMm": 38.2341
+        "p05Mm": 0.2574,
+        "medianMm": 1.6515,
+        "p95Mm": 37.7957,
+        "maxMm": 38.2458
       },
       "female": {
-        "minMm": 0.0764,
-        "p05Mm": 3.1759,
-        "medianMm": 11.2401,
-        "p95Mm": 27.3503,
-        "maxMm": 29.1223
+        "minMm": 0.0767,
+        "p05Mm": 3.2454,
+        "medianMm": 11.408,
+        "p95Mm": 27.582,
+        "maxMm": 29.3854
       },
       "closestFemalePointM": [
-        -0.07699361443519592,
+        -0.0798431858420372,
         0.8261942863464355,
         -0.061289817094802856
       ],
       "closestTargetPointM": [
-        -0.07697356807175419,
-        0.8261667307277863,
-        -0.06122141744894863
+        -0.07982364176975722,
+        0.8261668390991633,
+        -0.06122092860569182
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 228,
+        "count": 227,
         "vertexIndices": [
           123,
           131,
           132,
           133,
           134,
-          137,
           138,
           140,
           141,
@@ -4255,19 +4226,19 @@
         ],
         "control": {
           "minMm": 0.0018,
-          "p05Mm": 0.1675,
-          "medianMm": 1.2987,
-          "p95Mm": 1.9814,
-          "maxMm": 2.9746
+          "p05Mm": 0.1677,
+          "medianMm": 1.313,
+          "p95Mm": 1.9503,
+          "maxMm": 2.995
         },
         "female": {
-          "minMm": 0.0764,
-          "p05Mm": 2.8002,
-          "medianMm": 10.8285,
-          "p95Mm": 12.1813,
-          "maxMm": 12.7025
+          "minMm": 0.0767,
+          "p05Mm": 2.8007,
+          "medianMm": 11.0288,
+          "p95Mm": 12.4388,
+          "maxMm": 12.9153
         },
-        "femaleOver5Mm": 198
+        "femaleOver5Mm": 197
       }
     },
     {
@@ -4283,34 +4254,34 @@
         "VH_F_pubis_compact_bone_R"
       ],
       "vertices": 409,
-      "retainedWarpMaxResidualMm": 3.0302296488667604e-05,
+      "retainedWarpMaxResidualMm": 2.9978211303643216e-05,
       "control": {
-        "minMm": 0.0271,
+        "minMm": 0.0277,
         "p05Mm": 0.0879,
-        "medianMm": 1.3423,
-        "p95Mm": 37.291,
-        "maxMm": 37.8383
+        "medianMm": 1.3427,
+        "p95Mm": 37.315,
+        "maxMm": 37.8661
       },
       "female": {
-        "minMm": 0.409,
-        "p05Mm": 3.8485,
-        "medianMm": 9.1819,
-        "p95Mm": 27.9134,
-        "maxMm": 28.6471
+        "minMm": 0.4115,
+        "p05Mm": 3.8533,
+        "medianMm": 9.4849,
+        "p95Mm": 28.1594,
+        "maxMm": 28.8978
       },
       "closestFemalePointM": [
-        -0.06478109210729599,
+        -0.06754104048013687,
         0.8556680083274841,
         -0.05716206878423691
       ],
       "closestTargetPointM": [
-        -0.06464135110237311,
-        0.8554405666912536,
-        -0.05685223156488847
+        -0.06740494565942093,
+        0.8554388175845048,
+        -0.056848539207164935
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 234,
+        "count": 231,
         "vertexIndices": [
           126,
           136,
@@ -4328,7 +4299,6 @@
           187,
           188,
           189,
-          191,
           192,
           193,
           194,
@@ -4414,7 +4384,6 @@
           274,
           275,
           276,
-          277,
           278,
           279,
           280,
@@ -4503,7 +4472,6 @@
           363,
           364,
           365,
-          366,
           367,
           368,
           369,
@@ -4548,18 +4516,18 @@
           408
         ],
         "control": {
-          "minMm": 0.0271,
-          "p05Mm": 0.0439,
-          "medianMm": 0.5718,
-          "p95Mm": 1.4905,
-          "maxMm": 2.9738
+          "minMm": 0.0277,
+          "p05Mm": 0.0437,
+          "medianMm": 0.579,
+          "p95Mm": 1.4909,
+          "maxMm": 2.8496
         },
         "female": {
-          "minMm": 0.409,
-          "p05Mm": 3.9396,
-          "medianMm": 8.7188,
-          "p95Mm": 9.9179,
-          "maxMm": 10.0947
+          "minMm": 0.4115,
+          "p05Mm": 3.8335,
+          "medianMm": 9.0065,
+          "p95Mm": 10.2501,
+          "maxMm": 10.4124
         },
         "femaleOver5Mm": 215
       }
@@ -4577,30 +4545,30 @@
         "VH_F_pubis_compact_bone_R"
       ],
       "vertices": 664,
-      "retainedWarpMaxResidualMm": 3.0033466787374316e-05,
+      "retainedWarpMaxResidualMm": 3.0033222218513114e-05,
       "control": {
         "minMm": 0.001,
-        "p05Mm": 0.4715,
-        "medianMm": 189.2821,
-        "p95Mm": 387.738,
-        "maxMm": 416.8063
+        "p05Mm": 0.4763,
+        "medianMm": 189.2712,
+        "p95Mm": 387.7596,
+        "maxMm": 416.7482
       },
       "female": {
-        "minMm": 2.0965,
-        "p05Mm": 7.0577,
-        "medianMm": 188.9921,
-        "p95Mm": 387.5253,
-        "maxMm": 415.3897
+        "minMm": 2.1205,
+        "p05Mm": 7.0836,
+        "medianMm": 189.1763,
+        "p95Mm": 387.6018,
+        "maxMm": 415.3669
       },
       "closestFemalePointM": [
-        -0.05013217404484749,
+        -0.051676951348781586,
         0.7903868556022644,
         -0.041408978402614594
       ],
       "closestTargetPointM": [
-        -0.05131872369076783,
-        0.7913464096854882,
-        -0.039971458140981485
+        -0.052856114182451286,
+        0.7913579776416759,
+        -0.03993825278885557
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
@@ -4731,17 +4699,17 @@
         ],
         "control": {
           "minMm": 0.001,
-          "p05Mm": 0.039,
-          "medianMm": 0.7326,
-          "p95Mm": 2.5633,
-          "maxMm": 2.8799
+          "p05Mm": 0.0392,
+          "medianMm": 0.7366,
+          "p95Mm": 2.5672,
+          "maxMm": 2.8832
         },
         "female": {
-          "minMm": 2.0965,
-          "p05Mm": 2.6031,
-          "medianMm": 10.3999,
-          "p95Mm": 11.4103,
-          "maxMm": 11.7213
+          "minMm": 2.1205,
+          "p05Mm": 2.6321,
+          "medianMm": 10.5259,
+          "p95Mm": 11.5515,
+          "maxMm": 11.8678
         },
         "femaleOver5Mm": 99
       }
@@ -4759,30 +4727,30 @@
         "VH_F_pubis_compact_bone_R"
       ],
       "vertices": 638,
-      "retainedWarpMaxResidualMm": 2.99603286683567e-05,
+      "retainedWarpMaxResidualMm": 2.9982957875814513e-05,
       "control": {
-        "minMm": 0.1954,
-        "p05Mm": 2.1237,
-        "medianMm": 406.9822,
-        "p95Mm": 446.4669,
-        "maxMm": 447.8481
+        "minMm": 0.1955,
+        "p05Mm": 2.1269,
+        "medianMm": 406.9726,
+        "p95Mm": 446.4045,
+        "maxMm": 447.7851
       },
       "female": {
-        "minMm": 2.2603,
-        "p05Mm": 10.697,
-        "medianMm": 406.3775,
-        "p95Mm": 445.0877,
-        "maxMm": 446.4796
+        "minMm": 2.2732,
+        "p05Mm": 10.831,
+        "medianMm": 406.419,
+        "p95Mm": 445.0557,
+        "maxMm": 446.4466
       },
       "closestFemalePointM": [
-        -0.058736007660627365,
+        -0.06055575981736183,
         0.7929946780204773,
         -0.04978218302130699
       ],
       "closestTargetPointM": [
-        -0.0595808135156656,
-        0.7939448190226952,
-        -0.047913373975264524
+        -0.06141338690367458,
+        0.7939209922216559,
+        -0.047891697119053715
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
@@ -4930,18 +4898,18 @@
           581
         ],
         "control": {
-          "minMm": 0.1954,
-          "p05Mm": 0.9168,
-          "medianMm": 2.3316,
-          "p95Mm": 2.7124,
-          "maxMm": 2.7503
+          "minMm": 0.1955,
+          "p05Mm": 0.9185,
+          "medianMm": 2.3391,
+          "p95Mm": 2.7389,
+          "maxMm": 2.7756
         },
         "female": {
-          "minMm": 2.2603,
-          "p05Mm": 2.583,
-          "medianMm": 11.7134,
-          "p95Mm": 13.1413,
-          "maxMm": 13.3336
+          "minMm": 2.2732,
+          "p05Mm": 2.608,
+          "medianMm": 11.8701,
+          "p95Mm": 13.3081,
+          "maxMm": 13.5573
         },
         "femaleOver5Mm": 124
       }
@@ -4959,30 +4927,30 @@
         "VH_F_pubis_compact_bone_R"
       ],
       "vertices": 718,
-      "retainedWarpMaxResidualMm": 3.020408640496814e-05,
+      "retainedWarpMaxResidualMm": 3.018405336954308e-05,
       "control": {
-        "minMm": 0.1562,
-        "p05Mm": 2.1496,
-        "medianMm": 227.331,
-        "p95Mm": 405.0588,
-        "maxMm": 407.3861
+        "minMm": 0.1566,
+        "p05Mm": 2.1539,
+        "medianMm": 227.2389,
+        "p95Mm": 404.8638,
+        "maxMm": 407.1768
       },
       "female": {
-        "minMm": 3.8387,
-        "p05Mm": 14.1157,
-        "medianMm": 226.1502,
-        "p95Mm": 403.6032,
-        "maxMm": 405.849
+        "minMm": 3.8546,
+        "p05Mm": 14.2965,
+        "medianMm": 226.0966,
+        "p95Mm": 403.3979,
+        "maxMm": 405.6453
       },
       "closestFemalePointM": [
-        -0.06350202113389969,
+        -0.0654696449637413,
         0.7940158843994141,
         -0.053958386182785034
       ],
       "closestTargetPointM": [
-        -0.06457861661546263,
-        0.7961302379575083,
-        -0.05094073698531835
+        -0.06657174912679455,
+        0.796098131537469,
+        -0.050907501706835785
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
@@ -5030,18 +4998,18 @@
           717
         ],
         "control": {
-          "minMm": 0.1562,
-          "p05Mm": 0.1926,
-          "medianMm": 0.9194,
-          "p95Mm": 2.1615,
-          "maxMm": 2.4421
+          "minMm": 0.1566,
+          "p05Mm": 0.1931,
+          "medianMm": 0.9197,
+          "p95Mm": 2.166,
+          "maxMm": 2.446
         },
         "female": {
-          "minMm": 3.8387,
-          "p05Mm": 5.5964,
-          "medianMm": 10.5111,
-          "p95Mm": 14.191,
-          "maxMm": 14.2895
+          "minMm": 3.8546,
+          "p05Mm": 5.6113,
+          "medianMm": 10.5829,
+          "p95Mm": 14.3739,
+          "maxMm": 14.4039
         },
         "femaleOver5Mm": 38
       }
@@ -5059,30 +5027,30 @@
         "VH_F_pubis_compact_bone_L"
       ],
       "vertices": 459,
-      "retainedWarpMaxResidualMm": 3.038331427959947e-05,
+      "retainedWarpMaxResidualMm": 3.0375712999096094e-05,
       "control": {
-        "minMm": 0.0074,
-        "p05Mm": 2.3107,
-        "medianMm": 113.9359,
-        "p95Mm": 359.8129,
-        "maxMm": 365.3727
+        "minMm": 0.008,
+        "p05Mm": 2.3324,
+        "medianMm": 114.0615,
+        "p95Mm": 359.5995,
+        "maxMm": 365.3537
       },
       "female": {
-        "minMm": 0.1392,
-        "p05Mm": 2.5383,
-        "medianMm": 108.9,
-        "p95Mm": 359.8699,
-        "maxMm": 366.2786
+        "minMm": 0.1438,
+        "p05Mm": 2.5378,
+        "medianMm": 109.048,
+        "p95Mm": 359.8421,
+        "maxMm": 366.3025
       },
       "closestFemalePointM": [
-        0.07003061473369598,
+        0.07299746572971344,
         0.856018602848053,
         -0.017022859305143356
       ],
       "closestTargetPointM": [
-        0.06990190296066465,
-        0.8560405390945486,
-        -0.017071047679539104
+        0.07286534598385887,
+        0.8560430108789012,
+        -0.01707424781996864
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
@@ -5121,20 +5089,20 @@
           334
         ],
         "control": {
-          "minMm": 0.0074,
-          "p05Mm": 0.0403,
-          "medianMm": 1.2347,
-          "p95Mm": 2.794,
-          "maxMm": 2.8906
+          "minMm": 0.008,
+          "p05Mm": 0.0399,
+          "medianMm": 1.2378,
+          "p95Mm": 2.8047,
+          "maxMm": 2.9049
         },
         "female": {
-          "minMm": 0.4299,
-          "p05Mm": 0.7805,
-          "medianMm": 4.2286,
-          "p95Mm": 8.8928,
-          "maxMm": 10.233
+          "minMm": 0.4323,
+          "p05Mm": 0.7806,
+          "medianMm": 4.2957,
+          "p95Mm": 8.943,
+          "maxMm": 10.5865
         },
-        "femaleOver5Mm": 12
+        "femaleOver5Mm": 13
       }
     },
     {
@@ -5153,34 +5121,34 @@
         "VH_F_coccyx"
       ],
       "vertices": 1336,
-      "retainedWarpMaxResidualMm": 3.0931250129583176e-05,
+      "retainedWarpMaxResidualMm": 3.069614388890657e-05,
       "control": {
-        "minMm": 0.0288,
-        "p05Mm": 0.4232,
-        "medianMm": 44.6183,
-        "p95Mm": 62.3618,
-        "maxMm": 100.9454
+        "minMm": 0.0294,
+        "p05Mm": 0.4343,
+        "medianMm": 45.5977,
+        "p95Mm": 62.9804,
+        "maxMm": 101.1596
       },
       "female": {
-        "minMm": 0.0122,
-        "p05Mm": 1.7124,
-        "medianMm": 40.3713,
-        "p95Mm": 58.7938,
-        "maxMm": 95.9676
+        "minMm": 0.0124,
+        "p05Mm": 1.7334,
+        "medianMm": 41.2859,
+        "p95Mm": 62.8484,
+        "maxMm": 96.1337
       },
       "closestFemalePointM": [
-        0.05500774830579758,
+        0.057437557727098465,
         0.9167900681495667,
         -0.08812016248703003
       ],
       "closestTargetPointM": [
-        0.05500062778152208,
-        0.9167941606384756,
-        -0.08811115901170853
+        0.05743051167170151,
+        0.9167942866416577,
+        -0.08811088224992428
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 323,
+        "count": 319,
         "vertexIndices": [
           879,
           881,
@@ -5274,7 +5242,6 @@
           1020,
           1021,
           1022,
-          1023,
           1028,
           1032,
           1033,
@@ -5404,7 +5371,6 @@
           1198,
           1207,
           1208,
-          1209,
           1210,
           1226,
           1227,
@@ -5445,11 +5411,9 @@
           1271,
           1272,
           1273,
-          1274,
           1275,
           1276,
           1277,
-          1278,
           1279,
           1280,
           1281,
@@ -5507,20 +5471,20 @@
           1335
         ],
         "control": {
-          "minMm": 0.0288,
-          "p05Mm": 0.053,
-          "medianMm": 1.4498,
-          "p95Mm": 2.8696,
-          "maxMm": 2.9979
+          "minMm": 0.0294,
+          "p05Mm": 0.0516,
+          "medianMm": 1.4772,
+          "p95Mm": 2.8716,
+          "maxMm": 2.9687
         },
         "female": {
-          "minMm": 0.0393,
-          "p05Mm": 0.289,
-          "medianMm": 4.385,
-          "p95Mm": 25.0933,
-          "maxMm": 33.0157
+          "minMm": 0.0408,
+          "p05Mm": 0.2943,
+          "medianMm": 4.2612,
+          "p95Mm": 25.1516,
+          "maxMm": 33.0241
         },
-        "femaleOver5Mm": 155
+        "femaleOver5Mm": 152
       }
     },
     {
@@ -5536,30 +5500,30 @@
         "VH_F_pubis_compact_bone_L"
       ],
       "vertices": 1126,
-      "retainedWarpMaxResidualMm": 3.07053560310672e-05,
+      "retainedWarpMaxResidualMm": 3.0684386892406926e-05,
       "control": {
-        "minMm": 0.0023,
-        "p05Mm": 0.7045,
-        "medianMm": 14.8803,
-        "p95Mm": 57.2719,
-        "maxMm": 58.2133
+        "minMm": 0.0025,
+        "p05Mm": 0.7173,
+        "medianMm": 14.9915,
+        "p95Mm": 57.4779,
+        "maxMm": 58.381
       },
       "female": {
-        "minMm": 0.0139,
-        "p05Mm": 0.657,
-        "medianMm": 16.7174,
-        "p95Mm": 46.5186,
-        "maxMm": 47.9325
+        "minMm": 0.0141,
+        "p05Mm": 0.6657,
+        "medianMm": 16.9279,
+        "p95Mm": 46.9915,
+        "maxMm": 48.6073
       },
       "closestFemalePointM": [
-        0.13224320113658905,
+        0.1373961865901947,
         0.9639993906021118,
         -0.018925806507468224
       ],
       "closestTargetPointM": [
-        0.132236270794647,
-        0.964004656055595,
-        -0.01891502652250104
+        0.1373892705154213,
+        0.964004792537203,
+        -0.018914749683977952
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
@@ -5909,18 +5873,18 @@
           1125
         ],
         "control": {
-          "minMm": 0.0023,
-          "p05Mm": 0.1104,
-          "medianMm": 1.4798,
-          "p95Mm": 2.6321,
-          "maxMm": 2.9759
+          "minMm": 0.0025,
+          "p05Mm": 0.1145,
+          "medianMm": 1.4843,
+          "p95Mm": 2.6661,
+          "maxMm": 2.9899
         },
         "female": {
-          "minMm": 0.0751,
-          "p05Mm": 0.3411,
-          "medianMm": 3.556,
-          "p95Mm": 6.5215,
-          "maxMm": 8.3992
+          "minMm": 0.0781,
+          "p05Mm": 0.3467,
+          "medianMm": 3.5937,
+          "p95Mm": 6.7598,
+          "maxMm": 8.6905
         },
         "femaleOver5Mm": 68
       }
@@ -5938,34 +5902,34 @@
         "VH_F_pubis_compact_bone_L"
       ],
       "vertices": 1350,
-      "retainedWarpMaxResidualMm": 3.0637899426531746e-05,
+      "retainedWarpMaxResidualMm": 3.062580093215005e-05,
       "control": {
-        "minMm": 0.0163,
-        "p05Mm": 1.6072,
-        "medianMm": 5.3516,
-        "p95Mm": 52.3348,
-        "maxMm": 59.194
+        "minMm": 0.017,
+        "p05Mm": 1.6264,
+        "medianMm": 5.473,
+        "p95Mm": 52.5828,
+        "maxMm": 59.6535
       },
       "female": {
-        "minMm": 0.0216,
-        "p05Mm": 0.1583,
-        "medianMm": 5.2325,
-        "p95Mm": 41.54,
-        "maxMm": 46.924
+        "minMm": 0.0222,
+        "p05Mm": 0.1607,
+        "medianMm": 5.3256,
+        "p95Mm": 41.9558,
+        "maxMm": 47.1855
       },
       "closestFemalePointM": [
-        0.12302572280168533,
+        0.12791241705417633,
         0.9182027578353882,
         0.00026125001022592187
       ],
       "closestTargetPointM": [
-        0.12300553194139663,
-        0.9182098706877195,
-        0.00026380383402762936
+        0.12789167702885737,
+        0.9182102812404439,
+        0.0002639509802961148
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 392,
+        "count": 389,
         "vertexIndices": [
           475,
           493,
@@ -5976,11 +5940,9 @@
           549,
           552,
           564,
-          590,
           592,
           600,
           602,
-          611,
           630,
           637,
           638,
@@ -6235,7 +6197,6 @@
           1148,
           1149,
           1150,
-          1152,
           1153,
           1154,
           1155,
@@ -6361,20 +6322,20 @@
           1328
         ],
         "control": {
-          "minMm": 0.0163,
-          "p05Mm": 0.7518,
-          "medianMm": 2.0664,
-          "p95Mm": 2.6707,
-          "maxMm": 2.9868
+          "minMm": 0.017,
+          "p05Mm": 0.7528,
+          "medianMm": 2.078,
+          "p95Mm": 2.6878,
+          "maxMm": 2.9314
         },
         "female": {
-          "minMm": 0.0216,
-          "p05Mm": 0.2674,
-          "medianMm": 2.8271,
-          "p95Mm": 6.1347,
-          "maxMm": 7.3678
+          "minMm": 0.0222,
+          "p05Mm": 0.2837,
+          "medianMm": 2.8706,
+          "p95Mm": 6.315,
+          "maxMm": 7.5704
         },
-        "femaleOver5Mm": 64
+        "femaleOver5Mm": 74
       }
     },
     {
@@ -6390,34 +6351,34 @@
         "VH_F_pubis_compact_bone_L"
       ],
       "vertices": 1478,
-      "retainedWarpMaxResidualMm": 3.0683637782523596e-05,
+      "retainedWarpMaxResidualMm": 3.0555547930608364e-05,
       "control": {
-        "minMm": 0.002,
-        "p05Mm": 0.2273,
-        "medianMm": 2.8639,
-        "p95Mm": 41.7938,
-        "maxMm": 42.5916
+        "minMm": 0.004,
+        "p05Mm": 0.2337,
+        "medianMm": 2.8981,
+        "p95Mm": 41.974,
+        "maxMm": 42.7835
       },
       "female": {
-        "minMm": 0.0091,
-        "p05Mm": 0.4009,
-        "medianMm": 2.4362,
-        "p95Mm": 36.879,
-        "maxMm": 37.871
+        "minMm": 0.0095,
+        "p05Mm": 0.4029,
+        "medianMm": 2.4736,
+        "p95Mm": 37.0558,
+        "maxMm": 38.0476
       },
       "closestFemalePointM": [
-        0.11755522340536118,
+        0.1222759336233139,
         0.9266995787620544,
         0.02009725011885166
       ],
       "closestTargetPointM": [
-        0.11754667531465446,
-        0.926702628251974,
-        0.0200978902760252
+        0.12226699845604365,
+        0.9267028650895657,
+        0.020097940275313683
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 775,
+        "count": 768,
         "vertexIndices": [
           0,
           1,
@@ -6647,7 +6608,6 @@
           230,
           231,
           232,
-          234,
           235,
           236,
           237,
@@ -6672,7 +6632,6 @@
           256,
           257,
           258,
-          259,
           260,
           262,
           263,
@@ -7029,8 +6988,6 @@
           1040,
           1041,
           1042,
-          1044,
-          1046,
           1047,
           1051,
           1054,
@@ -7044,7 +7001,6 @@
           1094,
           1095,
           1096,
-          1097,
           1098,
           1099,
           1100,
@@ -7152,7 +7108,6 @@
           1284,
           1285,
           1286,
-          1287,
           1316,
           1319,
           1320,
@@ -7163,7 +7118,6 @@
           1326,
           1327,
           1328,
-          1329,
           1330,
           1331,
           1332,
@@ -7196,18 +7150,18 @@
           1427
         ],
         "control": {
-          "minMm": 0.002,
-          "p05Mm": 0.1537,
-          "medianMm": 1.2218,
-          "p95Mm": 2.8611,
-          "maxMm": 2.9872
+          "minMm": 0.004,
+          "p05Mm": 0.1507,
+          "medianMm": 1.2066,
+          "p95Mm": 2.887,
+          "maxMm": 2.9942
         },
         "female": {
-          "minMm": 0.0377,
-          "p05Mm": 0.389,
-          "medianMm": 1.7201,
-          "p95Mm": 4.2668,
-          "maxMm": 6.1627
+          "minMm": 0.0388,
+          "p05Mm": 0.3913,
+          "medianMm": 1.7386,
+          "p95Mm": 4.2737,
+          "maxMm": 6.2913
         },
         "femaleOver5Mm": 8
       }
@@ -7225,43 +7179,41 @@
         "VH_F_pubis_compact_bone_L"
       ],
       "vertices": 507,
-      "retainedWarpMaxResidualMm": 3.0030365154240323e-05,
+      "retainedWarpMaxResidualMm": 2.995338752374048e-05,
       "control": {
-        "minMm": 0.093,
-        "p05Mm": 3.0099,
-        "medianMm": 86.7775,
-        "p95Mm": 144.4575,
-        "maxMm": 152.9802
+        "minMm": 0.0938,
+        "p05Mm": 3.0336,
+        "medianMm": 86.9667,
+        "p95Mm": 144.3962,
+        "maxMm": 152.9019
       },
       "female": {
-        "minMm": 0.2024,
-        "p05Mm": 2.4912,
-        "medianMm": 80.4646,
-        "p95Mm": 141.0368,
-        "maxMm": 149.8267
+        "minMm": 0.2029,
+        "p05Mm": 2.5064,
+        "medianMm": 80.515,
+        "p95Mm": 140.9649,
+        "maxMm": 149.7299
       },
       "closestFemalePointM": [
-        0.02618435211479664,
+        0.02719263732433319,
         0.8241204023361206,
         0.016814999282360077
       ],
       "closestTargetPointM": [
-        0.026067274994428874,
-        0.8242808213420244,
-        0.016776121975238693
+        0.027078490591245775,
+        0.8242833975608523,
+        0.016775574924422044
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 26,
+        "count": 24,
         "vertexIndices": [
           459,
           460,
           465,
           468,
-          469,
           472,
           473,
-          475,
           477,
           484,
           485,
@@ -7282,18 +7234,18 @@
           505
         ],
         "control": {
-          "minMm": 0.093,
-          "p05Mm": 0.1375,
-          "medianMm": 1.7172,
-          "p95Mm": 2.9614,
-          "maxMm": 2.9769
+          "minMm": 0.0938,
+          "p05Mm": 0.1205,
+          "medianMm": 1.6317,
+          "p95Mm": 2.9261,
+          "maxMm": 2.9261
         },
         "female": {
-          "minMm": 0.2024,
-          "p05Mm": 0.2719,
-          "medianMm": 1.1198,
-          "p95Mm": 2.3965,
-          "maxMm": 2.4278
+          "minMm": 0.2029,
+          "p05Mm": 0.2448,
+          "medianMm": 0.7534,
+          "p95Mm": 1.8255,
+          "maxMm": 2.3213
         },
         "femaleOver5Mm": 0
       }
@@ -7311,30 +7263,30 @@
         "VH_F_pubis_compact_bone_L"
       ],
       "vertices": 410,
-      "retainedWarpMaxResidualMm": 3.001235903291923e-05,
+      "retainedWarpMaxResidualMm": 2.990686797019751e-05,
       "control": {
-        "minMm": 0.0359,
-        "p05Mm": 0.3341,
-        "medianMm": 124.5845,
-        "p95Mm": 215.7142,
-        "maxMm": 235.0687
+        "minMm": 0.0363,
+        "p05Mm": 0.3376,
+        "medianMm": 124.6356,
+        "p95Mm": 215.5682,
+        "maxMm": 234.924
       },
       "female": {
-        "minMm": 0.0303,
-        "p05Mm": 5.5789,
-        "medianMm": 120.0699,
-        "p95Mm": 213.9421,
-        "maxMm": 233.7235
+        "minMm": 0.0304,
+        "p05Mm": 5.5821,
+        "medianMm": 120.0705,
+        "p95Mm": 213.8285,
+        "maxMm": 233.6154
       },
       "closestFemalePointM": [
-        0.02956429496407509,
+        0.030749985948204994,
         0.8321109414100647,
         0.027851151302456856
       ],
       "closestTargetPointM": [
-        0.029571883867720947,
-        0.8321072377709182,
-        0.02788027198377785
+        0.03075733484308994,
+        0.8321071663934289,
+        0.02788045809442597
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
@@ -7425,18 +7377,18 @@
           409
         ],
         "control": {
-          "minMm": 0.0359,
-          "p05Mm": 0.0397,
-          "medianMm": 0.5533,
-          "p95Mm": 1.8828,
-          "maxMm": 2.6519
+          "minMm": 0.0363,
+          "p05Mm": 0.0401,
+          "medianMm": 0.556,
+          "p95Mm": 1.9132,
+          "maxMm": 2.6725
         },
         "female": {
-          "minMm": 0.0303,
-          "p05Mm": 0.7915,
-          "medianMm": 5.9153,
-          "p95Mm": 6.3985,
-          "maxMm": 6.7404
+          "minMm": 0.0304,
+          "p05Mm": 0.7925,
+          "medianMm": 5.9187,
+          "p95Mm": 6.4022,
+          "maxMm": 6.7443
         },
         "femaleOver5Mm": 67
       }
@@ -7454,34 +7406,34 @@
         "VH_F_pubis_compact_bone_L"
       ],
       "vertices": 1801,
-      "retainedWarpMaxResidualMm": 3.0033116124759977e-05,
+      "retainedWarpMaxResidualMm": 3.0031424207545885e-05,
       "control": {
         "minMm": 0.0727,
-        "p05Mm": 1.7011,
-        "medianMm": 181.1388,
-        "p95Mm": 347.4144,
-        "maxMm": 354.8923
+        "p05Mm": 1.7144,
+        "medianMm": 180.9732,
+        "p95Mm": 347.4438,
+        "maxMm": 354.9316
       },
       "female": {
-        "minMm": 0.0327,
-        "p05Mm": 7.3023,
-        "medianMm": 178.8709,
-        "p95Mm": 348.5896,
-        "maxMm": 355.8199
+        "minMm": 0.0328,
+        "p05Mm": 7.438,
+        "medianMm": 178.6947,
+        "p95Mm": 348.6728,
+        "maxMm": 355.894
       },
       "closestFemalePointM": [
-        0.03152073919773102,
+        0.03262574225664139,
         0.808925211429596,
         -0.016372298821806908
       ],
       "closestTargetPointM": [
-        0.03153808109286458,
-        0.8089260596410672,
-        -0.01634460686882911
+        0.0326427416633427,
+        0.8089259502607747,
+        -0.016344217621454722
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 139,
+        "count": 138,
         "vertexIndices": [
           1346,
           1396,
@@ -7499,7 +7451,6 @@
           1556,
           1595,
           1633,
-          1634,
           1636,
           1637,
           1638,
@@ -7625,19 +7576,19 @@
         ],
         "control": {
           "minMm": 0.0727,
-          "p05Mm": 0.3253,
-          "medianMm": 1.2885,
-          "p95Mm": 2.8669,
-          "maxMm": 2.9949
+          "p05Mm": 0.3244,
+          "medianMm": 1.3027,
+          "p95Mm": 2.8567,
+          "maxMm": 2.9791
         },
         "female": {
-          "minMm": 0.0327,
-          "p05Mm": 0.1307,
-          "medianMm": 7.2837,
-          "p95Mm": 11.3128,
-          "maxMm": 11.8337
+          "minMm": 0.0328,
+          "p05Mm": 0.1308,
+          "medianMm": 7.3833,
+          "p95Mm": 11.6013,
+          "maxMm": 12.1356
         },
-        "femaleOver5Mm": 83
+        "femaleOver5Mm": 82
       }
     },
     {
@@ -7653,34 +7604,34 @@
         "VH_F_pubis_compact_bone_L"
       ],
       "vertices": 837,
-      "retainedWarpMaxResidualMm": 2.9997475076982315e-05,
+      "retainedWarpMaxResidualMm": 3.0021353857315946e-05,
       "control": {
-        "minMm": 0.288,
-        "p05Mm": 3.4619,
-        "medianMm": 83.5519,
-        "p95Mm": 97.0456,
-        "maxMm": 98.0247
+        "minMm": 0.2923,
+        "p05Mm": 3.5014,
+        "medianMm": 83.7326,
+        "p95Mm": 97.2193,
+        "maxMm": 98.1987
       },
       "female": {
-        "minMm": 0.122,
-        "p05Mm": 4.2007,
-        "medianMm": 78.5426,
-        "p95Mm": 92.2729,
-        "maxMm": 93.3646
+        "minMm": 0.1231,
+        "p05Mm": 4.2202,
+        "medianMm": 78.7068,
+        "p95Mm": 92.376,
+        "maxMm": 93.4595
       },
       "closestFemalePointM": [
-        0.01977287232875824,
+        0.02047640271484852,
         0.8103131055831909,
         0.0024120500311255455
       ],
       "closestTargetPointM": [
-        0.019841447326385167,
-        0.8102199173863254,
-        0.002450865002773654
+        0.020543824798536177,
+        0.810217954622973,
+        0.002451560186762802
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 35,
+        "count": 31,
         "vertexIndices": [
           792,
           795,
@@ -7694,9 +7645,7 @@
           809,
           810,
           811,
-          812,
           813,
-          814,
           815,
           816,
           817,
@@ -7704,8 +7653,6 @@
           819,
           820,
           821,
-          822,
-          824,
           825,
           827,
           828,
@@ -7719,18 +7666,18 @@
           836
         ],
         "control": {
-          "minMm": 0.288,
-          "p05Mm": 0.5338,
-          "medianMm": 1.8429,
-          "p95Mm": 2.9819,
-          "maxMm": 2.9854
+          "minMm": 0.2923,
+          "p05Mm": 0.5134,
+          "medianMm": 1.8397,
+          "p95Mm": 2.8569,
+          "maxMm": 2.9002
         },
         "female": {
-          "minMm": 0.122,
-          "p05Mm": 0.2009,
-          "medianMm": 1.0531,
-          "p95Mm": 2.1323,
-          "maxMm": 3.0014
+          "minMm": 0.1231,
+          "p05Mm": 0.1975,
+          "medianMm": 0.9669,
+          "p95Mm": 2.2472,
+          "maxMm": 3.0403
         },
         "femaleOver5Mm": 0
       }
@@ -7751,34 +7698,34 @@
         "VH_F_coccyx"
       ],
       "vertices": 507,
-      "retainedWarpMaxResidualMm": 3.00251636538605e-05,
+      "retainedWarpMaxResidualMm": 3.0642475285641026e-05,
       "control": {
-        "minMm": 0.0253,
-        "p05Mm": 0.5525,
-        "medianMm": 4.158,
-        "p95Mm": 34.9808,
-        "maxMm": 39.3519
+        "minMm": 0.0228,
+        "p05Mm": 0.559,
+        "medianMm": 4.1973,
+        "p95Mm": 35.1823,
+        "maxMm": 39.6907
       },
       "female": {
-        "minMm": 2.7481,
-        "p05Mm": 4.1458,
-        "medianMm": 9.7507,
-        "p95Mm": 25.6916,
-        "maxMm": 31.5077
+        "minMm": 2.7676,
+        "p05Mm": 4.1674,
+        "medianMm": 9.7897,
+        "p95Mm": 26.1181,
+        "maxMm": 32.1053
       },
       "closestFemalePointM": [
-        0.09904883801937103,
+        0.10305499285459518,
         0.8551825881004333,
         -0.0418652668595314
       ],
       "closestTargetPointM": [
-        0.09781334935097818,
-        0.8552446834278846,
-        -0.03941136775672796
+        0.10184396911498268,
+        0.8552581350259523,
+        -0.039377860354752985
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 187,
+        "count": 185,
         "vertexIndices": [
           98,
           105,
@@ -7932,7 +7879,6 @@
           452,
           453,
           454,
-          455,
           457,
           458,
           459,
@@ -7959,7 +7905,6 @@
           486,
           487,
           489,
-          491,
           500,
           501,
           502,
@@ -7969,18 +7914,18 @@
           506
         ],
         "control": {
-          "minMm": 0.0253,
-          "p05Mm": 0.1937,
-          "medianMm": 2.0126,
-          "p95Mm": 2.8294,
-          "maxMm": 2.9986
+          "minMm": 0.0228,
+          "p05Mm": 0.194,
+          "medianMm": 2.0206,
+          "p95Mm": 2.8244,
+          "maxMm": 2.9701
         },
         "female": {
-          "minMm": 2.7481,
-          "p05Mm": 3.2598,
-          "medianMm": 8.9112,
-          "p95Mm": 12.9763,
-          "maxMm": 17.7727
+          "minMm": 2.7676,
+          "p05Mm": 3.2759,
+          "medianMm": 9.0066,
+          "p95Mm": 13.0149,
+          "maxMm": 17.7742
         },
         "femaleOver5Mm": 155
       }
@@ -7998,34 +7943,34 @@
         "VH_F_pubis_compact_bone_L"
       ],
       "vertices": 1091,
-      "retainedWarpMaxResidualMm": 3.0049695327129563e-05,
+      "retainedWarpMaxResidualMm": 2.9881519575913124e-05,
       "control": {
-        "minMm": 0.003,
-        "p05Mm": 0.1023,
-        "medianMm": 1.5597,
-        "p95Mm": 18.5307,
-        "maxMm": 35.415
+        "minMm": 0.0037,
+        "p05Mm": 0.1025,
+        "medianMm": 1.5702,
+        "p95Mm": 18.8112,
+        "maxMm": 35.8726
       },
       "female": {
         "minMm": 0.0024,
-        "p05Mm": 0.2832,
-        "medianMm": 3.7245,
-        "p95Mm": 17.6139,
-        "maxMm": 21.8641
+        "p05Mm": 0.2878,
+        "medianMm": 3.7632,
+        "p95Mm": 17.8127,
+        "maxMm": 21.9791
       },
       "closestFemalePointM": [
-        0.04251161590218544,
+        0.04429534077644348,
         0.8441863656044006,
         0.0015199999324977398
       ],
       "closestTargetPointM": [
-        0.042512313499625164,
-        0.8441859914108375,
-        0.0015222490389968685
+        0.044296016166289386,
+        0.8441859839169179,
+        0.0015222656713751038
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 693,
+        "count": 692,
         "vertexIndices": [
           105,
           115,
@@ -8046,7 +7991,6 @@
           142,
           143,
           144,
-          146,
           147,
           148,
           149,
@@ -8722,18 +8666,18 @@
           1090
         ],
         "control": {
-          "minMm": 0.003,
-          "p05Mm": 0.0579,
-          "medianMm": 0.8155,
-          "p95Mm": 2.3842,
-          "maxMm": 2.987
+          "minMm": 0.0037,
+          "p05Mm": 0.0593,
+          "medianMm": 0.8232,
+          "p95Mm": 2.4376,
+          "maxMm": 2.9944
         },
         "female": {
           "minMm": 0.0024,
-          "p05Mm": 0.2279,
-          "medianMm": 1.7853,
-          "p95Mm": 11.4189,
-          "maxMm": 12.596
+          "p05Mm": 0.2284,
+          "medianMm": 1.8077,
+          "p95Mm": 11.6463,
+          "maxMm": 12.8614
         },
         "femaleOver5Mm": 168
       }
@@ -8751,30 +8695,30 @@
         "VH_F_pubis_compact_bone_L"
       ],
       "vertices": 504,
-      "retainedWarpMaxResidualMm": 2.994345912064878e-05,
+      "retainedWarpMaxResidualMm": 2.990858096504073e-05,
       "control": {
-        "minMm": 0.0072,
-        "p05Mm": 0.2417,
-        "medianMm": 5.156,
-        "p95Mm": 38.9704,
-        "maxMm": 43.8661
+        "minMm": 0.0074,
+        "p05Mm": 0.2427,
+        "medianMm": 5.2027,
+        "p95Mm": 39.506,
+        "maxMm": 44.483
       },
       "female": {
-        "minMm": 0.0246,
-        "p05Mm": 0.2007,
-        "medianMm": 4.0203,
-        "p95Mm": 29.3339,
-        "maxMm": 32.6756
+        "minMm": 0.0245,
+        "p05Mm": 0.2026,
+        "medianMm": 4.0428,
+        "p95Mm": 29.4601,
+        "maxMm": 32.8143
       },
       "closestFemalePointM": [
-        0.025700373575091362,
+        0.026641739532351494,
         0.8155087232589722,
         0.000454099994385615
       ],
       "closestTargetPointM": [
-        0.025684894127279832,
-        0.8155233463613433,
-        0.00044183601951984996
+        0.02662664976855787,
+        0.8155235833755369,
+        0.0004417063646636998
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
@@ -9010,18 +8954,18 @@
           503
         ],
         "control": {
-          "minMm": 0.0072,
-          "p05Mm": 0.1322,
-          "medianMm": 0.8521,
-          "p95Mm": 2.0918,
-          "maxMm": 2.6485
+          "minMm": 0.0074,
+          "p05Mm": 0.1335,
+          "medianMm": 0.8624,
+          "p95Mm": 2.1287,
+          "maxMm": 2.6616
         },
         "female": {
-          "minMm": 0.0246,
-          "p05Mm": 0.0732,
-          "medianMm": 2.2837,
-          "p95Mm": 6.961,
-          "maxMm": 7.2518
+          "minMm": 0.0245,
+          "p05Mm": 0.0738,
+          "medianMm": 2.3122,
+          "p95Mm": 7.0598,
+          "maxMm": 7.3687
         },
         "femaleOver5Mm": 34
       }
@@ -9039,34 +8983,34 @@
         "VH_F_pubis_compact_bone_L"
       ],
       "vertices": 390,
-      "retainedWarpMaxResidualMm": 3.0252125846837892e-05,
+      "retainedWarpMaxResidualMm": 3.014542971046927e-05,
       "control": {
-        "minMm": 0.0042,
-        "p05Mm": 0.1518,
-        "medianMm": 1.9918,
-        "p95Mm": 37.7226,
-        "maxMm": 38.426
+        "minMm": 0.0039,
+        "p05Mm": 0.1519,
+        "medianMm": 2.0207,
+        "p95Mm": 37.7239,
+        "maxMm": 38.4185
       },
       "female": {
-        "minMm": 1.088,
-        "p05Mm": 4.3992,
-        "medianMm": 11.6781,
-        "p95Mm": 24.7284,
-        "maxMm": 26.5212
+        "minMm": 1.1078,
+        "p05Mm": 4.4353,
+        "medianMm": 11.8483,
+        "p95Mm": 24.9435,
+        "maxMm": 26.7613
       },
       "closestFemalePointM": [
-        0.07870278507471085,
+        0.08165706694126129,
         0.8292523622512817,
         -0.059853892773389816
       ],
       "closestTargetPointM": [
-        0.07791643607018214,
-        0.8291409848022572,
-        -0.059110290534214883
+        0.08086806144093192,
+        0.829149121924909,
+        -0.05908317899781277
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 224,
+        "count": 223,
         "vertexIndices": [
           123,
           131,
@@ -9075,7 +9019,6 @@
           134,
           137,
           140,
-          141,
           147,
           148,
           149,
@@ -9294,18 +9237,18 @@
           389
         ],
         "control": {
-          "minMm": 0.0042,
+          "minMm": 0.0039,
           "p05Mm": 0.131,
-          "medianMm": 1.3024,
-          "p95Mm": 2.1639,
-          "maxMm": 2.9653
+          "medianMm": 1.3142,
+          "p95Mm": 2.1863,
+          "maxMm": 2.8415
         },
         "female": {
-          "minMm": 1.088,
-          "p05Mm": 3.4672,
-          "medianMm": 11.5054,
-          "p95Mm": 12.2218,
-          "maxMm": 12.5956
+          "minMm": 1.1078,
+          "p05Mm": 3.4836,
+          "medianMm": 11.6483,
+          "p95Mm": 12.4733,
+          "maxMm": 12.7748
         },
         "femaleOver5Mm": 201
       }
@@ -9323,30 +9266,30 @@
         "VH_F_pubis_compact_bone_L"
       ],
       "vertices": 411,
-      "retainedWarpMaxResidualMm": 3.0302296488667604e-05,
+      "retainedWarpMaxResidualMm": 2.9978211303643216e-05,
       "control": {
-        "minMm": 0.0017,
-        "p05Mm": 0.0731,
-        "medianMm": 1.2217,
-        "p95Mm": 37.1894,
-        "maxMm": 37.7162
+        "minMm": 0.0018,
+        "p05Mm": 0.0741,
+        "medianMm": 1.2241,
+        "p95Mm": 37.1827,
+        "maxMm": 37.7129
       },
       "female": {
-        "minMm": 0.2022,
-        "p05Mm": 5.4681,
-        "medianMm": 9.9724,
-        "p95Mm": 25.2925,
-        "maxMm": 26.0287
+        "minMm": 0.2024,
+        "p05Mm": 5.5342,
+        "medianMm": 10.1853,
+        "p95Mm": 25.5175,
+        "maxMm": 26.2584
       },
       "closestFemalePointM": [
-        0.059424176812171936,
+        0.061927687376737595,
         0.8498321771621704,
         -0.05634858459234238
       ],
       "closestTargetPointM": [
-        0.05939376934674304,
-        0.849889767472819,
-        -0.0561571353232709
+        0.06189836296854425,
+        0.8498901120639671,
+        -0.056156838251597764
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
@@ -9588,18 +9531,18 @@
           410
         ],
         "control": {
-          "minMm": 0.0017,
-          "p05Mm": 0.0545,
-          "medianMm": 0.4908,
-          "p95Mm": 1.3949,
-          "maxMm": 2.9027
+          "minMm": 0.0018,
+          "p05Mm": 0.0568,
+          "medianMm": 0.4909,
+          "p95Mm": 1.4031,
+          "maxMm": 2.9356
         },
         "female": {
-          "minMm": 0.2022,
-          "p05Mm": 5.1824,
-          "medianMm": 9.6912,
-          "p95Mm": 10.8149,
-          "maxMm": 10.8963
+          "minMm": 0.2024,
+          "p05Mm": 5.3036,
+          "medianMm": 9.9183,
+          "p95Mm": 11.0521,
+          "maxMm": 11.1511
         },
         "femaleOver5Mm": 222
       }
@@ -9617,30 +9560,30 @@
         "VH_F_pubis_compact_bone_L"
       ],
       "vertices": 659,
-      "retainedWarpMaxResidualMm": 2.9980859403018944e-05,
+      "retainedWarpMaxResidualMm": 2.988351628824383e-05,
       "control": {
-        "minMm": 0.0073,
-        "p05Mm": 0.4709,
-        "medianMm": 190.1009,
-        "p95Mm": 388.1012,
-        "maxMm": 416.5413
+        "minMm": 0.0074,
+        "p05Mm": 0.4716,
+        "medianMm": 190.2042,
+        "p95Mm": 388.1276,
+        "maxMm": 416.4879
       },
       "female": {
-        "minMm": 4.2033,
-        "p05Mm": 8.2125,
-        "medianMm": 190.8066,
-        "p95Mm": 389.3049,
-        "maxMm": 416.7367
+        "minMm": 4.2641,
+        "p05Mm": 8.2715,
+        "medianMm": 190.982,
+        "p95Mm": 389.3731,
+        "maxMm": 416.7141
       },
       "closestFemalePointM": [
-        0.05013217404484749,
+        0.051676951348781586,
         0.7903868556022644,
         -0.041408978402614594
       ],
       "closestTargetPointM": [
-        0.05281123814086877,
-        0.7924348137171792,
-        -0.0388997966046196
+        0.05435666834722776,
+        0.792467982233119,
+        -0.03882616475298661
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
@@ -9771,20 +9714,20 @@
           481
         ],
         "control": {
-          "minMm": 0.0073,
-          "p05Mm": 0.0511,
-          "medianMm": 0.7904,
-          "p95Mm": 2.7086,
-          "maxMm": 2.839
+          "minMm": 0.0074,
+          "p05Mm": 0.0513,
+          "medianMm": 0.7927,
+          "p95Mm": 2.714,
+          "maxMm": 2.8457
         },
         "female": {
-          "minMm": 4.2033,
-          "p05Mm": 4.5155,
-          "medianMm": 12.4768,
-          "p95Mm": 13.4336,
-          "maxMm": 13.6781
+          "minMm": 4.2641,
+          "p05Mm": 4.5716,
+          "medianMm": 12.7027,
+          "p95Mm": 13.6403,
+          "maxMm": 13.8896
         },
-        "femaleOver5Mm": 108
+        "femaleOver5Mm": 111
       }
     },
     {
@@ -9800,30 +9743,30 @@
         "VH_F_pubis_compact_bone_L"
       ],
       "vertices": 624,
-      "retainedWarpMaxResidualMm": 2.9952212779000356e-05,
+      "retainedWarpMaxResidualMm": 2.995160181986376e-05,
       "control": {
-        "minMm": 0.5794,
-        "p05Mm": 1.9965,
-        "medianMm": 412.9912,
-        "p95Mm": 446.1898,
-        "maxMm": 447.5693
+        "minMm": 0.5801,
+        "p05Mm": 2.0201,
+        "medianMm": 412.9809,
+        "p95Mm": 446.1313,
+        "maxMm": 447.5101
       },
       "female": {
-        "minMm": 3.8139,
-        "p05Mm": 11.7453,
-        "medianMm": 413.7736,
-        "p95Mm": 446.4395,
-        "maxMm": 447.8327
+        "minMm": 3.8331,
+        "p05Mm": 11.8884,
+        "medianMm": 413.7979,
+        "p95Mm": 446.4109,
+        "maxMm": 447.8031
       },
       "closestFemalePointM": [
-        0.058736007660627365,
+        0.06055575981736183,
         0.7929946780204773,
         -0.04978218302130699
       ],
       "closestTargetPointM": [
-        0.06002767425301671,
-        0.794810193997425,
-        -0.046686859997498234
+        0.061866244046872604,
+        0.7947737886727801,
+        -0.04665006719541279
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
@@ -9968,18 +9911,18 @@
           567
         ],
         "control": {
-          "minMm": 0.5794,
-          "p05Mm": 1.1311,
-          "medianMm": 2.4487,
-          "p95Mm": 2.8434,
-          "maxMm": 2.961
+          "minMm": 0.5801,
+          "p05Mm": 1.1329,
+          "medianMm": 2.4745,
+          "p95Mm": 2.8733,
+          "maxMm": 2.9852
         },
         "female": {
-          "minMm": 3.8139,
-          "p05Mm": 4.451,
-          "medianMm": 12.9915,
-          "p95Mm": 14.0625,
-          "maxMm": 14.3203
+          "minMm": 3.8331,
+          "p05Mm": 4.483,
+          "medianMm": 13.2007,
+          "p95Mm": 14.3233,
+          "maxMm": 14.5767
         },
         "femaleOver5Mm": 129
       }
@@ -9997,30 +9940,30 @@
         "VH_F_pubis_compact_bone_L"
       ],
       "vertices": 726,
-      "retainedWarpMaxResidualMm": 3.020408640496814e-05,
+      "retainedWarpMaxResidualMm": 3.018405336954308e-05,
       "control": {
-        "minMm": 0.0856,
-        "p05Mm": 1.9656,
-        "medianMm": 224.0993,
-        "p95Mm": 404.7144,
-        "maxMm": 407.4334
+        "minMm": 0.0857,
+        "p05Mm": 1.9701,
+        "medianMm": 223.8276,
+        "p95Mm": 404.5208,
+        "maxMm": 407.2258
       },
       "female": {
-        "minMm": 5.6246,
-        "p05Mm": 14.928,
-        "medianMm": 224.3956,
-        "p95Mm": 404.9227,
-        "maxMm": 407.4934
+        "minMm": 5.6265,
+        "p05Mm": 15.0955,
+        "medianMm": 224.2475,
+        "p95Mm": 404.7158,
+        "maxMm": 407.2847
       },
       "closestFemalePointM": [
-        0.06350202113389969,
+        0.0654696449637413,
         0.7940158843994141,
         -0.053958386182785034
       ],
       "closestTargetPointM": [
-        0.06370963361939709,
-        0.797786966090212,
-        -0.049790469315438936
+        0.06568902443781414,
+        0.7977819083697298,
+        -0.04978393344165622
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
@@ -10069,18 +10012,18 @@
           725
         ],
         "control": {
-          "minMm": 0.0856,
-          "p05Mm": 0.0886,
-          "medianMm": 0.7216,
-          "p95Mm": 1.9656,
-          "maxMm": 2.2587
+          "minMm": 0.0857,
+          "p05Mm": 0.0889,
+          "medianMm": 0.7233,
+          "p95Mm": 1.9701,
+          "maxMm": 2.2607
         },
         "female": {
-          "minMm": 5.6246,
-          "p05Mm": 5.6246,
-          "medianMm": 11.8475,
-          "p95Mm": 15.5166,
-          "maxMm": 15.5166
+          "minMm": 5.6265,
+          "p05Mm": 5.6265,
+          "medianMm": 11.8883,
+          "p95Mm": 15.7088,
+          "maxMm": 15.7088
         },
         "femaleOver5Mm": 41
       }
@@ -10096,44 +10039,42 @@
         "VH_F_sacrum"
       ],
       "vertices": 1469,
-      "retainedWarpMaxResidualMm": 3.003425101013414e-05,
+      "retainedWarpMaxResidualMm": 3.0034250952562595e-05,
       "control": {
-        "minMm": 1.6254,
-        "p05Mm": 3.438,
-        "medianMm": 15.8787,
-        "p95Mm": 29.855,
-        "maxMm": 37.9889
+        "minMm": 1.6315,
+        "p05Mm": 3.5281,
+        "medianMm": 16.004,
+        "p95Mm": 29.9361,
+        "maxMm": 37.994
       },
       "female": {
-        "minMm": 0.0305,
-        "p05Mm": 1.1238,
-        "medianMm": 10.1324,
-        "p95Mm": 25.5588,
-        "maxMm": 36.5165
+        "minMm": 0.0306,
+        "p05Mm": 1.1391,
+        "medianMm": 10.1734,
+        "p95Mm": 25.6095,
+        "maxMm": 36.6041
       },
       "closestFemalePointM": [
-        -0.023402655497193336,
+        -0.024460848420858383,
         0.9447295665740967,
         -0.03286154568195343
       ],
       "closestTargetPointM": [
-        -0.023411496029148805,
-        0.9447037912401446,
-        -0.03287534636452573
+        -0.024469363225590998,
+        0.9447036334741536,
+        -0.0328754303091575
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 41,
+        "count": 39,
         "vertexIndices": [
           203,
           204,
           205,
-          217,
           315,
           316,
           318,
           320,
-          322,
           324,
           395,
           396,
@@ -10168,18 +10109,18 @@
           1294
         ],
         "control": {
-          "minMm": 1.6254,
-          "p05Mm": 1.6254,
-          "medianMm": 2.4436,
-          "p95Mm": 2.958,
-          "maxMm": 2.9945
+          "minMm": 1.6315,
+          "p05Mm": 1.6315,
+          "medianMm": 2.4234,
+          "p95Mm": 2.9449,
+          "maxMm": 2.9966
         },
         "female": {
-          "minMm": 0.0449,
-          "p05Mm": 0.8621,
-          "medianMm": 2.7327,
-          "p95Mm": 5.1314,
-          "maxMm": 7.0263
+          "minMm": 0.045,
+          "p05Mm": 0.8583,
+          "medianMm": 2.8139,
+          "p95Mm": 5.3803,
+          "maxMm": 7.1331
         },
         "femaleOver5Mm": 3
       }
@@ -10195,34 +10136,34 @@
         "VH_F_sacrum"
       ],
       "vertices": 1765,
-      "retainedWarpMaxResidualMm": 2.985017043731785e-05,
+      "retainedWarpMaxResidualMm": 2.9851338721803623e-05,
       "control": {
         "minMm": 0.0002,
-        "p05Mm": 0.077,
-        "medianMm": 8.6804,
-        "p95Mm": 12.1974,
-        "maxMm": 15.1886
+        "p05Mm": 0.0774,
+        "medianMm": 8.7286,
+        "p95Mm": 12.1985,
+        "maxMm": 15.1999
       },
       "female": {
         "minMm": 0.0183,
-        "p05Mm": 0.5706,
-        "medianMm": 6.3304,
-        "p95Mm": 18.1005,
-        "maxMm": 19.7114
+        "p05Mm": 0.5735,
+        "medianMm": 6.3533,
+        "p95Mm": 18.1775,
+        "maxMm": 19.7122
       },
       "closestFemalePointM": [
-        -0.02273320034146309,
+        -0.02376142516732216,
         0.9448806643486023,
         -0.03339943662285805
       ],
       "closestTargetPointM": [
-        -0.02273276438338438,
-        0.9448955308653985,
-        -0.03338876312768054
+        -0.02376100785606753,
+        0.944895532794507,
+        -0.03338876171757361
       ],
       "controlProximityPatch": {
         "definition": "All retained source vertices within 3 mm of control bone triangle surfaces; a screening region, not an annotated anatomical attachment.",
-        "count": 620,
+        "count": 619,
         "vertexIndices": [
           83,
           84,
@@ -10818,7 +10759,6 @@
           1689,
           1690,
           1691,
-          1734,
           1737,
           1739,
           1740,
@@ -10847,19 +10787,19 @@
         ],
         "control": {
           "minMm": 0.0002,
-          "p05Mm": 0.031,
-          "medianMm": 0.2163,
-          "p95Mm": 0.6404,
-          "maxMm": 2.989
+          "p05Mm": 0.0311,
+          "medianMm": 0.2197,
+          "p95Mm": 0.6073,
+          "maxMm": 2.96
         },
         "female": {
           "minMm": 0.0323,
-          "p05Mm": 0.9525,
-          "medianMm": 7.2694,
-          "p95Mm": 12.8834,
-          "maxMm": 15.2604
+          "p05Mm": 0.9547,
+          "medianMm": 7.3017,
+          "p95Mm": 12.8883,
+          "maxMm": 15.2624
         },
-        "femaleOver5Mm": 462
+        "femaleOver5Mm": 465
       }
     },
     {
@@ -10873,21 +10813,21 @@
       ],
       "vertices": 2044,
       "female": {
-        "minMm": 0.0091,
-        "p05Mm": 1.8015,
-        "medianMm": 42.5041,
-        "p95Mm": 95.3109,
-        "maxMm": 104.4608
+        "minMm": 0.0092,
+        "p05Mm": 1.8337,
+        "medianMm": 43.7286,
+        "p95Mm": 97.5319,
+        "maxMm": 106.8438
       },
       "closestFemalePointM": [
-        -0.04577115923166275,
+        -0.04781066253781319,
         0.9376334547996521,
         -0.0693330392241478
       ],
       "closestTargetPointM": [
-        -0.04577644041516332,
-        0.9376334044460235,
-        -0.06934050389776521
+        -0.04781584380915403,
+        0.9376334033237455,
+        -0.0693406759409097
       ]
     },
     {
@@ -10901,21 +10841,21 @@
       ],
       "vertices": 2102,
       "female": {
-        "minMm": 0.0248,
-        "p05Mm": 1.4223,
-        "medianMm": 40.1655,
-        "p95Mm": 93.9071,
-        "maxMm": 102.8267
+        "minMm": 0.0252,
+        "p05Mm": 1.453,
+        "medianMm": 41.0374,
+        "p95Mm": 96.0903,
+        "maxMm": 105.1205
       },
       "closestFemalePointM": [
-        0.044283077120780945,
+        0.04625876247882843,
         0.9244925379753113,
         -0.08529869467020035
       ],
       "closestTargetPointM": [
-        0.04426784774177663,
-        0.9244791556129481,
-        -0.08528448251980954
+        0.04624369172618718,
+        0.9244787241877596,
+        -0.0852840246635611
       ]
     },
     {
@@ -10929,22 +10869,70 @@
       ],
       "vertices": 1403,
       "female": {
-        "minMm": 0.2668,
-        "p05Mm": 3.2228,
-        "medianMm": 40.2259,
-        "p95Mm": 83.6947,
-        "maxMm": 90.1353
+        "minMm": 0.2768,
+        "p05Mm": 3.3229,
+        "medianMm": 41.4599,
+        "p95Mm": 86.6386,
+        "maxMm": 93.6021
       },
       "closestFemalePointM": [
-        -0.000829529482871294,
+        -0.0008606932824477553,
         0.8186191320419312,
         0.003547914791852236
       ],
       "closestTargetPointM": [
-        -0.0005631743609379502,
-        0.8186293706912117,
-        0.003536977997353389
+        -0.0005844060211224742,
+        0.8186301846369758,
+        0.0035361488831197577
       ]
     }
-  ]
+  ],
+  "verifiedReuse": {
+    "sourceAuditSha256": "f30238afe0ecaf22f4106b7ac5b2fb3917032fbe2a90fe9fb6675b4098561dad",
+    "sourceManifestSha256": "e753425a2c6bffcde9e2dc6478e37f96c2e4bec20f2f5ce1a1a0bdef0233eabf",
+    "method": "Reused only when screen kind and source/target IDs match, and actual indexed query/control/target vertex coordinates and triangle indices are exactly equal in both source frames; prior schema, thresholds and input file hashes verified before use.",
+    "reusedScreens": [
+      "L5 disc / sacrum",
+      "Right / left pubis"
+    ],
+    "recomputedScreens": [
+      "Right femur / hip envelope",
+      "Right gluteus maximus",
+      "Right gluteus medius",
+      "Right gluteus minimus",
+      "Right iliacus",
+      "Right adductor brevis",
+      "Right adductor longus",
+      "Right adductor magnus",
+      "Right adductor minimus",
+      "Right piriformis",
+      "Right obturator internus",
+      "Right obturator externus",
+      "Right gemellus inferior",
+      "Right gemellus superior",
+      "Right semimembranosus",
+      "Right semitendinosus",
+      "Long head of right biceps femoris",
+      "Left femur / hip envelope",
+      "Left gluteus maximus",
+      "Left gluteus medius",
+      "Left gluteus minimus",
+      "Left iliacus",
+      "Left adductor brevis",
+      "Left adductor longus",
+      "Left adductor magnus",
+      "Left adductor minimus",
+      "Left piriformis",
+      "Left obturator internus",
+      "Left obturator externus",
+      "Left gemellus inferior",
+      "Left gemellus superior",
+      "Left semimembranosus",
+      "Left semitendinosus",
+      "Long head of left biceps femoris",
+      "L5 / sacrum",
+      "Right ilium / sacrum",
+      "Left ilium / sacrum"
+    ]
+  }
 }

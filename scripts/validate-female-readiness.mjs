@@ -45,7 +45,7 @@ export function collectContext(root) {
  const read = relative => fs.readFileSync(path.join(root, relative));
  const atlasPath = 'public/models/atlas-female-reconstructed.json';
  const atlas = JSON.parse(read(atlasPath));
- const assets = [atlasPath, 'public/models/female-fit-report.json', 'app/anatomy.ts', 'app/scene.tsx', 'app/page.tsx'];
+ const assets = [atlasPath, 'public/models/female-fit-report.json', 'app/anatomy.ts', 'app/scene.tsx', 'app/page.tsx', 'app/globals.css', 'web/main.tsx'];
  for (const chunk of atlas.chunks) {
   assets.push(`public${chunk.url}`);
   if (chunk.gzip) assets.push(`public${chunk.gzip}`);

@@ -42,10 +42,10 @@
     "Containment in an artist-created envelope is not anatomical validation; the envelope itself may be undersized or misplaced."
   ],
   "inputs": {
-    "manifestSha256": "44c57151d3ea87badd028def6a9668bd43a39cca601bc29af44363978728cc33",
+    "manifestSha256": "9b6f0fc90c80e4cd50a7ec65fa9d43ddeb0d6e5d79b6d1b9a78105443610730b",
     "chunks": {
-      "/models/female-base-13.bin": "9cb296d2bd61792954de1c612e0beab43088432d9ad73fd222253c4cc42437a3",
-      "/models/female-base-14.bin": "a3260c36f823968da19cdc0f28c196189a05a34bc097b43f3a5daba2d82664b2"
+      "/models/female-base-13.bin": "ace6a8089c0541fd78eb0f062c6c6a0699d2a9ccb73ed0585f9bb0bd02b2910e",
+      "/models/female-base-14.bin": "ac3ae4d52563fd7fc586c1d9133897981719d22450278a96ae5f3b8033572843"
     }
   },
   "excluded": [
@@ -103,22 +103,22 @@
         "nonManifoldEdges": 0,
         "inconsistentlyOrientedEdges": 0,
         "degenerateTriangles": 0,
-        "signedVolumeM3": 0.00022502521413101276
+        "signedVolumeM3": 0.0002228175241313973
       },
       "vertices": {
         "samples": 8846,
         "counts": {
-          "inside": 6488,
-          "outside": 2022,
-          "boundary": 334,
+          "inside": 6485,
+          "outside": 2023,
+          "boundary": 336,
           "uncertain": 2
         },
         "outsideDistanceMm": {
           "minMm": 0.2008,
-          "p05Mm": 0.3308,
-          "medianMm": 1.8332,
-          "p95Mm": 6.1766,
-          "maxMm": 7.8086
+          "p05Mm": 0.3293,
+          "medianMm": 1.8376,
+          "p95Mm": 6.177,
+          "maxMm": 7.78
         },
         "outsideSampleIndices": [
           1897,
@@ -2089,6 +2089,7 @@
           8301,
           8302,
           8303,
+          8304,
           8305,
           8306,
           8307,
@@ -2145,34 +2146,34 @@
           8358
         ],
         "uncertainSampleIndices": [
-          4350,
-          8304
+          8562,
+          8817
         ],
         "maximumOutsidePointM": [
-          0.10144916921854019,
+          0.10142601281404495,
           1.1473580598831177,
           0.0683039054274559
         ],
         "nearestEnvelopePointM": [
-          0.10751912742853165,
-          1.1461308002471924,
-          0.07306036353111267
+          0.10747796297073364,
+          1.1460719108581543,
+          0.07302062958478928
         ]
       },
       "triangleCentroids": {
         "samples": 17982,
         "counts": {
           "inside": 13138,
-          "outside": 4139,
-          "boundary": 701,
-          "uncertain": 4
+          "outside": 4136,
+          "boundary": 706,
+          "uncertain": 2
         },
         "outsideDistanceMm": {
-          "minMm": 0.2003,
-          "p05Mm": 0.3324,
-          "medianMm": 1.789,
-          "p95Mm": 6.1688,
-          "maxMm": 7.7799
+          "minMm": 0.2007,
+          "p05Mm": 0.3323,
+          "medianMm": 1.791,
+          "p95Mm": 6.1628,
+          "maxMm": 7.7518
         },
         "outsideSampleIndices": [
           3727,
@@ -2936,7 +2937,6 @@
           6981,
           6982,
           6983,
-          6984,
           6985,
           6986,
           6987,
@@ -3383,6 +3383,7 @@
           11060,
           11061,
           11082,
+          11084,
           11085,
           11086,
           11087,
@@ -5227,7 +5228,6 @@
           15233,
           15234,
           15235,
-          15254,
           15256,
           15257,
           15258,
@@ -5343,7 +5343,6 @@
           15591,
           15592,
           15593,
-          15594,
           15595,
           15645,
           15690,
@@ -6292,7 +6291,6 @@
           16977,
           16978,
           16979,
-          16980,
           16981,
           16982,
           16983,
@@ -6316,20 +6314,18 @@
           17001
         ],
         "uncertainSampleIndices": [
-          584,
-          587,
-          11084,
-          12299
+          6984,
+          16980
         ],
         "maximumOutsidePointM": [
-          0.10092953095833461,
+          0.10091032087802887,
           1.1475624640782673,
           0.06906783332427342
         ],
         "nearestEnvelopePointM": [
-          0.10696104168891907,
-          1.146263837814331,
-          0.07380707561969757
+          0.10693283379077911,
+          1.146246075630188,
+          0.07376756519079208
         ]
       }
     },
@@ -6345,22 +6341,22 @@
         "nonManifoldEdges": 0,
         "inconsistentlyOrientedEdges": 0,
         "degenerateTriangles": 0,
-        "signedVolumeM3": 0.00022502521413101276
+        "signedVolumeM3": 0.0002228175241313973
       },
       "vertices": {
         "samples": 4017,
         "counts": {
-          "inside": 3896,
+          "inside": 3895,
           "outside": 79,
           "boundary": 42,
-          "uncertain": 0
+          "uncertain": 1
         },
         "outsideDistanceMm": {
-          "minMm": 0.2038,
+          "minMm": 0.2039,
           "p05Mm": 0.2344,
-          "medianMm": 2.9868,
-          "p95Mm": 4.4005,
-          "maxMm": 4.4337
+          "medianMm": 2.9853,
+          "p95Mm": 4.398,
+          "maxMm": 4.4305
         },
         "outsideSampleIndices": [
           490,
@@ -6443,16 +6439,18 @@
           1748,
           1754
         ],
-        "uncertainSampleIndices": [],
+        "uncertainSampleIndices": [
+          3469
+        ],
         "maximumOutsidePointM": [
-          0.10251601040363312,
+          0.10251254588365555,
           1.1486785411834717,
           0.07258716225624084
         ],
         "nearestEnvelopePointM": [
-          0.1057102382183075,
-          1.148423671722412,
-          0.07565142959356308
+          0.10571060329675674,
+          1.1482652425765991,
+          0.07562533766031265
         ]
       },
       "triangleCentroids": {
@@ -6464,11 +6462,11 @@
           "uncertain": 1
         },
         "outsideDistanceMm": {
-          "minMm": 0.2052,
-          "p05Mm": 0.2504,
-          "medianMm": 3.1585,
-          "p95Mm": 4.3754,
-          "maxMm": 4.4306
+          "minMm": 0.2054,
+          "p05Mm": 0.2506,
+          "medianMm": 3.1583,
+          "p95Mm": 4.3733,
+          "maxMm": 4.4267
         },
         "outsideSampleIndices": [
           889,
@@ -6629,17 +6627,17 @@
           3689
         ],
         "uncertainSampleIndices": [
-          6674
+          6646
         ],
         "maximumOutsidePointM": [
-          0.1024756208062172,
+          0.10247117777665456,
           1.148572285970052,
           0.0726216584444046
         ],
         "nearestEnvelopePointM": [
-          0.10567591339349747,
-          1.1482114791870117,
-          0.07566434144973755
+          0.10566655546426773,
+          1.148159384727478,
+          0.07565729320049286
         ]
       }
     },
@@ -6655,7 +6653,7 @@
         "nonManifoldEdges": 0,
         "inconsistentlyOrientedEdges": 0,
         "degenerateTriangles": 0,
-        "signedVolumeM3": 0.00022502521413101276
+        "signedVolumeM3": 0.0002228175241313973
       },
       "vertices": {
         "samples": 1927,
@@ -6698,22 +6696,22 @@
         "nonManifoldEdges": 0,
         "inconsistentlyOrientedEdges": 0,
         "degenerateTriangles": 0,
-        "signedVolumeM3": 0.0002246990818834499
+        "signedVolumeM3": 0.0002224932065890842
       },
       "vertices": {
         "samples": 8904,
         "counts": {
-          "inside": 6950,
+          "inside": 6947,
           "outside": 1638,
-          "boundary": 316,
-          "uncertain": 0
+          "boundary": 318,
+          "uncertain": 1
         },
         "outsideDistanceMm": {
           "minMm": 0.2002,
-          "p05Mm": 0.2941,
-          "medianMm": 1.5548,
-          "p95Mm": 5.6838,
-          "maxMm": 7.6209
+          "p05Mm": 0.293,
+          "medianMm": 1.553,
+          "p95Mm": 5.684,
+          "maxMm": 7.6157
         },
         "outsideSampleIndices": [
           1939,
@@ -8355,32 +8353,34 @@
           8405,
           8406
         ],
-        "uncertainSampleIndices": [],
+        "uncertainSampleIndices": [
+          2727
+        ],
         "maximumOutsidePointM": [
-          -0.09662149101495743,
+          -0.0966140478849411,
           1.1482665538787842,
           0.0739780142903328
         ],
         "nearestEnvelopePointM": [
-          -0.10170367360115051,
-          1.147904872894287,
-          0.07964538037776947
+          -0.10168708115816116,
+          1.1478289365768433,
+          0.07964115589857101
         ]
       },
       "triangleCentroids": {
         "samples": 18108,
         "counts": {
-          "inside": 14098,
+          "inside": 14096,
           "outside": 3333,
-          "boundary": 677,
-          "uncertain": 0
+          "boundary": 678,
+          "uncertain": 1
         },
         "outsideDistanceMm": {
-          "minMm": 0.2028,
-          "p05Mm": 0.2878,
-          "medianMm": 1.5072,
-          "p95Mm": 5.6309,
-          "maxMm": 7.5705
+          "minMm": 0.2018,
+          "p05Mm": 0.2867,
+          "medianMm": 1.5078,
+          "p95Mm": 5.6286,
+          "maxMm": 7.5664
         },
         "outsideSampleIndices": [
           3778,
@@ -11717,16 +11717,18 @@
           17106,
           17107
         ],
-        "uncertainSampleIndices": [],
+        "uncertainSampleIndices": [
+          5961
+        ],
         "maximumOutsidePointM": [
-          -0.09707976877689362,
+          -0.09707206736008327,
           1.1482563018798828,
           0.07363192737102509
         ],
         "nearestEnvelopePointM": [
-          -0.10238025337457657,
-          1.147999882698059,
-          0.07903120666742325
+          -0.10237184911966324,
+          1.147923231124878,
+          0.07902193814516068
         ]
       }
     },
@@ -11742,22 +11744,22 @@
         "nonManifoldEdges": 0,
         "inconsistentlyOrientedEdges": 0,
         "degenerateTriangles": 0,
-        "signedVolumeM3": 0.0002246990818834499
+        "signedVolumeM3": 0.0002224932065890842
       },
       "vertices": {
         "samples": 4001,
         "counts": {
-          "inside": 3899,
+          "inside": 3898,
           "outside": 66,
-          "boundary": 36,
+          "boundary": 37,
           "uncertain": 0
         },
         "outsideDistanceMm": {
-          "minMm": 0.3873,
+          "minMm": 0.3872,
           "p05Mm": 0.6688,
-          "medianMm": 2.8761,
-          "p95Mm": 3.4806,
-          "maxMm": 3.5343
+          "medianMm": 2.8762,
+          "p95Mm": 3.4803,
+          "maxMm": 3.5342
         },
         "outsideSampleIndices": [
           2088,
@@ -11829,30 +11831,30 @@
         ],
         "uncertainSampleIndices": [],
         "maximumOutsidePointM": [
-          -0.09773800522089005,
+          -0.09773778170347214,
           1.1499930620193481,
           0.07862298935651779
         ],
         "nearestEnvelopePointM": [
-          -0.10010585188865662,
-          1.1497901678085327,
-          0.0812389999628067
+          -0.10010469704866409,
+          1.1497902870178223,
+          0.08123963326215744
         ]
       },
       "triangleCentroids": {
         "samples": 7625,
         "counts": {
-          "inside": 7430,
+          "inside": 7429,
           "outside": 120,
-          "boundary": 75,
+          "boundary": 76,
           "uncertain": 0
         },
         "outsideDistanceMm": {
-          "minMm": 0.2446,
-          "p05Mm": 0.7446,
-          "medianMm": 2.68,
+          "minMm": 0.2449,
+          "p05Mm": 0.7447,
+          "medianMm": 2.6801,
           "p95Mm": 3.4523,
-          "maxMm": 3.5078
+          "maxMm": 3.5075
         },
         "outsideSampleIndices": [
           3969,
@@ -11978,14 +11980,14 @@
         ],
         "uncertainSampleIndices": [],
         "maximumOutsidePointM": [
-          -0.09742590288321178,
+          -0.09742571413516998,
           1.1499441862106323,
           0.07893753051757812
         ],
         "nearestEnvelopePointM": [
-          -0.09977597743272781,
-          1.1497427225112915,
-          0.08153390884399414
+          -0.09977475553750992,
+          1.149742841720581,
+          0.08153442293405533
         ]
       }
     },
@@ -12001,7 +12003,7 @@
         "nonManifoldEdges": 0,
         "inconsistentlyOrientedEdges": 0,
         "degenerateTriangles": 0,
-        "signedVolumeM3": 0.0002246990818834499
+        "signedVolumeM3": 0.0002224932065890842
       },
       "vertices": {
         "samples": 1942,

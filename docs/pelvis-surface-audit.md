@@ -29,13 +29,13 @@ These values are the 95th percentile of female distances for each *control proxi
 
 | Screen | Right p95 | Left p95 | Interpretation |
 | --- | ---: | ---: | --- |
-| Femur / hip envelope | 9.07 mm | 8.89 mm | A tiny overall minimum does not demonstrate congruence across the nearby femur surface. |
-| Gluteus maximus / hip and sacrum | 25.10 mm | 25.09 mm | Large displacement of formerly nearby surface regions requires local review. |
-| Piriformis / hip and sacrum | 13.21 mm | 12.98 mm | Whole-bone replacement has changed nearby relationships. |
-| Semitendinosus / hip | 13.14 mm | 14.06 mm | Review the relevant attachment regions before teaching movement. |
-| Long head of biceps femoris / hip | 14.19 mm | 15.52 mm | On the left, even the smallest sampled whole-mesh distance is 5.62 mm. |
+| Femur / hip envelope | 9.27 mm | 8.94 mm | A tiny overall minimum does not demonstrate congruence across the nearby femur surface. |
+| Gluteus maximus / hip and sacrum | 25.10 mm | 25.15 mm | Large displacement of formerly nearby surface regions requires local review. |
+| Piriformis / hip and sacrum | 13.33 mm | 13.01 mm | Whole-bone replacement has changed nearby relationships. |
+| Semitendinosus / hip | 13.31 mm | 14.32 mm | Review the relevant attachment regions before teaching movement. |
+| Long head of biceps femoris / hip | 14.37 mm | 15.71 mm | On the left, even the smallest sampled whole-mesh distance is 5.63 mm. |
 
-For the L5 disc, 462 of the 620 control-patch vertices are now more than 5 mm from the female sacrum; patch p95 is 12.88 mm. Its overall minimum is only 0.018 mm. This directly illustrates why a single closest-point distance can conceal poor assembly correspondence.
+For the L5 disc, 465 of the 619 control-patch vertices are now more than 5 mm from the female sacrum; patch p95 is 12.89 mm. Its overall minimum is only 0.018 mm. This directly illustrates why a single closest-point distance can conceal poor assembly correspondence.
 
 The female ilium/sacrum and pubis/pubis minimum sample distances are below 0.3 mm. These minima **do not establish healthy SI joint or symphysis spacing**. The closest locations might be wrong-facing surfaces, segment boundaries, or intersections.
 
@@ -43,16 +43,28 @@ The female ilium/sacrum and pubis/pubis minimum sample distances are below 0.3 m
 
 The separate experiment computes nearest-surface correspondence displacements on the right femur, left femur, and L5-disc control proximity patches. Each region has equal weight so the more densely sampled disc does not dominate. A translation cap of 5 mm prevents an unbounded proposal. No production asset is written.
 
-The candidate translation is **(+0.40, −0.87, +0.42) mm** in model x/y/z. It improves 18 of 36 patch p95 values and worsens 18:
+The candidate translation is **(+0.43, −0.85, +0.38) mm** in model x/y/z. It improves 17 of 36 patch p95 values and worsens 19:
 
 | Screen | Current p95 | Candidate p95 |
 | --- | ---: | ---: |
-| Right femur | 9.07 mm | 9.02 mm |
-| Left femur | 8.89 mm | 9.16 mm |
-| L5 disc | 12.88 mm | 12.07 mm |
-| Left long-head biceps femoris | 15.52 mm | 15.81 mm |
+| Right femur | 9.27 mm | 9.15 mm |
+| Left femur | 8.94 mm | 9.23 mm |
+| L5 disc | 12.89 mm | 12.12 mm |
+| Left long-head biceps femoris | 15.71 mm | 15.98 mm |
 
-The geometric correspondence suggestions conflict: femur patches suggest roughly 0.8–1.15 mm superior movement; the disc patch suggests 4.56 mm inferior movement. A single translation cannot follow both suggestions. The experiment uses unannotated nearest points and does not justify rotating, deforming, or reattaching anatomy. **The candidate is rejected for production.** Even uniformly better scores would not establish anatomical accuracy.
+The geometric correspondence suggestions conflict: femur patches suggest roughly 0.80–1.23 mm superior movement; the disc patch suggests 4.58 mm inferior movement. A single translation cannot follow both suggestions. The experiment uses unannotated nearest points and does not justify rotating, deforming, or reattaching anatomy. **The candidate is rejected for production.** Even uniformly better scores would not establish anatomical accuracy.
+
+## Effect of the silhouette adjustment
+
+These current tables and views describe the published [isolated waist refinement](female-waist-slimmer-review.md), which retains the preceding rounded glute contour. The control applies the stored universal body field and the explicit posterior/inferior source-ID allowlist; bone controls do not receive the optional glute components. All retained query vertices still reproduce the published meshes within 0.0002 mm.
+
+A separate [comparison using identical original patch vertex indices](../data/anatomy/female-proportion-pelvis-comparison.json) avoids confusing changed threshold membership with an actual proximity change. Relative to the original pre-proportion baseline, all 36 matched patch p95 distances remain slightly larger, by **0.0001–0.3262 mm**. The largest increase is right gemellus superior, 9.918 → 10.244 mm; left adductor magnus increases 0.289 mm and left semitendinosus 0.261 mm. L5 disc increases only 0.005 mm, and gluteus maximus is almost unchanged on its fixed proximity patch.
+
+Reducing the previous lateral hip flare reduces the maximum accumulated gap worsening from 0.759 to 0.326 mm. The [preceding waist-stage comparison](../data/anatomy/female-waist-pelvis-comparison.json) is preserved. This does not establish correct attachment registration: the large underlying cross-source gaps remain. The rounded contour redistributes depth and lowers selected inferior glute vertices by up to 16.77 mm, while all coordinates and normals outside the four glute muscle/vein IDs remain identical to the preceding scoped model. The latest waist pass preserves the checked glute geometry exactly. Its fixed-patch p95 measurements do not change from the preceding contour revision at the report’s 0.0001 mm precision. Gluteus-maximus patch p95 values remain 25.0972/25.1516 mm; a nearly unchanged patch p95 is not proof that the whole reshaped muscle is anatomically valid.
+
+The current report is pinned to published manifest `9b6f0fc90c80e4cd50a7ec65fa9d43ddeb0d6e5d79b6d1b9a78105443610730b`. It recomputed **37 screens** and reused only the unchanged L5-disc/sacrum and right/left-pubis screens after verifying prior manifest/fit/chunk hashes, matching screen kind and source/target IDs, and exact indexed query, control, and target vertex/triangle identity. The [prior rounded-contour audit](../data/anatomy/pelvis-surface-audit-glute-rounded.json) is preserved, and the current report records its hash and the reused/recomputed names. Reuse requires schema 1 and the same 3/5 mm thresholds. A normal run without reuse options still computes all screens from scratch.
+
+The current audit recomputes its 3 mm source-proximity patches for changed geometry under the applicable field, so their counts can differ from the preserved baseline. Use the fixed-index comparison when attributing a change to the shape passes. These discrepancies remain part of SWR-513.
 
 ## Evidence required before changing registration
 

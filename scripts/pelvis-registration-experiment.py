@@ -17,7 +17,7 @@ for path, expected in [(male.path, report['inputs']['maleManifestSha256']), (fem
     if audit.sha(path) != expected:
         raise RuntimeError(f'Rerun pelvis surface audit against current inputs first: {path}')
 fit=json.loads((root/'public/models/female-fit-report.json').read_text())
-warp=lambda vertices:audit.morph(vertices,fit['morph'])
+warp=lambda vertices,part_id:audit.morph(vertices,fit['morph'],part_id)
 rows={row['name']:row for row in report['results']}
 anchors=['Right femur / hip envelope','Left femur / hip envelope','L5 disc / sacrum']
 proposals=[]
