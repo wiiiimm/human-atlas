@@ -1,6 +1,5 @@
 import {createRoot} from 'react-dom/client';
 import {lazy, Suspense} from 'react';
-import Landing from '../app/landing';
 import '../app/globals.css';
 
 const AtlasViewer = lazy(() => import('../app/page'));
@@ -9,14 +8,14 @@ const model = pathname === '/female' ? 'female' : pathname === '/male' ? 'male' 
 
 document.title = model
   ? `${model === 'female' ? 'Female' : 'Male'} anatomy · Human Atlas`
-  : pathname === '/' ? 'Human Atlas' : 'Page not found · Human Atlas';
+  : 'Page not found · Human Atlas';
 
 createRoot(document.getElementById('root')!).render(
   model ? (
     <Suspense fallback={<main className="route-loading" role="status">Opening {model} anatomy…</main>}>
       <AtlasViewer model={model} onModelChange={next => window.location.assign(`/${next}`)}/>
     </Suspense>
-  ) : pathname === '/' ? <Landing/> : (
+  ) : (
     <main className="route-loading">
       <h1>Page not found</h1>
       <a href="/">Return to Human Atlas</a>

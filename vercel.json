@@ -13,5 +13,12 @@
       "source": "/male",
       "destination": "/index.html"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/male",
+      "permanent": false
+    }
   ]
 }
