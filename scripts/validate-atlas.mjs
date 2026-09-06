@@ -23,6 +23,7 @@ if(reconstructed){
   const dx=Math.sign(x)*(lateral(y)-1)*R*Math.tanh(Math.abs(x)/R);
   const w=smoothstep(t.ramp[0],t.ramp[1],y)*(1-smoothstep(t.ramp[2],t.ramp[3],y));
   let qx=x+dx,qy=y,qz=z+z*(t.scale-1)*w;
+  const n=morph.nose;if(n){const r2=((x-n.center[0])/n.radius[0])**2+((y-n.center[1])/n.radius[1])**2,wn=(1-smoothstep(0,1,r2))*smoothstep(n.plane-n.rampDepth,n.plane+n.rampDepth,z);qz-=wn*(1-n.scale)*(z-n.plane);}
   const wh=smoothstep(h.ramp[0],h.ramp[1],y)*(1-h.scale);
   qx-=wh*(qx-h.center[0]);qy-=wh*(qy-h.center[1]);qz-=wh*(qz-h.center[2]);
   return [qx*morph.stature,qy*morph.stature,qz*morph.stature];
@@ -100,8 +101,8 @@ if(reconstructed){
  assert.equal(new Set(atlas.concepts.map(c=>c.id)).size,atlas.concepts.length);
  assert.ok(report.checks.minimumTransformDeterminant>0);assert.ok(report.checks.minimumMorphJacobian>0,'Morph folds space');
  assert.ok(report.checks.breastWallMaxResidualM<.002,'Breast tissue floats off the chest wall');
+ for(const p of atlas.parts.filter(p=>/VH_F_(nipple|areola)/.test(p.id)))assert.equal(p.system,'integumentary',`${p.id}: nipple and areola stay in the optional Body surface layer`);
  assert.equal(atlas.parts.filter(p=>p.system==='integumentary').length,6,'Expected six optional breast surface structures');
- for(const p of atlas.parts.filter(p=>/VH_F_(nipple|areola)/.test(p.id)))assert.equal(p.system,'integumentary',`${p.id}: surface structure in exposed tissue layer`);
  const l=report.landmarks;assert.ok(l.stature.after<l.stature.before&&l.biacromialWidth.after<l.biacromialWidth.before&&l.biIliacWidth.after>l.biacromialWidth.after*.9,'Female proportions not applied');
  console.log(`Every retained mesh keeps its source topology and follows the recorded female morph (max deviation ${(maxError*1000).toFixed(3)} mm); fitted female meshes match their transforms and drape; male-specific anatomy is excluded.`);
 }

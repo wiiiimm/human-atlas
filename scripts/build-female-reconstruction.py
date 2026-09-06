@@ -164,11 +164,11 @@ def max_filter(grid,radius):
 # Reference-guided surface: a broad lower mound and a longer, shallow upper slope.
 # These are artistic contour estimates, not measured anatomy from the stock illustrations.
 X,Y=np.meshgrid(GX0+np.arange(NX)*CELL,GY0+np.arange(NY)*CELL)
-profile=dict(centerX=.094,centerY=1.235,radiusX=.075,upperRadius=.100,lowerRadius=.060,projection=.043)
+profile=dict(centerX=.100,centerY=1.268,radiusX=.068,upperRadius=.070,lowerRadius=.070,projection=.034)
 U=(np.abs(X)-profile['centerX'])/profile['radiusX']
 V=(Y-profile['centerY'])/np.where(Y>profile['centerY'],profile['upperRadius'],profile['lowerRadius'])
 R2=U*U+V*V
-thickness=profile['projection']*np.maximum(0,1-R2)**1.3
+thickness=profile['projection']*np.maximum(0,1-R2)**0.85
 # Use a smooth chest base so small rib and muscle ridges do not imprint on the mound.
 base_wall=blur(wall,6.)
 blend=np.maximum(0,1-R2)**2
@@ -205,9 +205,30 @@ drape=dict(cell=CELL,origin=[GX0,GY0],columns=NX,rows=NY,embed=EMBED,values=np.r
 # Generate a closed outer adipose envelope with its back embedded in the chest.
 # Internal HRA structures retain their topology and follow the recorded displacement grid.
 UNDERCUT=.004
+# Sculpted fat lobules: jittered seed points across the pad, each a rounded bump, so the surface
+# reads as lobulated adipose tissue under the scene lighting (as in ecorche illustrations)
+# instead of a smooth shell. Bumps fade at the rim and around the areola.
+LOBULE=dict(spacing=.0105,sigma=.0042,amplitude=.0,seed=7)  # smooth surface; the reference style draws fibres, not lobules
+def lobule_seeds(side):
+    rng=np.random.default_rng(LOBULE['seed']+(0 if side=='left' else 1));cx=profile['centerX']*(1 if side=='left' else -1)
+    sp=LOBULE['spacing'];pts=[]
+    for j,y in enumerate(np.arange(profile['centerY']-.1,profile['centerY']+.1,sp*.87)):
+        for x in np.arange(cx-.1,cx+.1,sp):
+            pts.append([x+(sp/2 if j%2 else 0)+rng.uniform(-.25,.25)*sp,y+rng.uniform(-.25,.25)*sp])
+    return np.array(pts)
+def areola_center(side):
+    a=[m for m in breast if m['part']['id']==('VH_F_areola_L' if side=='left' else 'VH_F_areola_R')][0]['pos'];return a[:,:2].mean(axis=0)
+def lobules(xy,side):
+    seeds=lobule_seeds(side);d2=((xy[:,None,0]-seeds[None,:,0])**2+(xy[:,None,1]-seeds[None,:,1])**2)
+    bump=np.exp(-d2/(2*LOBULE['sigma']**2)).sum(axis=1);bump=bump/bump.max()
+    cx=profile['centerX']*(1 if side=='left' else -1)
+    u=(xy[:,0]-cx)/profile['radiusX'];v=(xy[:,1]-profile['centerY'])/np.where(xy[:,1]>profile['centerY'],profile['upperRadius'],profile['lowerRadius'])
+    fade=1-smoothstep(.55,.95,np.sqrt(u*u+v*v))
+    ac=areola_center(side);fade=fade*smoothstep(.012,.024,np.hypot(xy[:,0]-ac[0],xy[:,1]-ac[1]))
+    return LOBULE['amplitude']*(bump-.55)*fade
 def breast_surface_mesh(side,front,back):
     # Concentric rings give a smooth perimeter rather than a staircase cut from a grid.
-    rings=40;segments=128;cx=profile['centerX']*(1 if side=='left' else -1)
+    rings=64;segments=192;cx=profile['centerX']*(1 if side=='left' else -1)
     xy=[[cx,profile['centerY'],0.]]
     for ring in range(1,rings+1):
         r=ring/rings
@@ -215,7 +236,7 @@ def breast_surface_mesh(side,front,back):
             t=2*np.pi*j/segments;v=np.sin(t)
             xy.append([cx+profile['radiusX']*r*np.cos(t),profile['centerY']+r*v*(profile['upperRadius'] if v>=0 else profile['lowerRadius']),0.])
     xy=np.array(xy);f=xy.copy();b=xy.copy()
-    f[:,2]=bilinear(front,xy);b[:,2]=bilinear(back,xy);count=len(f)
+    f[:,2]=bilinear(front,xy)+lobules(xy,side);b[:,2]=bilinear(back,xy);count=len(f)
     pos=np.concatenate([f,b]);tri=[]
     for j in range(segments):tri.append([0,1+j,1+(j+1)%segments])
     for ring in range(1,rings):
@@ -242,7 +263,7 @@ for m in breast:
     pos,nrm,idx=breast_surface_mesh(side,front,back)
     m.update(pos=pos,nrm=nrm,idx=idx)
     m['part']['name']=f'Adipose tissue of {side} breast'
-    m['provenance']['adaptation']='Reference-guided smooth breast contour on the chest wall, replacing the HRA adipose envelope; estimated shape reshaped by the shared female body morph'
+    m['provenance']['adaptation']='Reference-guided smooth breast body on the pectoralis, replacing the HRA adipose envelope; estimated shape reshaped by the shared female body morph'
     regenerated.append(m['part']['id'])
 gap_before=float(np.nanmedian(shift));residual=np.where(covered,wall-EMBED-(envelope+drape_grid),np.nan);gap_after=float(np.median((back-wall)[R2<.99]));gap_max=float(np.max((back-wall)[R2<.99]))
 
@@ -255,6 +276,9 @@ MORPH=dict(
  lateralRadius=.17,  # beyond this |x| the lateral change saturates into a translation, so arms move with the torso instead of being squeezed
  thoraxDepth=dict(scale=.96,ramp=[1.05,1.15,1.35,1.45]),
  head=dict(scale=.95,center=[0.,1.61,-.03],ramp=[1.44,1.56]),
+ # Lower nasal bridge and projection: depth beyond the face plane is compressed inside a smooth
+ # window around the nose (nasal bones and cartilages), giving a flatter East Asian profile.
+ nose=dict(plane=.062,scale=.52,center=[0.,1.578],radius=[.03,.045],rampDepth=.012),
 )
 def lateral_factor(y):
     knots=MORPH['lateralKnots'];out=np.full_like(y,knots[-1][1])
@@ -268,6 +292,9 @@ def morph(p):
     t=MORPH['thoraxDepth'];w=smoothstep(t['ramp'][0],t['ramp'][1],y)*(1-smoothstep(t['ramp'][2],t['ramp'][3],y))
     dz=z*(t['scale']-1)*w
     q=np.stack([x+dx,y,z+dz],axis=1)
+    n=MORPH['nose'];r2=((x-n['center'][0])/n['radius'][0])**2+((y-n['center'][1])/n['radius'][1])**2
+    wn=(1-smoothstep(0.,1.,r2))*smoothstep(n['plane']-n['rampDepth'],n['plane']+n['rampDepth'],z)
+    q[:,2]=q[:,2]-wn*(1-n['scale'])*(z-n['plane'])
     h=MORPH['head'];wh=smoothstep(h['ramp'][0],h['ramp'][1],y)[:,None]
     q=q-wh*(1-h['scale'])*(q-np.array(h['center']))
     return q*MORPH['stature']
@@ -345,7 +372,7 @@ landmarks=dict(
  headWidth=span(['Left parietal bone','Right parietal bone'],0),
  chestDepth=extent('Body of sternum',2),
 )
-report=dict(method='BodyParts3D framework with fitted and draped HRA female structures, reshaped by one smooth whole-body morph',reviewStatus='Experimental; proportions estimated, organ placement unreviewed',transforms=transforms,morph=MORPH,drape=drape,breastProfile=profile,tissueInsets=tissue_insets,regenerated=regenerated,replacements=replacements,landmarks=landmarks,retained=[p['id'] for p in retained],added=[dict(id=p['id'],name=p['name'],system=p['system'],transform=p['group']) for p in added],excluded=excluded,checks=dict(retainedGeometryUnchanged=False,limbProportionsUnchanged=False,minimumMorphJacobian=min_det,minimumTransformDeterminant=float(min(np.prod(t['scale']) for t in transforms.values())),breastWallGapBeforeDrapeM=gap_before,breastWallGapAfterDrapeM=gap_after,breastWallMaxResidualM=gap_max),parts=len(atlas['parts']),concepts=len(atlas['concepts']),triangles=atlas['triangles'])
+report=dict(method='BodyParts3D framework with fitted and draped HRA female structures, reshaped by one smooth whole-body morph',reviewStatus='Experimental; proportions estimated, organ placement unreviewed',transforms=transforms,morph=MORPH,drape=drape,breastProfile=profile,lobules=LOBULE,tissueInsets=tissue_insets,regenerated=regenerated,replacements=replacements,landmarks=landmarks,retained=[p['id'] for p in retained],added=[dict(id=p['id'],name=p['name'],system=p['system'],transform=p['group']) for p in added],excluded=excluded,checks=dict(retainedGeometryUnchanged=False,limbProportionsUnchanged=False,minimumMorphJacobian=min_det,minimumTransformDeterminant=float(min(np.prod(t['scale']) for t in transforms.values())),breastWallGapBeforeDrapeM=gap_before,breastWallGapAfterDrapeM=gap_after,breastWallMaxResidualM=gap_max),parts=len(atlas['parts']),concepts=len(atlas['concepts']),triangles=atlas['triangles'])
 for p in atlas['parts']:p.pop('group',None)
 (OUT/'atlas-female-reconstructed.json').write_text(json.dumps(atlas,separators=(',',':')))
 (OUT/'female-fit-report.json').write_text(json.dumps(report,indent=2))

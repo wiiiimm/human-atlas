@@ -1,6 +1,6 @@
 # Human Atlas
 
-An interactive 3D anatomy explorer built with React, Three.js, and shadcn/ui. Explore the BodyParts3D male reference (**2,234 meshes, 3,432 named concepts**) or a female study prototype (**2,243 meshes, 4,246 concepts**) built from the BodyParts3D framework, fitted HRA female organs and breast anatomy, and a whole-body morph toward estimated female proportions. The original HRA female assembly is also available for comparison.
+An interactive 3D anatomy explorer built with React, Three.js, and shadcn/ui. Explore the BodyParts3D male reference (**2,234 meshes, 3,432 named concepts**) or a female study prototype (**2,243 meshes, 4,246 concepts**) derived from the BodyParts3D framework, fitted HRA female organs and pelvis, an illustrated breast body, and a whole-body morph toward estimated female proportions. The HRA female source atlas still ships for validation and rebuilds but is not offered in the viewer.
 
 **[Explore the live demo](https://human-atlas-seven.vercel.app)**
 
@@ -44,9 +44,9 @@ The male viewer uses **BodyParts3D 4.0**, an adult male reference anatomy, licen
 
 Geometry is simplified for browser performance while retaining every source mesh. The packaged model contains 2,288,268 triangles and downloads approximately 33 MB of compressed geometry. Full credits, source links, and adaptation details are in [ATTRIBUTION.md](public/ATTRIBUTION.md).
 
-The **Female · source only** option uses **HRA united-female v1.5**, licensed **CC BY 4.0**, with 888 meshes and approximately 23.6 MB of compressed geometry. It includes female reproductive anatomy, selected organs, and a body surface; skeleton and muscle coverage is partial. Eight pregnancy reference pieces are hidden on load/reset and excluded from the All preset. Only the chosen dataset is loaded.
+> **The female model is a derived study model, not a scanned reference.** The male atlas is BodyParts3D, an actual adult male reference model. There is no equivalent complete female source, so the female model diverges from the male one: it reuses the male skeleton, muscles, and shared organs, swaps in the HRA female pelvis and reproductive organs, adds an illustrated breast body, and reshapes everything with an estimated whole-body morph. Its proportions are estimates guided by ecorché illustrations, not measurements of a real body.
 
-The default female option retains **2,181 BodyParts3D meshes** with their source topology, adds **62 fitted HRA female meshes** (the female pelvis in place of the male one, reproductive organs, and breast tissue draped onto the chest wall with a regenerated fat body), and reshapes the whole assembly with one smooth morph toward estimated female proportions: about 1.62 m stature, narrower shoulders, a wider pelvis, and a smaller skull. Male-specific anatomy is omitted. Proportions are estimates and organ placement is experimental, with visible source provenance. It downloads approximately 35 MB of compressed geometry. Choose **Female · source only** to compare. See [the reconstruction documentation](docs/female-anatomy.md) for the pipeline, exclusions, and limitations.
+The female option retains **2,181 BodyParts3D meshes** with their source topology, adds **62 fitted HRA female meshes** (the female pelvis in place of the male one, reproductive organs, and breast tissue draped onto the chest wall with a regenerated fat body), and reshapes the whole assembly with one smooth morph toward estimated female proportions: about 1.62 m stature, narrower shoulders, a wider pelvis, and a smaller skull. Male-specific anatomy is omitted. Proportions are estimates and organ placement is experimental, with visible source provenance. It downloads approximately 35 MB of compressed geometry. See [the reconstruction documentation](docs/female-anatomy.md) for the pipeline, exclusions, and limitations.
 
 This is an educational explorer, not a diagnostic or surgical tool.
 
