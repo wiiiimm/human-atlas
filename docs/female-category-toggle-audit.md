@@ -2,13 +2,13 @@
 
 All **62 inserted HRA-derived structures** have an existing, active control-panel category and respond to that category's visibility toggle. No missing toggle or concrete wrong primary-category assignment was found. This is a category/visibility audit, not validation of the model's geometry or completeness.
 
-The two regenerated breast envelopes are included within those 62 structures; they do not make 64. Exact independent expectations are recorded in [female-category-expectations.json](../data/anatomy/female-category-expectations.json).
+All 16 contoured breast meshes preserve their HRA source topology and are included within those 62 structures. No breast envelope is regenerated. Exact independent expectations are recorded in [female-category-expectations.json](../data/anatomy/female-category-expectations.json).
 
 | Control-panel toggle | Inserted pieces | Scope |
 | --- | ---: | --- |
 | Skeleton | 8 | Bilateral ilium, ischium, pubis; sacrum; coccyx |
 | Reproductive | 38 | Ovaries, uterine tubes, uterus/cervix, vagina, and associated supports/folds/recess |
-| Breast tissue | 10 | Two regenerated envelopes, two lobe assemblies, two main-duct assemblies, two sinus assemblies, two suspensory-support assemblies |
+| Breast tissue | 10 | Two contoured HRA adipose envelopes, two lobe assemblies, two main-duct assemblies, two sinus assemblies, two suspensory-support assemblies |
 | Body surface | 6 | Bilateral nipples, areolae, and areolar tubercles |
 
 ## Category interpretation
@@ -45,13 +45,13 @@ Reviewed the actual source and generated manifests, `female-fit-report.json`, `a
 
 ```bash
 node --experimental-strip-types --test scripts/female-category-toggle.test.mjs scripts/chest-visibility.test.mjs
+node --test scripts/hra-breast-contour.test.mjs
 ```
 
-**13 tests pass**: six new focused cases plus seven existing chest cases. Coverage includes the exact 62-ID inventory, both regenerated envelopes, all reviewed categories and active controls, every inserted piece against every system toggle, defaults, all three chest modes, every inserted piece under selection/isolation, and unchanged male behavior. The expected category fixture is independent of the generated atlas's actual `system` field, so an erroneous reassignment cannot pass by reproducing itself in the test.
+**All 18 category, chest-visibility and breast-contour tests pass against the promoted canonical assets.** The category suite contains six focused cases plus seven chest-visibility cases. Coverage includes the exact 62-ID inventory, all 16 source-topology-preserving breast meshes, all reviewed categories and active controls, every inserted piece against every system toggle, defaults, all three chest modes, every inserted piece under selection/isolation, and unchanged male behavior. The expected category fixture is independent of the generated atlas's actual `system` field, so an erroneous reassignment cannot pass by reproducing itself in the test. Five additional breast-contour tests verify source indices, the recorded shape field, normals, reviewed geometry bytes, unchanged nonbreast meshes and canonical compressed payloads.
 
-Browser verification on `/female` also passed with no page errors. The actual category controls produced Reproductive 38 → 0 → 38, Breast tissue 10 → 0 → 10, Body surface 6 → 0 → 6, and Skeleton 301 → 0 → 301 (including all eight inserted pelvic pieces). From Breast tissue alone, Glands enabled the 386 muscle pieces plus eight internal breast pieces (394 total); Pectorals left 386; re-enabling Breast tissue restored 396. Re-enabling Body surface after Pectorals restored its six pieces (392 total). All showed 2,243 pieces; Hide all showed zero. These checks exercise the real control handlers as well as the tested visibility helper.
-
-Audited manifest SHA-256: `9b6f0fc90c80e4cd50a7ec65fa9d43ddeb0d6e5d79b6d1b9a78105443610730b`.
+The previous browser audit used manifest `9b6f0fc90c80e4cd50a7ec65fa9d43ddeb0d6e5d79b6d1b9a78105443610730b`, before source-based breast promotion. Its category counts were Reproductive 38, Breast tissue 10 and Body surface 6, and each toggled to zero and back; Skeleton included all eight inserted pelvic pieces. Those observations are historical UI evidence. Current geometry and category-test results must be checked against the promoted manifest rather than inferred from that earlier browser session.
+Current automated-audit manifest SHA-256: `4134384790ef6be9526105466ab946f4291afdc0e8237145dd0d64cd5809ffa8`.
 
 ## Every inserted ID
 

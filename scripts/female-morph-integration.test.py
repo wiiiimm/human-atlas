@@ -35,7 +35,7 @@ class MorphIntegrationTests(unittest.TestCase):
 const fs = require('node:fs');
 const input = JSON.parse(fs.readFileSync(0, 'utf8'));
 const source = fs.readFileSync('scripts/validate-atlas.mjs', 'utf8');
-const expression = source.slice(source.indexOf(' const smoothstep='), source.indexOf(' const drapeShift='));
+const expression = source.slice(source.indexOf(' const smoothstep='), source.indexOf(" assert.ok(breast,"));
 const apply = new Function('morph', expression + ';return apply;')(input.settings);
 process.stdout.write(JSON.stringify(input.cases.map(([point, id]) => apply(...point, id))));
 """

@@ -48,40 +48,8 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
   };
   const isBreastTissue=(p:Part)=>p.system==='integumentary'&&p.id.startsWith('VH_F_')&&p.id!=='VH_F_skin';
   const isBodySurface=(p:Part)=>p.system==='integumentary'&&!isBreastTissue(p);
-  // Lobulated adipose/connective detail, not a skeletal-muscle fiber map.
-  // The illustration changes shading only; source tissue geometry stays intact.
-  const createTissueMaps=()=>{
-  const tissueCanvas=document.createElement('canvas');tissueCanvas.width=tissueCanvas.height=512;
-  const tissueContext=tissueCanvas.getContext('2d')!,tissuePixels=tissueContext.createImageData(512,512);
-  const heightCanvas=document.createElement('canvas');heightCanvas.width=heightCanvas.height=512;
-  const heightContext=heightCanvas.getContext('2d')!,heightPixels=heightContext.createImageData(512,512);
-  const hash=(x:number,y:number)=>{const n=Math.sin(x*127.1+y*311.7)*43758.5453;return n-Math.floor(n);};
-  for(let y=0;y<512;y++)for(let x=0;x<512;x++){
-   const u=x/512,v=y/512;
-   // Slightly elongated, irregular lobules separated by pale connective septa.
-   const px=u*12+.45*Math.sin(v*18),py=v*10+.3*Math.sin(u*21);
-   const ix=Math.floor(px),iy=Math.floor(py);let first=Infinity,second=Infinity;
-   for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
-    const cx=ix+dx,cy=iy+dy,dist=Math.hypot(px-cx-.15-.7*hash(cx,cy),py-cy-.15-.7*hash(cx+39,cy+11));
-    if(dist<first){second=first;first=dist;}else if(dist<second)second=dist;
-   }
-   const separation=second-first,septa=Math.exp(-separation*separation/ .009);
-   const dome=Math.max(0,1-first*first),grain=hash(x,y)-.5;
-   const tone=.78+.22*dome-.06*septa+grain*.012,offset=(y*512+x)*4;
-   tissuePixels.data.set([213*tone+septa*32,174*tone+septa*44,101*tone+septa*60,255],offset);
-   const h=Math.round(255*(.35+.45*dome-.14*septa));heightPixels.data.set([h,h,h,255],offset);
-  }
-  tissueContext.putImageData(tissuePixels,0,0);heightContext.putImageData(heightPixels,0,0);
-  const tissueMap=new T.CanvasTexture(tissueCanvas),tissueBump=new T.CanvasTexture(heightCanvas);
-  tissueMap.colorSpace=T.SRGBColorSpace;tissueMap.anisotropy=tissueBump.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());
-  return {map:tissueMap,bump:tissueBump};
-  };
-  const tissueMaps=atlas.parts.some(p=>/^VH_F_fat_[LR]$/.test(p.id))?createTissueMaps():null;
   const materialFor=(system:string,surface=system==='integumentary')=>{
-   const adipose=system==='adipose';
-   const areola=system==='areola';
-   const m=new T.MeshStandardMaterial({color:adipose?'#ffffff':areola?'#c4867a':system==='mammary'?'#c7a4b7':SYSTEMS.find(s=>s.id===system)?.color??'#aebbb8',metalness:adipose||system==='mammary'?0:.08,roughness:adipose||system==='mammary'?.8:.53,side:T.DoubleSide,transparent:surface,opacity:surface?.1:1,depthWrite:!surface});
-   if(adipose&&tissueMaps){m.map=tissueMaps.map;m.bumpMap=tissueMaps.bump;m.bumpScale=.65;}
+   const m=new T.MeshStandardMaterial({color:SYSTEMS.find(s=>s.id===system)?.color??'#aebbb8',metalness:.08,roughness:.53,side:T.DoubleSide,transparent:surface,opacity:surface?.1:1,depthWrite:!surface});
    m.customProgramCacheKey=()=>'atlas-standard-v2';
    m.onBeforeCompile=shader=>{
     shader.uniforms.partState={value:partTexture};shader.uniforms.selectionState={value:selectionTexture};shader.uniforms.stateWidth={value:width};
@@ -93,9 +61,8 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
    };materials.push(m);return m;
   };
   const mats=new Map<string,T.Material>(SYSTEMS.map(s=>[s.id,materialFor(s.id)]));
-  mats.set('breast',materialFor('integumentary',false));
-  mats.set('adipose',materialFor('adipose',false));
-  mats.set('areola',materialFor('areola',false));
+  // Source-derived HRA breast tissues use a plain material; source IDs retain their layer controls.
+  mats.set('hra-breast',materialFor('reproductive',false));
   let loaded=0;
   const loadChunk=async(ci:number)=>{
    const chunk=atlas.chunks[ci],compressed=!!chunk.gzip&&typeof DecompressionStream!=='undefined';const response=await fetch(compressed?chunk.gzip!:chunk.url,{signal:abort.signal});const buffer=await decodeModelResponse(response,chunk.bytes,compressed);if(disposed)return;
@@ -107,8 +74,7 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
     g.setAttribute('normal',new T.BufferAttribute(new Int16Array(buffer,p.normals,p.vertexCount*3),3,true));g.setIndex(new T.BufferAttribute(new Uint32Array(buffer,p.indices,p.indexCount),1));
     g.boundingBox=bounds[i].clone();g.computeBoundingSphere();const pick=new T.Mesh(g);pick.matrixAutoUpdate=false;pickers[i]=pick;geometries.push(g);
     g.setAttribute('partIndex',new T.BufferAttribute(new Float32Array(p.vertexCount).fill(i),1));
-    if(/^VH_F_fat_[LR]$/.test(p.id)){const uv=new Float32Array(p.vertexCount*2),position=g.getAttribute('position'),[lo,hi]=p.bounds;for(let v=0;v<p.vertexCount;v++){uv[v*2]=(position.getX(v)-lo[0])/(hi[0]-lo[0]);uv[v*2+1]=(position.getY(v)-lo[1])/(hi[1]-lo[1]);}g.setAttribute('uv',new T.BufferAttribute(uv,2));}
-    const category=p.system==='mammary'&&/suspensory_ligaments/.test(p.id)?'connective':p.system==='mammary'&&/^VH_F_fat_[LR]$/.test(p.id)?'adipose':p.system==='mammary'&&/nipple|areola/.test(p.id)?'areola':isBreastTissue(p)?'breast':p.system;const list=groups.get(category)??[];list.push(g);groups.set(category,list);
+    const category=p.system==='mammary'||isBreastTissue(p)?'hra-breast':p.system;const list=groups.get(category)??[];list.push(g);groups.set(category,list);
    });
    groups.forEach((gs,system)=>{const geometry=mergeGeometries(gs,false);if(!geometry)throw new Error('Could not assemble anatomy geometry.');geometries.push(geometry);const mesh=new T.Mesh(geometry,mats.get(system));mesh.frustumCulled=false;scene.add(mesh);});
    lastState=null;loaded++;onProgress(Math.round(loaded/atlas.chunks.length*100));dirty=true;
@@ -168,7 +134,7 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
 
   };animate();
   const contextLost=(e:Event)=>{e.preventDefault();onError('The 3D session was paused by your device. Reload to continue.');};renderer.domElement.addEventListener('webglcontextlost',contextLost);
-  return()=>{disposed=true;abort.abort();cancelAnimationFrame(frame);observer.disconnect();controls.dispose();geometries.forEach(g=>g.dispose());tissueMaps?.map.dispose();tissueMaps?.bump.dispose();materials.forEach(m=>m.dispose());scene.traverse(o=>{if(o instanceof T.Mesh&&!geometries.includes(o.geometry)){o.geometry.dispose();const ms=Array.isArray(o.material)?o.material:[o.material];ms.forEach(m=>m.dispose());}});env.dispose();partTexture.dispose();selectionTexture.dispose();markerGeometry.dispose();markerMaterial.dispose();hover.remove();renderer.dispose();renderer.domElement.remove();};
+  return()=>{disposed=true;abort.abort();cancelAnimationFrame(frame);observer.disconnect();controls.dispose();geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());scene.traverse(o=>{if(o instanceof T.Mesh&&!geometries.includes(o.geometry)){o.geometry.dispose();const ms=Array.isArray(o.material)?o.material:[o.material];ms.forEach(m=>m.dispose());}});env.dispose();partTexture.dispose();selectionTexture.dispose();markerGeometry.dispose();markerMaterial.dispose();hover.remove();renderer.dispose();renderer.domElement.remove();};
  },[atlas]);
  return <div className="scene" ref={host}/>;
 }
