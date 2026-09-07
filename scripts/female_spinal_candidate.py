@@ -159,35 +159,242 @@ def ray_hits(segments, center, direction):
     return hits[np.r_[True, np.diff(hits) > 1e-7]] if len(hits) else hits
 
 
-def canal_screen(cords, bones):
+def radial_boundaries(segments, center, directions):
+    """Vectorized first boundary and parity; endpoint half-open rule avoids doubles."""
+    if not len(segments):
+        return np.full(len(directions), np.inf), np.zeros(len(directions), dtype=int)
+    a = segments[:, 0] - center
+    edge = segments[:, 1] - segments[:, 0]
+    cross = lambda p, q: p[..., 0] * q[..., 1] - p[..., 1] * q[..., 0]
+    denominator = cross(directions[:, None], edge[None])
+    valid = abs(denominator) > 1e-12
+    denominator = np.where(valid, denominator, 1)
+    ray = cross(a, edge)[None] / denominator
+    fraction = cross(a[None], directions[:, None]) / denominator
+    hits = np.where(valid & (ray > 1e-8) & (fraction >= 0) & (fraction < 1), ray, np.inf)
+    # Match the measured screen's 0.1 micron hit deduplication, including seams.
+    hits.sort(axis=1)
+    finite = np.isfinite(hits)
+    differences = np.zeros_like(hits[:, 1:])
+    np.subtract(hits[:, 1:], hits[:, :-1], out=differences, where=finite[:, 1:])
+    distinct = finite.copy()
+    distinct[:, 1:] &= differences > 1e-7
+    return hits[:, 0], distinct.sum(axis=1) % 2
+
+
+class CanalCorrection:
+    """Compact C2 transverse translation fitted to actual cervical bone sections."""
+    FIT_FRACTIONS = (.1, .3, .5, .7, .9)
+    HOLDOUT_FRACTIONS = (.025, .2, .4, .6, .8, .975)
+
+    def __init__(self, cords, bones):
+        self.radius = .035
+        mids = {key: float((v[:, 1].min() + v[:, 1].max()) / 2) for key, (v, _, _) in cords.items()}
+        self.centers = np.linspace(mids[CORD_IDS[7]], mids[CORD_IDS[2]], 5)
+        low, high = self.centers[0] - self.radius, self.centers[-1] + self.radius
+        self.ids = [key for key in CORD_IDS if cords[key][0][:, 1].max() >= low and cords[key][0][:, 1].min() <= high]
+        triangles = np.concatenate([v[f] for v, _, f in bones.values()])
+        theta = np.linspace(.013, 2 * np.pi + .013, 64, endpoint=False)
+        self.directions = np.column_stack([np.cos(theta), np.sin(theta)])
+        self.sections = []
+        for key in self.ids:
+            v, _, f = cords[key]
+            for fraction in self.FIT_FRACTIONS:
+                height = float(v[:, 1].min() + fraction * np.ptp(v[:, 1]))
+                cord = section(v[f], height)
+                bone = section(triangles, height)
+                center = (cord.min(axis=(0, 1)) + cord.max(axis=(0, 1))) / 2
+                hits = [ray_hits(cord, center, direction) for direction in self.directions]
+                radii = np.array([hit[-1] if len(hit) else np.inf for hit in hits])
+                valid = np.isfinite(radii)
+                first, _ = radial_boundaries(bone, center, self.directions)
+                self.sections.append(dict(id=key, fraction=fraction, height=height, bone=bone,
+                                          center=center, radii=radii, valid=valid,
+                                          initialCoverage=int(np.sum(np.isfinite(first) & valid))))
+        self.matrix = self.basis(np.array([s['height'] for s in self.sections]))
+        self.coefficients = np.zeros((5, 2))
+        self.iterations = 0
+        self.initial_loss = self.loss(self.coefficients)
+        # Deterministic coordinate descent directly over the smooth field, not
+        # independent per-segment translations or fitted annotations.
+        for step in (.002, .001, .0005, .00025, .0001):
+            for _ in range(20):
+                changed = False
+                for i in range(5):
+                    for axis in range(2):
+                        best = self.coefficients
+                        value = self.loss(best)
+                        for delta in (-step, step):
+                            trial = self.coefficients.copy()
+                            trial[i, axis] += delta
+                            candidate_loss = self.loss(trial)
+                            if candidate_loss < value:
+                                best, value = trial, candidate_loss
+                        if best is not self.coefficients:
+                            self.coefficients = best
+                            changed = True
+                self.iterations += 1
+                if not changed:
+                    break
+        self.final_loss = self.loss(self.coefficients)
+
+    def basis(self, heights, derivative=False):
+        delta = np.asarray(heights)[:, None] - self.centers
+        r = abs(delta) / self.radius
+        inside = np.maximum(1 - r, 0)
+        return -20 * delta / self.radius**2 * inside**3 if derivative else inside**4 * (4 * r + 1)
+
+    def loss(self, coefficients):
+        shifts = self.matrix @ coefficients
+        # Bounds prevent solving interference by moving outside the local canal.
+        if np.linalg.norm(shifts, axis=1).max() > .006:
+            return 1e12
+        loss = .001 * float(np.sum((coefficients * 1000)**2))
+        for shift, s in zip(shifts, self.sections):
+            first, parity = radial_boundaries(s['bone'], s['center'] + shift, self.directions)
+            clearances = (first[s['valid']] - s['radii'][s['valid']]) * 1000
+            coverage = int(np.sum(np.isfinite(first) & s['valid']))
+            loss += float(np.sum(np.maximum(.5 - clearances, 0)**2))
+            loss += 100 * int(parity.sum()) + max(0, s['initialCoverage'] - coverage - 4)**2
+        return loss
+
+    def map(self, points, normals=None):
+        shift = self.basis(points[:, 1]) @ self.coefficients
+        mapped = points.copy()
+        mapped[:, [0, 2]] += shift
+        if normals is None:
+            return mapped
+        slope = self.basis(points[:, 1], derivative=True) @ self.coefficients
+        result = normals.copy()
+        result[:, 1] -= slope[:, 0] * normals[:, 0] + slope[:, 1] * normals[:, 2]
+        result /= np.linalg.norm(result, axis=1)[:, None]
+        inactive = (shift == 0).all(axis=1) & (slope == 0).all(axis=1)
+        result[inactive] = normals[inactive]
+        return mapped, result
+
+    def evidence(self):
+        heights = np.linspace(self.centers[0] - self.radius, self.centers[-1] + self.radius, 2001)
+        return dict(method='Five compact C2 Wendland functions translate the cord in x/depth as a continuous function of height. Coefficients minimize actual bone/cord section clearance violations; no source triangles or transverse sizes are replaced.',
+                    basisCentersM=self.centers.tolist(), basisRadiusM=self.radius,
+                    coefficientsXZ_M=self.coefficients.tolist(), fitIds=self.ids,
+                    fitFractions=list(self.FIT_FRACTIONS), holdoutFractions=list(self.HOLDOUT_FRACTIONS),
+                    fitSectionCount=len(self.sections), iterations=self.iterations,
+                    objective=dict(targetRadialClearanceMm=.5, maximumFitSectionShiftMm=6,
+                                   coefficientPenalty=.001, oddBoneParityPenalty=100,
+                                   allowedLostCoveredRays=4, initialLoss=self.initial_loss, finalLoss=self.final_loss),
+                    maximumSampledShiftMm=float(np.linalg.norm(self.basis(heights) @ self.coefficients, axis=1).max() * 1000),
+                    maximumSampledSlope=float(np.linalg.norm(self.basis(heights, derivative=True) @ self.coefficients, axis=1).max()),
+                    jacobianDeterminant=1,
+                    normalMethod='Analytical inverse-transpose of the transverse-translation Jacobian composed with the initial registration normal transform.',
+                    limitation='A deterministic local optimum on sampled open cross-sections is not a complete canal containment proof.')
+
+
+def section_comparison_svg(path, baseline, candidate, bones):
+    triangles = np.concatenate([v[f] for v, _, f in bones.values()])
+    lines = ['<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="700" viewBox="0 0 1100 700">',
+             '<rect width="1100" height="700" fill="#101826"/>',
+             '<text x="30" y="35" fill="white" font-size="20">Actual cervical cross-sections: before and after canal-derived correction</text>']
+    for column, key in enumerate(CORD_IDS[4:6]):
+        v, _, f = baseline[key]
+        height = (v[:, 1].min() + v[:, 1].max()) / 2
+        bone = section(triangles, height)
+        old = section(v[f], height)
+        cv, _, cf = candidate[key]
+        new = section(cv[cf], height)
+        center = (old.min(axis=(0, 1)) + old.max(axis=(0, 1))) / 2
+        x0 = 275 + 550 * column
+        lines.append(f'<text x="{x0-220}" y="80" fill="white" font-size="18">C{column+5} cord segment, height {height:.5f} m</text>')
+        for segments, color, width in [(bone, '#c0cddd', 1.5), (old, '#ff8276', 2.2), (new, '#65e6c2', 2.2)]:
+            projected = (segments - center) * np.array([6500, -6500]) + [x0, 370]
+            d = ' '.join(f'M{a[0]:.2f},{a[1]:.2f} L{b[0]:.2f},{b[1]:.2f}' for a, b in projected)
+            lines.append(f'<path d="{d}" fill="none" stroke="{color}" stroke-width="{width}"/>')
+    lines += ['<text x="30" y="660" fill="white" font-size="16">Grey: vertebral triangles | Red: initial cord | Green: corrected cord | Open contours are retained.</text>', '</svg>']
+    path.write_text('\n'.join(lines) + '\n')
+
+
+def canal_screen(cords, bones, fractions=(.5,), ids=None):
     bone_triangles = np.concatenate([v[f] for v, _, f in bones.values()])
     result = []
-    for key in CORD_IDS:
+    for key, fraction in [(key, fraction) for key in (ids or CORD_IDS) for fraction in fractions]:
         v, _, f = cords[key]
-        height = float((v[:, 1].min() + v[:, 1].max()) / 2)
+        height = float(v[:, 1].min() + fraction * np.ptp(v[:, 1]))
         cord = section(v[f], height)
         if not len(cord):
             raise ValueError(f'No cord cross-section for {key}')
         center = (cord.min(axis=(0, 1)) + cord.max(axis=(0, 1))) / 2
         bone = section(bone_triangles, height)
-        clearances = []; escaping = 0; bone_parities = []
+        clearances = []; escaping = 0; bone_parities = []; bone_escaping = 0; cord_escaping = 0
         for theta in np.linspace(.013, 2 * np.pi + .013, 64, endpoint=False):
             direction = np.array([np.cos(theta), np.sin(theta)])
             bh = ray_hits(bone, center, direction)
             ch = ray_hits(cord, center, direction)
             bone_parities.append(len(bh) % 2)
+            bone_escaping += int(not len(bh))
+            cord_escaping += int(not len(ch))
             if not len(bh) or not len(ch):
                 escaping += 1
             else:
                 clearances.append(float((bh[0] - ch[-1]) * 1000))
-        result.append(dict(id=key, heightM=height, centerXZ=center.tolist(),
+        result.append(dict(id=key, sectionFraction=fraction, heightM=height, centerXZ=center.tolist(),
                            boneCrossSectionSegments=len(bone), cordCrossSectionSegments=len(cord),
                            radialDirections=64, escapingDirections=escaping,
+                           boneEscapingDirections=bone_escaping, cordEscapingDirections=cord_escaping,
                            oddBoneParityDirections=sum(bone_parities),
                            minimumRadialClearanceMm=min(clearances) if clearances else None,
                            medianRadialClearanceMm=float(np.median(clearances)) if clearances else None,
                            negativeRadialClearanceDirections=sum(c < 0 for c in clearances)))
     return result
+
+
+def mesh_point_parity(point, triangles, direction):
+    """Actual-triangle ray parity with ambiguous edge/tangent hits rejected."""
+    edge1 = triangles[:, 1] - triangles[:, 0]
+    edge2 = triangles[:, 2] - triangles[:, 0]
+    h = np.cross(direction, edge2)
+    det = np.sum(edge1 * h, axis=1)
+    valid = abs(det) > 1e-12
+    inv = np.zeros_like(det)
+    inv[valid] = 1 / det[valid]
+    delta = point - triangles[:, 0]
+    u = inv * np.sum(delta * h, axis=1)
+    q = np.cross(delta, edge1)
+    v = inv * np.sum(direction * q, axis=1)
+    distance = inv * np.sum(edge2 * q, axis=1)
+    hit = valid & (u >= 0) & (v >= 0) & (u + v <= 1) & (distance > 1e-8)
+    if np.any(hit & ((u < 1e-6) | (v < 1e-6) | (1-u-v < 1e-6))):
+        return None
+    distances = np.sort(distance[hit])
+    return int(np.sum(np.r_[True, np.diff(distances) > 1e-7]) % 2) if len(distances) else 0
+
+
+def medulla_interface(cords, medulla, Surface):
+    points = cords[CORD_IDS[0]][0]
+    top = points[points[:, 1] >= points[:, 1].max() - .001]
+    directions = np.array([[1, .371, .137], [-.219, 1, .413], [.173, -.281, 1.]])
+    directions /= np.linalg.norm(directions, axis=1)[:, None]
+    combined_v = np.concatenate([v for v, _, _ in medulla.values()])
+    surfaces = [(Surface(v, f), v[f], topology(v, f)) for v, _, f in medulla.values()]
+    distances = np.min(np.array([surface.distances(top) for surface, _, _ in surfaces]), axis=0)
+    states = []
+    for point in top:
+        classifications = []
+        for surface, triangles, stats in surfaces:
+            if stats['boundaryEdges'] or stats['nonmanifoldEdges']:
+                classifications.append('uncertain')
+                continue
+            votes = [mesh_point_parity(point, triangles, direction) for direction in directions]
+            classifications.append('uncertain' if None in votes or len(set(votes)) != 1 else ('inside' if votes[0] else 'outside'))
+        states.append('inside' if 'inside' in classifications else ('uncertain' if 'uncertain' in classifications else 'outside'))
+    return dict(method='All first-segment vertices in its upper 1 mm strip measured against actual medulla triangles; three non-ambiguous ray parities per closed medulla mesh classify points in their union.',
+                cordId=CORD_IDS[0], medullaIds=list(medulla), sampledUpperStripVertices=len(top),
+                upperStripCounts={state: states.count(state) for state in ('inside', 'outside', 'uncertain')},
+                minimumSurfaceDistanceMm=float(distances.min() * 1000),
+                medianSurfaceDistanceMm=float(np.median(distances) * 1000),
+                maximumSurfaceDistanceMm=float(distances.max() * 1000),
+                cordBounds=[points.min(axis=0).tolist(), points.max(axis=0).tolist()],
+                medullaBounds=[combined_v.min(axis=0).tolist(), combined_v.max(axis=0).tolist()],
+                axialBoundsGapMm=float((combined_v[:, 1].min() - points[:, 1].max()) * 1000),
+                interpretation='Inside samples indicate geometric overlap, not a welded anatomical junction; unsigned surface distances are not penetration depths. Positive axial bounds gap guarantees vertical separation; negative values alone only indicate overlapping height ranges.')
 
 
 def svg_overlay(path, cords, bones):
@@ -206,7 +413,7 @@ def svg_overlay(path, cords, bones):
                 # All triangles, no invented outline or body envelope.
                 d = ' '.join('M' + ' L'.join(f'{x:.2f},{y:.2f}' for x, y in triangle) + 'Z' for triangle in projected[f])
                 lines.append(f'<path d="{d}" fill="none" stroke="{color}" stroke-width=".35" opacity="{opacity}"/>')
-    lines += ['<text x="30" y="930" fill="white" font-size="13">Grey: current vertebrae; gold: registered HRA cord. Bone-centroid field is not a canal landmark fit.</text>', '</svg>']
+    lines += ['<text x="30" y="930" fill="white" font-size="13">Grey: current vertebrae and medulla; gold: candidate HRA cord. Sampled fitting does not prove complete containment.</text>', '</svg>']
     path.write_text('\n'.join(lines) + '\n')
 
 
@@ -219,7 +426,7 @@ def main():
     if output == ROOT.resolve() or ROOT.resolve() in output.parents:
         raise ValueError('Candidate output must resolve outside the repository, including symlink aliases')
     output.mkdir(parents=True, exist_ok=True)
-    for name in ('report.json', 'candidate.json', 'candidate.bin', 'overlay.svg'):
+    for name in ('report.json', 'candidate.json', 'candidate.bin', 'overlay.svg', 'baseline-overlay.svg', 'cervical-sections.svg'):
         if (output / name).is_symlink():
             raise ValueError(f'Refusing symlinked candidate output: {output / name}')
     source = Atlas(args.models_dir, 'atlas-female.json')
@@ -238,6 +445,12 @@ def main():
         fitted[key] = (p.astype('<f4').astype(float), normal.astype('<f4').astype(float), f)
     source_bones = {sid: source.mesh(sid) for sid, _ in BONE_PAIRS}
     target_bones = {tid: target.mesh(tid) for _, tid in BONE_PAIRS}
+    baseline = fitted
+    correction = CanalCorrection(baseline, target_bones)
+    fitted = {}
+    for key, (v, normal, faces) in baseline.items():
+        p, n = correction.map(v, normal)
+        fitted[key] = (p.astype('<f4').astype(float), n.astype('<f4').astype(float), faces)
     Surface = surface_helper()
     inventory = []
     blob = bytearray(); records = []
@@ -263,10 +476,14 @@ def main():
                             meanSurfaceDistanceMm=float(np.mean(distances)),
                             p95SurfaceDistanceMm=float(np.quantile(distances, .95)),
                             maxSurfaceDistanceMm=float(distances.max())))
+    target_medulla = {key: target.mesh(key) for key in ('FJ1769', 'FJ1831')}
+    source_medulla = {key: source.mesh(key) for key in source.parts if key.startswith('Allen_') and 'medulla_oblongata' in key and 'central_canal' not in key}
+    interface_source = medulla_interface(original, source_medulla, Surface)
+    interface_candidate = medulla_interface(fitted, target_medulla, Surface)
     source_sections = canal_screen(original, source_bones)
     candidate_sections = canal_screen(fitted, target_bones)
-    report = dict(schemaVersion=1, candidate='female-spinal-cord', enabled=False,
-                  status='Isolated measured registration candidate; not installed in either production atlas.',
+    report = dict(schemaVersion=2, candidate='female-spinal-cord', enabled=False,
+                  status='Canal-corrected study-model preview candidate; not installed in either production atlas.',
                   inputs=dict(source=source.evidence(), target=target.evidence(), scriptSha256=sha(Path(__file__).read_bytes()),
                               surfaceHelperSha256=sha((ROOT / 'scripts/pelvis-surface-audit.py').read_bytes())),
                   source=dict(dataset='HRA united-female v1.5 / Visible Human Female', license='CC BY 4.0',
@@ -282,29 +499,46 @@ def main():
                                     extrapolatedVertices=sum(int(((v[:, 1] < registration.s[0, 1]) | (v[:, 1] > registration.s[-1, 1])).sum()) for v, _, _ in original.values()),
                                     surfaceResiduals=metrics,
                                     normalMethod='Inverse-transpose of the local piecewise affine Jacobian, normalized.'),
+                  canalCorrection=correction.evidence(),
+                  medullaInterface=dict(source=interface_source, candidate=interface_candidate),
                   continuity=dict(method='Adjacent segment axial bounds plus up to 32 sampled end-strip vertices in each direction measured against actual opposite triangles; unsigned proximity cannot prove welded continuity or absence of overlap.',
-                                  source=continuity(original, Surface), candidate=continuity(fitted, Surface)),
+                                  source=continuity(original, Surface), baseline=continuity(baseline, Surface), candidate=continuity(fitted, Surface)),
                   canalScreen=dict(method='At each segment mid-height intersect actual triangles with a transverse plane; compare outer cord ray extent with first bone hit on 64 rays. Escape counts and odd bone-intersection parity expose incomplete rings or a center in bone. No invented canal mesh.',
-                                   source=source_sections, candidate=candidate_sections,
+                                   source=source_sections, baseline=canal_screen(baseline, target_bones), candidate=candidate_sections,
+                                   fitBefore=canal_screen(baseline, target_bones, correction.FIT_FRACTIONS, correction.ids),
+                                   fitAfter=canal_screen(fitted, target_bones, correction.FIT_FRACTIONS, correction.ids),
+                                   holdoutBefore=canal_screen(baseline, target_bones, correction.HOLDOUT_FRACTIONS, correction.ids),
+                                   holdoutAfter=canal_screen(fitted, target_bones, correction.HOLDOUT_FRACTIONS, correction.ids),
                                    limitations=['Twenty matched vertebrae only; discs, ligaments, dura and nerve roots are not modeled by this test.',
-                                                'One cross-section per segment and 64 rays cannot exclude crossings between samples.',
+                                                'Separate fitting and held-out cross-sections use 64 rays each; crossings between samples remain possible.',
                                                 'Bone centroids are reproducible surface descriptors, not anatomical canal landmarks.',
                                                 'Source topology is retained, including separate capped or open segment boundaries; none are welded or repaired.',
                                                 'The short existing central-canal fragment is not a continuous target canal and is not used as a fit guide.']),
-                  blockers=['Surface registration and sampled canal measurements need review before production integration.',
+                  blockers=['Incomplete vertebral-section rings and open source boundaries prevent a complete containment claim; these are limitations of this experimental preview.',
                             'S5 and coccygeal segment meshes are absent from the bundled cord allowlist; no synthetic replacement was created.',
                             'Source segment continuity is sampled, not a connected watertight cord reconstruction.'],
-                  artifacts=dict(geometry='candidate.bin', manifest='candidate.json', overlay='overlay.svg'))
+                  artifacts=dict(geometry='candidate.bin', manifest='candidate.json', overlay='overlay.svg', baselineOverlay='baseline-overlay.svg', cervicalSections='cervical-sections.svg'))
     report['summary'] = dict(candidateSectionsWithNegativeRadialClearance=sum(r['negativeRadialClearanceDirections'] > 0 for r in candidate_sections),
                             candidateSectionsWithEscapingRays=sum(r['escapingDirections'] > 0 for r in candidate_sections),
                             candidateSectionsWithOddBoneParity=sum(r['oddBoneParityDirections'] > 0 for r in candidate_sections),
                             sourceSectionsWithNegativeRadialClearance=sum(r['negativeRadialClearanceDirections'] > 0 for r in source_sections),
                             sourceSectionsWithEscapingRays=sum(r['escapingDirections'] > 0 for r in source_sections))
+    for name in ('fitBefore', 'fitAfter', 'holdoutBefore', 'holdoutAfter'):
+        rows = report['canalScreen'][name]
+        report['summary'][name] = dict(sections=len(rows), negativeClearanceSections=sum(r['negativeRadialClearanceDirections'] > 0 for r in rows),
+                                      minimumRadialClearanceMm=min(r['minimumRadialClearanceMm'] for r in rows if r['minimumRadialClearanceMm'] is not None),
+                                      oddBoneParitySections=sum(r['oddBoneParityDirections'] > 0 for r in rows))
+    refined_screens = [report['summary'][name] for name in ('fitAfter', 'holdoutAfter')]
+    report['previewReadiness'] = dict(eligibleForExperimentalPreview=all(r['negativeClearanceSections'] == 0 and r['oddBoneParitySections'] == 0 for r in refined_screens),
+                                    rationale='Fitting and held-out sampled sections clear measured bone boundaries; original topology and gaps remain visible. enabled:false records that this script does not publish the candidate.',
+                                    completeCanalContainmentEstablished=False)
     (output / 'candidate.bin').write_bytes(blob)
     (output / 'candidate.json').write_text(json.dumps(dict(enabled=False, coordinateSystem='meters, Y up; current female atlas frame',
                                                           source='HRA united-female v1.5', license='CC BY 4.0', normalType='float32', indexType='uint32',
                                                           binary='candidate.bin', binarySha256=sha(blob), parts=records), indent=2) + '\n')
-    svg_overlay(output / 'overlay.svg', fitted, target_bones)
+    svg_overlay(output / 'overlay.svg', fitted, {**target_bones, **target_medulla})
+    svg_overlay(output / 'baseline-overlay.svg', baseline, {**target_bones, **target_medulla})
+    section_comparison_svg(output / 'cervical-sections.svg', baseline, fitted, target_bones)
     (output / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(dict(output=str(output), enabled=False, **report['summary'])))
 

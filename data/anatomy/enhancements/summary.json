@@ -87,25 +87,25 @@
     "public/models/female-base-8.bin.gz": "b09da50abe143ccb582dec3be0b22d9b9d3dd87d1c890a2a71583a49928e1783",
     "public/models/female-base-9.bin": "b035540bb05fad41cb81129d8ae6ca86e59a198cb54b5f1dd771a88586e2abb5",
     "public/models/female-base-9.bin.gz": "ea0a89fe9b0d9dfd1e0fc8a21674e864d2b0938ecc40423cf03965c65c1a6a67",
-    "public/models/female-fit-report.json": "19dc10bc7b4e651373b2ac160dba576a72e5f0cdd5d392d8d6791c24d9c737ed"
+    "public/models/female-fit-report.json": "594580f8c99323092efb49121ae7e0a2ef154b73e9e4ca8f6820db74e2e77c76"
   },
   "experiments": {
     "spinal-cord": {
       "completed": true,
       "report": "spinal-cord.json",
-      "reportSha256": "5364af436c34910eb81ebcd25705db4c1deb517cfb69732f026c92e45ced11b3",
+      "reportSha256": "907fa808665adfb3c9b28d72fb0fb40148554b952f41fef883f08f60560379c0",
       "enabled": false
     },
     "knee-and-quadriceps": {
       "completed": true,
       "report": "knee-and-quadriceps.json",
-      "reportSha256": "ee78e6b407d62d0ce4156a29d07e9fb89b237758b49fcc6ae03c7c4192272e3a",
+      "reportSha256": "f074c4f66a616fa69689eaa4023618043361bd99599105a5c5c2c0d809c92f2e",
       "enabled": false
     },
     "kidney-internals": {
       "completed": true,
       "report": "kidney-internals.json",
-      "reportSha256": "ab64ef3ea04c799ab630dbc27342b9193205d427d9df8403783dc7b9cfe5c0fb",
+      "reportSha256": "bb118e3350e75972d80d2655465e9a5a298bce46b46e5e7363c287ba547c85b0",
       "enabled": false
     }
   },

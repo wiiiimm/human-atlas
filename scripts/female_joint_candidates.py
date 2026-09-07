@@ -92,6 +92,70 @@ def fit_joint(source_meshes,target_meshes):
                           sourceCropVertexCounts={k:len(v[0]) for k,v in source_regions.items()})
 
 
+def refine_joint(source_meshes,target_meshes,baseline,baseline_fit,ridge=.015):
+    """One Gaussian RBF displacement field constrained by local bone ICP fits.
+
+    Correspondences are automatic geometric surface points, not annotated anatomy.
+    Candidate soft-tissue vertices are NOT used to fit this field.
+    """
+    controls=[]; corrections=[]; local={}
+    for bone in source_meshes:
+        source_points,_=crop(*source_meshes[bone],bone)
+        _,target_surface=crop(*target_meshes[bone],bone)
+        points=sample(source_points,72)
+        scale=baseline_fit['scale']; rotation=np.array(baseline_fit['rotationRowVectors'])
+        translation=np.array(baseline_fit['translationM'])
+        for _ in range(16):
+            current=scale*points@rotation+translation
+            nearest=np.array([target_surface.nearest(p)[1] for p in current])
+            scale,rotation,translation=similarity(points,nearest)
+        current=scale*points@rotation+translation
+        nearest=np.array([target_surface.nearest(p)[1] for p in current])
+        # The local similarity preserves correspondence orientation; nearest surface
+        # correction addresses donor-shape mismatch. Regularization smooths it.
+        controls.append(points);corrections.append(nearest-baseline(points))
+        local[bone]=dict(scale=scale,rotationRowVectors=rotation.tolist(),translationM=translation.tolist(),
+                         localSimilaritySampleResidual=a.stats(target_surface.distances(current)))
+    centers=np.concatenate(controls); residual=np.concatenate(corrections)
+    radius=.025
+    kernel=np.exp(-np.sum((centers[:,None]-centers[None,:])**2,axis=2)/(2*radius**2))
+    coefficients=np.linalg.solve(kernel+ridge*np.eye(len(centers)),residual)
+    def field(points):
+        kernel=np.exp(-np.sum((points[:,None]-centers[None,:])**2,axis=2)/(2*radius**2))
+        return baseline(points)+kernel@coefficients
+    def jacobian(points):
+        offset=points[:,None]-centers[None,:]
+        weights=np.exp(-np.sum(offset*offset,axis=2)/(2*radius**2))
+        # J rows output components, columns input coordinates.
+        return baseline_fit['scale']*np.array(baseline_fit['rotationRowVectors']).T[None,:,:]-np.einsum('nc,ncj,ci->nij',weights,offset,coefficients)/(radius**2)
+    holdout={}
+    for bone,mesh in source_meshes.items():
+        points,_=crop(*mesh,bone); _,surface=crop(*target_meshes[bone],bone)
+        holdout[bone]=a.stats(surface.distances(field(sample(points,96,1))))
+    metadata=dict(method='Bone-local similarity ICP then one regularized Gaussian RBF surface displacement',
+        localBoneFits=local,kernelRadiusM=radius,ridge=ridge,controlCount=len(centers),
+        controlSourcePointsM=centers.tolist(),controlDisplacementsM=residual.tolist(),coefficients=coefficients.tolist(),
+        heldOutSourceToTargetSurface=holdout,
+        limitations='Automatic nearest-surface correspondences; no reviewed landmark or endpoint annotations; no soft-tissue points used in fitting.')
+    return field,jacobian,metadata
+
+
+def distortion(v,f,q,baseline_q,jacobian):
+    edges=np.unique(np.sort(np.concatenate([f[:,[0,1]],f[:,[1,2]],f[:,[2,0]]]),axis=1),axis=0)
+    length=np.linalg.norm(v[edges[:,1]]-v[edges[:,0]],axis=1)
+    qlength=np.linalg.norm(q[edges[:,1]]-q[edges[:,0]],axis=1)
+    blength=np.linalg.norm(baseline_q[edges[:,1]]-baseline_q[edges[:,0]],axis=1)
+    mask=(length>1e-9)&(blength>1e-9)
+    points=np.concatenate([v,v[f].mean(axis=1)])
+    jac=jacobian(points)
+    det=np.linalg.det(jac); singular=np.linalg.svd(jac,compute_uv=False)
+    return dict(evaluatedVerticesAndTriangleCentroids=len(points),minimumJacobianDeterminant=float(det.min()),
+        nonpositiveJacobianSamples=int((det<=0).sum()),minimumSingularValue=float(singular.min()),maximumSingularValue=float(singular.max()),
+        finalEdgeLengthRatioToSource=np.quantile(qlength[mask]/length[mask],[0,.05,.5,.95,1]).tolist(),
+        finalEdgeLengthRatioToSimilarity=np.quantile(qlength[mask]/blength[mask],[0,.05,.5,.95,1]).tolist(),
+        note='Jacobian is for pre-morph refinement, edges include unchanged female morph; sampled positivity is not a global injectivity proof.')
+
+
 def connected_components(v,f):
     _,indices=np.unique(np.round(v,7),axis=0,return_inverse=True)
     parents=np.arange(indices.max()+1)
@@ -159,7 +223,8 @@ def diagnostic_plot(root,output):
     (output/'joint-diagnostic.svg').write_text('\n'.join(svg))
 
 
-def run(root,output):
+def run(root,output,regularization=.015):
+    if not np.isfinite(regularization) or regularization<=0:raise ValueError("Regularization must be finite and positive")
     root=root.resolve();output=output.resolve()
     if output==ROOT.resolve() or ROOT.resolve() in output.parents or output==root or root in output.parents:
         raise ValueError('Candidate output must resolve outside the repository, including symlinks')
@@ -169,7 +234,7 @@ def run(root,output):
     female=a.Atlas(root,'atlas-female-reconstructed.json')
     morph_settings=json.loads((root/'public/models/female-fit-report.json').read_text())['morph']
     result=dict(schemaVersion=1,enabled=False,status='candidate-only; attachment annotations unreviewed',
-                inputHashes=before,method={'registration':'18-iteration bone-balanced point-to-triangle similarity ICP in pre-morph frame',
+                inputHashes=before,method={'registration':'Shared similarity baseline followed by per-bone ICP and one regularized Gaussian RBF displacement field',
                 'sourceFrame':'Bundled Y-up meters; +Z anterior; no axis flip',
                 'surfaceCrops':'Femur includes its 15 source compound leaves excluding cartilage. All patella triangles; femur bottom 90 mm; tibia top 80 mm; crops are not anatomical landmarks',
                 'scaleBounds':[.85,1.2],'attachmentPatchThresholdMm':3,
@@ -190,7 +255,8 @@ def run(root,output):
         assert len(source_ids['femur'])==15
         source_bones={k:source.mesh(ids) for k,ids in source_ids.items()}
         target_bones={k:target.mesh([key]) for k,key in BONES[side].items()}
-        transform,fit=fit_joint(source_bones,target_bones)
+        baseline,fit=fit_joint(source_bones,target_bones)
+        transform,jacobian,refinement=refine_joint(source_bones,target_bones,baseline,fit,regularization)
         source_surfaces={k:a.Surface(*v) for k,v in source_bones.items()}
         female_surfaces={k:a.Surface(*female.mesh([key])) for k,key in BONES[side].items()}
         rows=[]
@@ -199,15 +265,19 @@ def run(root,output):
             group='quadricepsTendons' if structure.startswith('tendon') else 'knee'
             result['candidates'][group]['partIds'].append(key)
             v,f=source.mesh([key]);q=a.morph(transform(v),morph_settings,key)
+            baseline_q=a.morph(baseline(v),morph_settings,key)
             row=dict(id=key,name=source.parts[key]['name'],candidate=group,export=export_mesh(output,key,q,f),
-                     topologyPreserved=True,connectedComponents=connected_components(v,f),boneScreens={})
+                     topologyPreserved=True,connectedComponents=connected_components(v,f),boneScreens={},
+                     distortion=distortion(v,f,q,baseline_q,jacobian))
             for bone,surface in source_surfaces.items():
                 sd=surface.distances(v); mask=sd<=.003
                 fd=female_surfaces[bone].distances(q)
+                bd=female_surfaces[bone].distances(baseline_q[mask]) if mask.any() else None
                 row['boneScreens'][bone]=dict(sourceAllVertices=a.stats(sd),candidateAllVertices=a.stats(fd),
                     sourceProximityPatchVertexCount=int(mask.sum()),
                     sourcePatch=a.stats(sd[mask]) if mask.any() else None,
                     candidateSamePatch=a.stats(fd[mask]) if mask.any() else None,
+                    similaritySamePatch=a.stats(bd) if bd is not None else None,
                     note='Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices')
             if group=='quadricepsTendons':
                 src_muscle=a.Surface(*source.mesh([f'VH_F_rectus_femoris_{side}']))
@@ -217,11 +287,12 @@ def run(root,output):
                 row['quadricepsInterface']=dict(targetIds=muscle_ids,sourceRectusAllVertices=a.stats(sd),
                     candidateQuadricepsAllVertices=a.stats(td),sourceNearRectusCount=int(mask.sum()),
                     candidateSamePatch=a.stats(td[mask]) if mask.any() else None,
+                    similaritySamePatch=a.stats(a.Surface(*female.mesh(muscle_ids)).distances(baseline_q[mask])) if mask.any() else None,
                     candidateVerticesWithin1Mm=int((td<=.001).sum()),candidateVerticesWithin3Mm=int((td<=.003).sum()),
                     duplicationConclusion='Proximity alone cannot distinguish intended joining from duplicate embedded distal tendon; visual/semantic review required')
             rows.append(row)
             print(f'  screened {key}',flush=True)
-        result['sides'][side]=dict(sourceBoneRegionIds=source_ids,targetBoneIds=BONES[side],fit=fit,parts=rows)
+        result['sides'][side]=dict(sourceBoneRegionIds=source_ids,targetBoneIds=BONES[side],fit=fit,refinement=refinement,parts=rows)
     after=inputs(root)
     assert before==after,'Input atlas changed during run; reject this report and rerun.'
     result['existingAtlasByteIdentityVerified']=True
@@ -245,13 +316,24 @@ def self_test():
     surface=a.Surface(np.array([[0.,0.,0.],[1.,0.,0.],[0.,1.,0.]]),np.array([[0,1,2]]))
     assert np.allclose(surface.nearest(np.array([.2,.2,1.]))[0],1.)
     assert np.allclose(surface.nearest(np.array([2.,0.,0.]))[0],1.)
-    print('Similarity recovery and exact face/edge distance checks pass.')
+    cube=np.array([[x,y,z] for x in [0.,.01] for y in [0.,.01] for z in [0.,.01]])
+    faces=np.array([[0,1,3],[0,3,2],[4,6,7],[4,7,5],[0,4,5],[0,5,1],[2,3,7],[2,7,6],[0,2,6],[0,6,4],[1,5,7],[1,7,3]])
+    meshes={bone:(cube+np.array([i*.025,0,0]),faces) for i,bone in enumerate(['femur','tibia','patella'])}
+    targets={bone:(v+np.array([0,.001,.002]),f) for bone,(v,f) in meshes.items()}
+    field,jac,_=refine_joint(meshes,targets,lambda x:x,dict(scale=1.,rotationRowVectors=np.eye(3).tolist(),translationM=[0,0,0]))
+    probes=np.array([[.006,.004,.005],[.03,.013,.008]])
+    numerical=np.stack([(field(probes+np.eye(3)[axis]*1e-6)-field(probes-np.eye(3)[axis]*1e-6))/(2e-6) for axis in range(3)],axis=2)
+    assert np.allclose(jac(probes),numerical,atol=1e-7)
+    assert np.array_equal(field(np.repeat(probes[:1],2,axis=0))[0],field(probes[:1])[0])
+    assert np.all(np.linalg.det(jac(probes))>0)
+    print('Similarity recovery, exact face/edge distances, coherent RBF field and analytical Jacobian checks pass.')
 
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root',type=Path,default=ROOT)
     parser.add_argument('--output-dir',type=Path,default=Path('/tmp/female-joint-candidates'))
+    parser.add_argument('--regularization',type=float,default=.015,help='Gaussian RBF ridge; .015 historical refined candidate, .08 smoother ALL preview')
     parser.add_argument('--self-test',action='store_true')
     parser.add_argument('--plot-only',action='store_true',help='Plot an existing report after checking current input hashes')
     args=parser.parse_args()
@@ -264,4 +346,4 @@ if __name__=='__main__':
         report=json.loads((args.output_dir/'report.json').read_text())
         assert report['inputHashes']==inputs(args.root)
         diagnostic_plot(args.root,args.output_dir)
-    else:run(args.root,args.output_dir)
+    else:run(args.root,args.output_dir,args.regularization)

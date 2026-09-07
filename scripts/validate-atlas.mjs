@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
+import {validateJointAdditions,reproduceJointPositions} from './validate-female-joint-additions.mjs';
 import {measureAtlasBreastChestClearance} from './breast-chest-clearance.mjs';
 const filename=process.argv[2]??'atlas.json',female=filename.startsWith('atlas-female'),reconstructed=filename==='atlas-female-reconstructed.json';
 const option=name=>{const i=process.argv.indexOf(name);return i<0?undefined:process.argv[i+1];};
@@ -10,8 +11,9 @@ const defaultModels=fileURLToPath(new URL('../public/models/',import.meta.url));
 const base=pathToFileURL(path.resolve(option('--models-dir')??defaultModels)+path.sep),sourceBase=pathToFileURL(path.resolve(option('--source-dir')??defaultModels)+path.sep);
 const atlas=JSON.parse(fs.readFileSync(new URL(filename,base)));
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
-assert.equal(atlas.parts.length,reconstructed?2243:female?888:2234);assert.equal(atlas.concepts.length,reconstructed?4246:female?1073:3432);
-const ids=new Set(atlas.parts.map(p=>p.id));assert.equal(ids.size,reconstructed?2243:female?888:2234);
+const jointIds=reconstructed?validateJointAdditions(atlas,base,sourceBase):new Set();
+assert.equal(atlas.parts.length,reconstructed?2243+jointIds.size:female?888:2234);assert.equal(atlas.concepts.length,reconstructed?4246+jointIds.size:female?1073:3432);
+const ids=new Set(atlas.parts.map(p=>p.id));assert.equal(ids.size,reconstructed?2243+jointIds.size:female?888:2234);
 const files=atlas.chunks.map(c=>{const b=fs.readFileSync(new URL(c.url.split('/').pop(),base));assert.equal(b.length,c.bytes);return b;});
 if(female){assert.equal(atlas.sex,'female');assert.equal(atlas.parts.filter(p=>p.system==='pregnancy').length,reconstructed?0:8);for(const label of ['uterus','ovary','vagina'])assert.ok(atlas.parts.some(p=>p.name.toLowerCase().includes(label)));assert.ok(!atlas.parts.some(p=>/prostate|testis|penis/i.test(p.name)));}
 if(reconstructed){
@@ -86,6 +88,14 @@ if(reconstructed){
  let retained=0,added=0,maxError=0;
  const check=(expected,actual,label)=>{for(let i=0;i<expected.length;i++){const e=Math.abs(expected[i]-actual[i]);maxError=Math.max(maxError,e);assert.ok(e<2e-4,`${label}: vertex mismatch ${e}`);}};
  for(const p of atlas.parts){
+  if(jointIds.has(p.id)){
+   const reference=femaleParts.get(p.id);
+   const original=new Float32Array(femaleFiles[reference.chunk].buffer,femaleFiles[reference.chunk].byteOffset+reference.positions,reference.vertexCount*3);
+   const actual=new Float32Array(files[p.chunk].buffer,files[p.chunk].byteOffset+p.positions,p.vertexCount*3);
+   const expected=reproduceJointPositions(p.id,original,report.jointAdditions,apply);
+   for(let i=0;i<actual.length;i++)assert.ok(Math.abs(expected[i]-actual[i])<1e-6,`${p.id}: recorded joint field mismatch`);
+   continue; // Source topology, normals, bounds and category independently checked above.
+  }
   const positions=new Float32Array(files[p.chunk].buffer,files[p.chunk].byteOffset+p.positions,p.vertexCount*3);
   const normals=new Int16Array(files[p.chunk].buffer,files[p.chunk].byteOffset+p.normals,p.vertexCount*3);
   for(let i=0;i<normals.length;i+=3){const l=Math.hypot(normals[i],normals[i+1],normals[i+2])/32767;assert.ok(l>.98&&l<1.02,`${p.id}: unnormalized normal`);}

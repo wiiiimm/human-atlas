@@ -22,10 +22,10 @@ const show = (p, state) => {
  return direct;
 };
 
-test('the reviewed fixture covers exactly all 62 inserted IDs and all 16 source-based contoured breast meshes', () => {
- assert.equal(ids.length, 62);
- assert.equal(Object.values(fixture.expected).flat().length, 62, 'Expected groups must not duplicate an ID.');
- assert.deepEqual([...fit.added.map(p => p.id)].sort(), [...ids].sort());
+test('the reviewed fixture covers exactly all 64 inserted IDs and all 16 source-based contoured breast meshes', () => {
+ assert.equal(ids.length, 64);
+ assert.equal(Object.values(fixture.expected).flat().length, 64, 'Expected groups must not duplicate an ID.');
+ assert.deepEqual([...fit.added.map(p => p.id), ...(fit.jointAdditions?.ids??[])].sort(), [...ids].sort());
  const inserted = atlas.parts.filter(p => p.provenance?.source !== 'BodyParts3D 4.0').map(p => p.id);
  assert.deepEqual(inserted.sort(), [...ids].sort(), 'No inserted source mesh may escape this audit.');
  assert.deepEqual(fit.regenerated, []);
@@ -43,7 +43,8 @@ test('each inserted structure has its reviewed category and a real active contro
  for (const [id, system] of expected) {
   assert.ok(sourceParts.has(id), `${id}: missing HRA source entry`);
   assert.equal(parts.get(id)?.system, system, `${id}: incorrect primary category`);
-  assert.equal(fit.added.find(p => p.id === id)?.system, system, `${id}: fit report differs`);
+  if(fit.jointAdditions?.ids.includes(id))assert.equal(system,'connective');
+  else assert.equal(fit.added.find(p => p.id === id)?.system, system, `${id}: fit report differs`);
   assert.ok(controls.get(system)?.name, `${id}: missing named UI category`);
   assert.ok(atlas.parts.filter(p => p.system === system).length > 0, `${id}: category would be hidden by activeSystems`);
  }
@@ -59,9 +60,9 @@ test('every inserted part responds to exactly its primary system toggle in tissu
  }
 });
 
-test('default female layers reveal all 56 non-surface inserted structures and keep six surfaces optional', () => {
+test('default female layers reveal all 58 non-surface inserted structures and keep six surfaces optional', () => {
  const s = {...base, visible:DEFAULT_VISIBLE};
- assert.equal(ids.filter(id => show(parts.get(id), s)).length, 56);
+ assert.equal(ids.filter(id => show(parts.get(id), s)).length, 58);
  for (const id of fixture.expected.integumentary) assert.equal(show(parts.get(id), s), false, id);
  for (const id of fixture.expected.integumentary) assert.equal(show(parts.get(id), {...s, visible:[...DEFAULT_VISIBLE,'integumentary']}), true, id);
 });

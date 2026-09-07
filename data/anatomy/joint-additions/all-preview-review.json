@@ -1,0 +1,489 @@
+{
+  "schemaVersion": 1,
+  "scope": "Experimental static study preview: bilateral anterolateral ligament only",
+  "recommendedIds": [
+    "VH_F_anterolateral_ligament_of_knee_L",
+    "VH_F_anterolateral_ligament_of_knee_R"
+  ],
+  "candidateReportSha256": "dd1e16dcbdb49d497128c2db7bad915cba2726fa3362bcc9bf8d6d11cb0ffdd1",
+  "inputHashes": {
+    "public/models/atlas-female-reconstructed.json": "4134384790ef6be9526105466ab946f4291afdc0e8237145dd0d64cd5809ffa8",
+    "public/models/atlas-female.json": "1525c07d2ed46263c086d1c6b2e52eb9b8f8985746e9a8259036bd6e1d9a1ced",
+    "public/models/atlas.json": "c359f4bcd2cba90b7411d66d5e9fc04dc81294d46cd5c1e8b212c824f2e5bbee",
+    "public/models/body-0.bin": "b33b2b5aac20f35fbf6871f916607bf3c4d386321c8c0fdadcca6b5d24e3641e",
+    "public/models/body-1.bin": "aa077a4675f0d0dd3c9b0af39dc8cf6bcb348c3bf7d283478d4206ce30a5a0de",
+    "public/models/body-10.bin": "4a959d998acd35cf88518a0f2f8ab99b42d9f69c7ce0d6a814df315eeac807ac",
+    "public/models/body-11.bin": "e8c1afe7f30fe710ad164ec9cd2287a32881606e7eb590af47d76b3f84405027",
+    "public/models/body-12.bin": "61a6c8da89bb20df50c575964ac81aa4090eabfc2cb27ad2155aea325f31c6c0",
+    "public/models/body-13.bin": "4c51b6be85d5b705d2b52b79b9ad1cdae0b65ad03c9402a2f2673c7633fd94f3",
+    "public/models/body-14.bin": "58604526a0cd9e7dca4d8587cd9a42f9dd03ec6c4ebbc22a9bf017b31246f7e7",
+    "public/models/body-2.bin": "4b3acfc35b91e4427eaca0e3be897d33f144354342ae0e52a2328b582ca8bdbe",
+    "public/models/body-3.bin": "6febb76b50423331f66802a63bb43f04f99ce08129837015910eed43d0719268",
+    "public/models/body-4.bin": "0509e6c996fe5b935ace770a5dbf2d83a474330b7e541a844052a080bbf814bb",
+    "public/models/body-5.bin": "32a967198ffed45839968228898f3d246c67f86fb26892c3ae270be30e2f1149",
+    "public/models/body-6.bin": "1c98dae807210cc51a4abc806134727c9544155cad0cc328cf2e1ae1f954d3ff",
+    "public/models/body-7.bin": "06340f48478eb989cec117a558290c0cd54eeead9641b565cbb8aab255b4e56b",
+    "public/models/body-8.bin": "18beacfdeadc8ad483d692672aae165f4323704cd7a9bfcbebbd703f5e268e25",
+    "public/models/body-9.bin": "0aa8aa09a379a2d759872659a2ef68fc4510ee37e435c4ebc63ee679722a4547",
+    "public/models/female-0.bin": "d4dc9a6daa7f720d581f914c10d2d1bba02b64eadd2a5de22b1588b81fd09a0d",
+    "public/models/female-1.bin": "c20a0c492992b44d5e03fe61c6363fa9341b00ec9a255659285ef98b98f3e337",
+    "public/models/female-2.bin": "7adeaf94028489b7192ade457f8217cc629c457263cd004e5ea84d248d9402e6",
+    "public/models/female-3.bin": "ad1e1f6a5d44d4de62d8cdaf7db8aeb0591d92ee9aff241d6278e7c3663ffc3c",
+    "public/models/female-4.bin": "770e35500d09b74941686c515524961c6540fa15db4192dee987fa5c49b19fbd",
+    "public/models/female-5.bin": "b2f5790193688d20ba240b10ccf5d89d56f46d034071170167afa369c327f7fb",
+    "public/models/female-6.bin": "8b9d1c038bf4b7951bc19a0e30dd3c7c65c29af3f2bd9f605b8048204c66ee40",
+    "public/models/female-7.bin": "36e45735f6ff00dc799109a7789acf7caa7d2d9bd7a4c20bdd0b6177cf14af17",
+    "public/models/female-8.bin": "9505b45b629f3fedd69b49b0cff6cef9d5c86431aa0903529c5cc09faa7200e4",
+    "public/models/female-9.bin": "b1988cec93d65044af32fd7da78852a4582fde6f4439470f430d0ef07936decb",
+    "public/models/female-base-0.bin": "5dfc3c73c8f61befe07ae60687ed410669631e298275d0150c04a0e9433b3483",
+    "public/models/female-base-1.bin": "00f0351b3c5fa57b27f538042a03ea4cd60cbd192e3b9a475d92c5155ad0d0f1",
+    "public/models/female-base-10.bin": "e70882234e036f15f93241712a2b17d7add5f95f73c8a551efba3bef9609e84a",
+    "public/models/female-base-11.bin": "6fd3a25230b662c8dbfd325594c85315a6b4a5aa26774f28f37ad05857163eb7",
+    "public/models/female-base-12.bin": "203bbe2ac78e8d37573bb3aa1da65b7fe2969ed0aa297d312abb3fc50e814e0d",
+    "public/models/female-base-13.bin": "368e4c15bf75b215680977aaac43c93325c5cf6d9693915bbe09427971667f0f",
+    "public/models/female-base-14.bin": "277a4b410294252eeb36f846cc4da9cd1a183fbf0c34190815ec75dd268b83cd",
+    "public/models/female-base-15.bin": "2c62d3128b711ed75c0b82df577a2580fbba0763e8306d2d028f1b6afa959100",
+    "public/models/female-base-2.bin": "0d4289e979f625e052338021367eceba5a006d25157d82cf7c487991df8af44a",
+    "public/models/female-base-3.bin": "a6a947583ce0b827ba0ffda88ab987720ae586133d3e16fc3b8ebdaa5a72ac13",
+    "public/models/female-base-4.bin": "bed6821db2d0106fcd855ae44a0fb95990d238541f12c02ad96ed4add49b04f5",
+    "public/models/female-base-5.bin": "5a4d814da6451c5570b4d5c85a382d3b3cd9bc1b80644e441db99ffbe8e195f7",
+    "public/models/female-base-6.bin": "4cbff6414581dbe1c7f153a81a2f82e8f65e52681417920e82746e804b7c2a2f",
+    "public/models/female-base-7.bin": "dc9e930e256ec98c4f709eae1c7f4e1bc9e181ed4046875016639e1de7a12f4f",
+    "public/models/female-base-8.bin": "da5a0f2784dce630ed11f27dcdc2534e99109dc7012643a03eeb2d2cad582f3c",
+    "public/models/female-base-9.bin": "b035540bb05fad41cb81129d8ae6ca86e59a198cb54b5f1dd771a88586e2abb5",
+    "public/models/female-fit-report.json": "594580f8c99323092efb49121ae7e0a2ef154b73e9e4ca8f6820db74e2e77c76"
+  },
+  "parts": [
+    {
+      "id": "VH_F_anterolateral_ligament_of_knee_L",
+      "sourceTopologyExact": true,
+      "finitePositionsAndNormals": true,
+      "unitNormals": true,
+      "normalsMatchDeformedSurface": true,
+      "boundsMatchReport": true,
+      "npzSha256": "f849d3123f45b96f4f1670d3851bb920d071ea0ffc2297b87c83b47e7e2900af",
+      "normalizedNormalsSha256": "78ea546fb798527555b4aaca73715c5b378a3359ffce8ea5d3d1e1dc67e3ebaf",
+      "shapeDistortion": {
+        "evaluatedVerticesAndTriangleCentroids": 554,
+        "minimumJacobianDeterminant": 0.5233583113653972,
+        "nonpositiveJacobianSamples": 0,
+        "minimumSingularValue": 0.5478876393391698,
+        "maximumSingularValue": 1.1661642767314708,
+        "finalEdgeLengthRatioToSource": [
+          0.6166193525627283,
+          0.7632160218099323,
+          0.8844986209685678,
+          0.9839875975866251,
+          1.0765729289048165
+        ],
+        "finalEdgeLengthRatioToSimilarity": [
+          0.7636152972913582,
+          0.9451591601361375,
+          1.0953543293728345,
+          1.2185604923673277,
+          1.333217249417745
+        ],
+        "note": "Jacobian is for pre-morph refinement, edges include unchanged female morph; sampled positivity is not a global injectivity proof."
+      },
+      "sourceVsCandidateAttachmentDistances": {
+        "femur": {
+          "sourceAllVertices": {
+            "minMm": 0.0036,
+            "p05Mm": 0.6067,
+            "medianMm": 7.5377,
+            "p95Mm": 25.065,
+            "maxMm": 25.8367
+          },
+          "candidateAllVertices": {
+            "minMm": 0.0318,
+            "p05Mm": 0.374,
+            "medianMm": 6.3508,
+            "p95Mm": 21.1171,
+            "maxMm": 22.0667
+          },
+          "sourceProximityPatchVertexCount": 63,
+          "sourcePatch": {
+            "minMm": 0.0036,
+            "p05Mm": 0.1896,
+            "medianMm": 1.7785,
+            "p95Mm": 2.8175,
+            "maxMm": 2.9638
+          },
+          "candidateSamePatch": {
+            "minMm": 0.0318,
+            "p05Mm": 0.0801,
+            "medianMm": 0.9356,
+            "p95Mm": 2.18,
+            "maxMm": 2.6206
+          },
+          "similaritySamePatch": {
+            "minMm": 0.0254,
+            "p05Mm": 0.2116,
+            "medianMm": 1.6454,
+            "p95Mm": 3.3216,
+            "maxMm": 3.8065
+          },
+          "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+        },
+        "tibia": {
+          "sourceAllVertices": {
+            "minMm": 0.0617,
+            "p05Mm": 0.7972,
+            "medianMm": 12.8379,
+            "p95Mm": 39.5594,
+            "maxMm": 40.3428
+          },
+          "candidateAllVertices": {
+            "minMm": 0.0897,
+            "p05Mm": 0.78,
+            "medianMm": 8.6493,
+            "p95Mm": 31.8857,
+            "maxMm": 32.6589
+          },
+          "sourceProximityPatchVertexCount": 49,
+          "sourcePatch": {
+            "minMm": 0.0617,
+            "p05Mm": 0.3708,
+            "medianMm": 1.9345,
+            "p95Mm": 2.7932,
+            "maxMm": 2.9123
+          },
+          "candidateSamePatch": {
+            "minMm": 0.0897,
+            "p05Mm": 0.3121,
+            "medianMm": 1.5292,
+            "p95Mm": 2.536,
+            "maxMm": 2.8316
+          },
+          "similaritySamePatch": {
+            "minMm": 0.094,
+            "p05Mm": 0.1915,
+            "medianMm": 2.4082,
+            "p95Mm": 4.1817,
+            "maxMm": 4.414
+          },
+          "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+        },
+        "patella": {
+          "sourceAllVertices": {
+            "minMm": 39.1395,
+            "p05Mm": 40.0631,
+            "medianMm": 48.6779,
+            "p95Mm": 61.4606,
+            "maxMm": 62.0099
+          },
+          "candidateAllVertices": {
+            "minMm": 18.3823,
+            "p05Mm": 19.427,
+            "medianMm": 28.7851,
+            "p95Mm": 40.9264,
+            "maxMm": 42.1942
+          },
+          "sourceProximityPatchVertexCount": 0,
+          "sourcePatch": null,
+          "candidateSamePatch": null,
+          "similaritySamePatch": null,
+          "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+        }
+      },
+      "boneIntrusions": {
+        "femur": {
+          "candidate": {
+            "boneClosure": {
+              "boundaryEdges": 0,
+              "nonmanifoldEdges": 0,
+              "weldPrecisionM": 1e-07
+            },
+            "triangleCrossings": {
+              "tissueTrianglesWithNoncoplanarSurfaceCrossing": 27,
+              "intersectingTrianglePairs": 41,
+              "method": "AABB broad phase; both triangles edge/face tests; coplanar contacts and exact endpoint-only contacts excluded"
+            },
+            "sampleCount": 554,
+            "insideCount": 63,
+            "ambiguousCount": 0,
+            "insideDepth": {
+              "minMm": 0.0318,
+              "p05Mm": 0.0786,
+              "medianMm": 0.6392,
+              "p95Mm": 1.2031,
+              "maxMm": 1.3105
+            },
+            "note": "Every vertex and triangle centroid screened with three ray directions; depth is exact point-to-triangle distance, not continuous maximum penetration."
+          },
+          "source": {
+            "boneClosure": {
+              "boundaryEdges": 251,
+              "nonmanifoldEdges": 0,
+              "weldPrecisionM": 1e-07
+            },
+            "triangleCrossings": {
+              "tissueTrianglesWithNoncoplanarSurfaceCrossing": 8,
+              "intersectingTrianglePairs": 25,
+              "method": "AABB broad phase; both triangles edge/face tests; coplanar contacts and exact endpoint-only contacts excluded"
+            },
+            "insideClassification": "unavailable: bone is not a closed two-manifold after position welding"
+          }
+        },
+        "tibia": {
+          "candidate": {
+            "boneClosure": {
+              "boundaryEdges": 0,
+              "nonmanifoldEdges": 0,
+              "weldPrecisionM": 1e-07
+            },
+            "triangleCrossings": {
+              "tissueTrianglesWithNoncoplanarSurfaceCrossing": 4,
+              "intersectingTrianglePairs": 12,
+              "method": "AABB broad phase; both triangles edge/face tests; coplanar contacts and exact endpoint-only contacts excluded"
+            },
+            "sampleCount": 554,
+            "insideCount": 0,
+            "ambiguousCount": 0,
+            "insideDepth": null,
+            "note": "Every vertex and triangle centroid screened with three ray directions; depth is exact point-to-triangle distance, not continuous maximum penetration."
+          },
+          "source": {
+            "boneClosure": {
+              "boundaryEdges": 0,
+              "nonmanifoldEdges": 0,
+              "weldPrecisionM": 1e-07
+            },
+            "triangleCrossings": {
+              "tissueTrianglesWithNoncoplanarSurfaceCrossing": 0,
+              "intersectingTrianglePairs": 0,
+              "method": "AABB broad phase; both triangles edge/face tests; coplanar contacts and exact endpoint-only contacts excluded"
+            },
+            "sampleCount": 554,
+            "insideCount": 0,
+            "ambiguousCount": 0,
+            "insideDepth": null,
+            "note": "Every vertex and triangle centroid screened with three ray directions; depth is exact point-to-triangle distance, not continuous maximum penetration."
+          }
+        }
+      }
+    },
+    {
+      "id": "VH_F_anterolateral_ligament_of_knee_R",
+      "sourceTopologyExact": true,
+      "finitePositionsAndNormals": true,
+      "unitNormals": true,
+      "normalsMatchDeformedSurface": true,
+      "boundsMatchReport": true,
+      "npzSha256": "1ef1a1b402b6d9526a70bd43db5ee75848b2251b23d15af41cce0a3645bfeeb8",
+      "normalizedNormalsSha256": "77c68f25cb535117a13dd9f9befc36032a107be41254f370e95cdb0fc699f68f",
+      "shapeDistortion": {
+        "evaluatedVerticesAndTriangleCentroids": 554,
+        "minimumJacobianDeterminant": 0.4800088392133442,
+        "nonpositiveJacobianSamples": 0,
+        "minimumSingularValue": 0.4610487680188583,
+        "maximumSingularValue": 1.209163875144838,
+        "finalEdgeLengthRatioToSource": [
+          0.5890375261891604,
+          0.7380943173201604,
+          0.895977412885357,
+          1.0040302416613622,
+          1.0667482384648386
+        ],
+        "finalEdgeLengthRatioToSimilarity": [
+          0.7294582367666554,
+          0.9140486901797572,
+          1.1095695515608135,
+          1.2433811042245946,
+          1.321050450111277
+        ],
+        "note": "Jacobian is for pre-morph refinement, edges include unchanged female morph; sampled positivity is not a global injectivity proof."
+      },
+      "sourceVsCandidateAttachmentDistances": {
+        "femur": {
+          "sourceAllVertices": {
+            "minMm": 0.0036,
+            "p05Mm": 0.6067,
+            "medianMm": 7.7413,
+            "p95Mm": 25.065,
+            "maxMm": 25.8366
+          },
+          "candidateAllVertices": {
+            "minMm": 0.0197,
+            "p05Mm": 0.3434,
+            "medianMm": 6.8924,
+            "p95Mm": 21.145,
+            "maxMm": 21.9101
+          },
+          "sourceProximityPatchVertexCount": 66,
+          "sourcePatch": {
+            "minMm": 0.0036,
+            "p05Mm": 0.224,
+            "medianMm": 1.7827,
+            "p95Mm": 2.8844,
+            "maxMm": 2.9639
+          },
+          "candidateSamePatch": {
+            "minMm": 0.0197,
+            "p05Mm": 0.1772,
+            "medianMm": 1.054,
+            "p95Mm": 2.4655,
+            "maxMm": 2.6524
+          },
+          "similaritySamePatch": {
+            "minMm": 0.0045,
+            "p05Mm": 0.2779,
+            "medianMm": 1.9048,
+            "p95Mm": 4.0371,
+            "maxMm": 4.3536
+          },
+          "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+        },
+        "tibia": {
+          "sourceAllVertices": {
+            "minMm": 0.0101,
+            "p05Mm": 0.3244,
+            "medianMm": 11.6561,
+            "p95Mm": 39.4357,
+            "maxMm": 40.2274
+          },
+          "candidateAllVertices": {
+            "minMm": 0.053,
+            "p05Mm": 0.2802,
+            "medianMm": 7.8032,
+            "p95Mm": 32.6475,
+            "maxMm": 33.6798
+          },
+          "sourceProximityPatchVertexCount": 71,
+          "sourcePatch": {
+            "minMm": 0.0101,
+            "p05Mm": 0.1157,
+            "medianMm": 1.6792,
+            "p95Mm": 2.8394,
+            "maxMm": 2.9326
+          },
+          "candidateSamePatch": {
+            "minMm": 0.053,
+            "p05Mm": 0.1038,
+            "medianMm": 1.1708,
+            "p95Mm": 2.4022,
+            "maxMm": 2.5698
+          },
+          "similaritySamePatch": {
+            "minMm": 0.0078,
+            "p05Mm": 0.1304,
+            "medianMm": 1.6405,
+            "p95Mm": 3.7684,
+            "maxMm": 3.9485
+          },
+          "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+        },
+        "patella": {
+          "sourceAllVertices": {
+            "minMm": 39.1395,
+            "p05Mm": 40.0631,
+            "medianMm": 48.7827,
+            "p95Mm": 61.4606,
+            "maxMm": 62.0099
+          },
+          "candidateAllVertices": {
+            "minMm": 18.1275,
+            "p05Mm": 19.0337,
+            "medianMm": 27.7704,
+            "p95Mm": 41.2313,
+            "maxMm": 42.7206
+          },
+          "sourceProximityPatchVertexCount": 0,
+          "sourcePatch": null,
+          "candidateSamePatch": null,
+          "similaritySamePatch": null,
+          "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+        }
+      },
+      "boneIntrusions": {
+        "femur": {
+          "candidate": {
+            "boneClosure": {
+              "boundaryEdges": 0,
+              "nonmanifoldEdges": 0,
+              "weldPrecisionM": 1e-07
+            },
+            "triangleCrossings": {
+              "tissueTrianglesWithNoncoplanarSurfaceCrossing": 22,
+              "intersectingTrianglePairs": 40,
+              "method": "AABB broad phase; both triangles edge/face tests; coplanar contacts and exact endpoint-only contacts excluded"
+            },
+            "sampleCount": 554,
+            "insideCount": 45,
+            "ambiguousCount": 0,
+            "insideDepth": {
+              "minMm": 0.0045,
+              "p05Mm": 0.017,
+              "medianMm": 0.4883,
+              "p95Mm": 0.8753,
+              "maxMm": 0.9232
+            },
+            "note": "Every vertex and triangle centroid screened with three ray directions; depth is exact point-to-triangle distance, not continuous maximum penetration."
+          },
+          "source": {
+            "boneClosure": {
+              "boundaryEdges": 249,
+              "nonmanifoldEdges": 0,
+              "weldPrecisionM": 1e-07
+            },
+            "triangleCrossings": {
+              "tissueTrianglesWithNoncoplanarSurfaceCrossing": 8,
+              "intersectingTrianglePairs": 25,
+              "method": "AABB broad phase; both triangles edge/face tests; coplanar contacts and exact endpoint-only contacts excluded"
+            },
+            "insideClassification": "unavailable: bone is not a closed two-manifold after position welding"
+          }
+        },
+        "tibia": {
+          "candidate": {
+            "boneClosure": {
+              "boundaryEdges": 0,
+              "nonmanifoldEdges": 0,
+              "weldPrecisionM": 1e-07
+            },
+            "triangleCrossings": {
+              "tissueTrianglesWithNoncoplanarSurfaceCrossing": 21,
+              "intersectingTrianglePairs": 32,
+              "method": "AABB broad phase; both triangles edge/face tests; coplanar contacts and exact endpoint-only contacts excluded"
+            },
+            "sampleCount": 554,
+            "insideCount": 18,
+            "ambiguousCount": 0,
+            "insideDepth": {
+              "minMm": 0.053,
+              "p05Mm": 0.0625,
+              "medianMm": 0.1966,
+              "p95Mm": 0.4409,
+              "maxMm": 0.5418
+            },
+            "note": "Every vertex and triangle centroid screened with three ray directions; depth is exact point-to-triangle distance, not continuous maximum penetration."
+          },
+          "source": {
+            "boneClosure": {
+              "boundaryEdges": 0,
+              "nonmanifoldEdges": 0,
+              "weldPrecisionM": 1e-07
+            },
+            "triangleCrossings": {
+              "tissueTrianglesWithNoncoplanarSurfaceCrossing": 21,
+              "intersectingTrianglePairs": 30,
+              "method": "AABB broad phase; both triangles edge/face tests; coplanar contacts and exact endpoint-only contacts excluded"
+            },
+            "sampleCount": 554,
+            "insideCount": 22,
+            "ambiguousCount": 0,
+            "insideDepth": {
+              "minMm": 0.057,
+              "p05Mm": 0.0622,
+              "medianMm": 0.2968,
+              "p95Mm": 0.5733,
+              "maxMm": 0.6332
+            },
+            "note": "Every vertex and triangle centroid screened with three ray directions; depth is exact point-to-triangle distance, not continuous maximum penetration."
+          }
+        }
+      }
+    }
+  ],
+  "existingAtlasUnchanged": true
+}
