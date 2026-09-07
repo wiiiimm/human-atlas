@@ -41,3 +41,7 @@ This is an experimental study model with estimated proportions, not independentl
 ## Coverage audit source metadata
 
 `data/anatomy/sources` contains pinned BodyParts3D English IS-A name/element tables and an index of official OBJ header identities. BodyParts3D, © The Database Center for Life Science licensed under CC Attribution 4.0 International. Source URLs, retrieval date and SHA-256 hashes are in `provenance.json`. The original archive retains historical license text in its OBJ headers; the current official license page specifies CC BY 4.0. Blank source names remain blank rather than being inferred.
+
+## Viewer interaction ideas
+
+Cursor-centred zoom and familiar muscle-group search shortcuts were inspired by [Female Atlas by Mahendra Beniwal](https://github.com/HiMahendraBeniwal/female-atlas/tree/b0a20fa3a009ca5f6bfa07b7479312e04c862af2). This implementation uses original interaction/search code and existing source mesh IDs. Search groups are viewer selections, not additional source anatomy or muscle-activation simulations.
