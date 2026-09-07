@@ -332,6 +332,10 @@
     "method": "Original HRA breast meshes: retain source base footprint, reduce anterior projection, lift lower anterior tissue, then translate into final female coordinates.",
     "normalMethod": "Inverse-transpose Jacobian of the contour field, central finite differences in source meters; uniform scale and translation follow.",
     "reviewStatus": "Illustrative source-derived contour and experimental placement; no attachment, containment, or anatomical approval.",
+    "chestClearance": {
+      "method": "xy-grid z difference: adipose posterior (min z) minus pectoralis anterior (max z) on a 4 mm cell, inner 60% ellipse of each fat envelope. Positive is a front gap; negative is intersection. Geometric screening only.",
+      "pectoralis": "muscular parts whose names match /pectoralis/i"
+    },
     "sourceManifestSha256": "1525c07d2ed46263c086d1c6b2e52eb9b8f8985746e9a8259036bd6e1d9a1ced",
     "sourceChunks": {
       "/models/female-0.bin": "d4dc9a6daa7f720d581f914c10d2d1bba02b64eadd2a5de22b1588b81fd09a0d",
@@ -3230,7 +3234,11 @@
     },
     "minimumTransformDeterminant": 0.7412750921343657,
     "minimumBreastVertexJacobian": 0.4608921465574987,
-    "breastSourceTopologyPreserved": true
+    "breastSourceTopologyPreserved": true,
+    "breastChestCoreCoveredCells": 796,
+    "breastChestCoreGapMinM": -0.035451821982860565,
+    "breastChestCoreGapMedianM": -0.02723032872826612,
+    "breastChestCoreGapMaxM": 0.015467208428136654
   },
   "parts": 2243,
   "concepts": 4246,

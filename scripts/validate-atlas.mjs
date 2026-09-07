@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
+import {measureAtlasBreastChestClearance} from './breast-chest-clearance.mjs';
 const filename=process.argv[2]??'atlas.json',female=filename.startsWith('atlas-female'),reconstructed=filename==='atlas-female-reconstructed.json';
 const option=name=>{const i=process.argv.indexOf(name);return i<0?undefined:process.argv[i+1];};
 const defaultModels=fileURLToPath(new URL('../public/models/',import.meta.url));
@@ -156,11 +157,21 @@ if(reconstructed){
  assert.ok(Math.abs(minimumBreastJacobian-report.checks.minimumBreastVertexJacobian)<1e-8);
  assert.equal(report.checks.breastSourceTopologyPreserved,true);
  for(const key of ['drape','breastProfile','lobules','tissueInsets'])assert.ok(!(key in report),`Obsolete breast report field ${key}`);
- for(const key of Object.keys(report.checks))assert.ok(!key.startsWith('breastWall'),'A contour reproduction check is not a chest-wall attachment measurement');
+ for(const key of Object.keys(report.checks))assert.ok(!key.startsWith('breastWall'),'Drape-era breastWall residuals are not this contour\'s chest screen');
+ const clearance=measureAtlasBreastChestClearance(atlas,files);
+ const screen=report.checks;
+ assert.ok(clearance.sides.L.coveredCells>=350&&clearance.sides.R.coveredCells>=350,'A breast core lost pectoralis overlap');
+ assert.ok(clearance.coreCoveredCells>=750,'Adipose/pectoralis core contact cells collapsed');
+ assert.ok(clearance.coreGapMedianM>-0.04&&clearance.coreGapMedianM<-0.01,`Core median gap ${clearance.coreGapMedianM} left the geometric band`);
+ assert.ok(clearance.coreGapMinM>-0.05,`Core intersection ${clearance.coreGapMinM} exceeded the geometric screen`);
+ assert.ok(clearance.coreGapMaxM<0.03,`Core front gap ${clearance.coreGapMaxM} exceeded the geometric screen`);
+ for(const key of ['breastChestCoreCoveredCells','breastChestCoreGapMinM','breastChestCoreGapMedianM','breastChestCoreGapMaxM'])assert.ok(key in screen,`Missing geometric chest screen ${key}`);
+ assert.equal(screen.breastChestCoreCoveredCells,clearance.coreCoveredCells);
+ for(const [key,value] of [['breastChestCoreGapMinM',clearance.coreGapMinM],['breastChestCoreGapMedianM',clearance.coreGapMedianM],['breastChestCoreGapMaxM',clearance.coreGapMaxM]])assert.ok(Math.abs(screen[key]-value)<1e-9,`${key}: report ${screen[key]} != measured ${value}`);
  for(const p of atlas.parts.filter(p=>/VH_F_(nipple|areola)/.test(p.id)))assert.equal(p.system,'integumentary',`${p.id}: nipple and areola stay in the optional Body surface layer`);
  assert.equal(atlas.parts.filter(p=>p.system==='integumentary').length,6,'Expected six optional breast surface structures');
  const l=report.landmarks;assert.ok(l.stature.after<l.stature.before&&l.biacromialWidth.after<l.biacromialWidth.before&&l.biIliacWidth.after>l.biacromialWidth.after*.9,'Female proportions not applied');
- console.log(`Every retained mesh keeps its source topology and follows the recorded female morph (max deviation ${(maxError*1000).toFixed(3)} mm); fitted non-breast meshes match their transforms; ${contoured} HRA breast meshes preserve topology and reproduce the final-frame contour (max position error ${(maxBreastError*1000).toFixed(6)} mm, normal error ${maxBreastNormalError} signed-short units). These integrity checks do not validate breast placement or attachments.`);
+ console.log(`Every retained mesh keeps its source topology and follows the recorded female morph (max deviation ${(maxError*1000).toFixed(3)} mm); fitted non-breast meshes match their transforms; ${contoured} HRA breast meshes preserve topology and reproduce the final-frame contour (max position error ${(maxBreastError*1000).toFixed(6)} mm, normal error ${maxBreastNormalError} signed-short units). Adipose/pectoralis core median gap ${(clearance.coreGapMedianM*1000).toFixed(2)} mm is a geometric screen, not attachment validation.`);
 }
 let tris=0;
 for(const p of atlas.parts){assert.ok(p.name.trim()&&p.name!=='-'&&!p.name.includes('Bounds('));assert.ok(p.conceptId!=='-');assert.ok(p.system);const b=files[p.chunk];assert.ok(p.indices+p.indexCount*4<=b.length);const pos=new Float32Array(b.buffer,b.byteOffset+p.positions,p.vertexCount*3),indices=new Uint32Array(b.buffer,b.byteOffset+p.indices,p.indexCount);assert.ok(indices.length>=3);for(const i of indices)assert.ok(i<p.vertexCount,`${p.id}: invalid vertex`);for(const value of pos)assert.ok(Number.isFinite(value));tris+=p.indexCount/3;}

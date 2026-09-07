@@ -5,6 +5,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 import {gunzipSync} from 'node:zlib';
+import {measureAdiposePectoralisClearance, measureAtlasBreastChestClearance} from './breast-chest-clearance.mjs';
 const root = new URL('../public/models/', import.meta.url);
 const read = name => fs.readFileSync(new URL(name, root));
 const json = name => JSON.parse(read(name));
@@ -118,6 +119,26 @@ test('all 2227 nonbreast meshes and original concepts match the main baseline ex
  assert.equal(count, 2227);
  assert.equal(digest.digest('hex'), '212aa73e0094e24e55511fc49dcc6105182aa566d588c90c0da7fa520d68f9ff');
  assert.equal(hash(JSON.stringify(atlas.concepts)), '268333fda59e06ff28644cb9d509da2cd63611a6a500366766d990af690678cd');
+});
+
+test('adipose posterior stays in a geometric pectoralis-core band', () => {
+ const files = atlas.chunks.map(c => read(c.url.split('/').pop()));
+ const measured = measureAtlasBreastChestClearance(atlas, files);
+ assert.equal(measured.coreCoveredCells, fit.checks.breastChestCoreCoveredCells);
+ assert.equal(measured.coreGapMedianM, fit.checks.breastChestCoreGapMedianM);
+ assert.ok(measured.sides.L.coveredCells >= 350 && measured.sides.R.coveredCells >= 350);
+ assert.ok(measured.coreGapMedianM > -0.04 && measured.coreGapMedianM < -0.01);
+ assert.ok(measured.coreGapMinM > -0.05 && measured.coreGapMaxM < 0.03);
+ const quad = (id, z, x0, x1, y0, y1) => ({
+  id, bounds: [[x0, y0, z], [x1, y1, z]],
+  positions: new Float32Array([x0, y0, z, x1, y0, z, x1, y1, z, x0, y1, z]),
+  indices: new Uint32Array([0, 1, 2, 0, 2, 3]),
+ });
+ const chest = [quad('FJ1464', .08, .02, .12, 1.16, 1.28), quad('FJ1464M', .08, -.12, -.02, 1.16, 1.28)];
+ const seated = measureAdiposePectoralisClearance(chest, [quad('VH_F_fat_L', .055, .02, .12, 1.16, 1.28), quad('VH_F_fat_R', .055, -.12, -.02, 1.16, 1.28)]);
+ const detached = measureAdiposePectoralisClearance(chest, [quad('VH_F_fat_L', .14, .02, .12, 1.16, 1.28), quad('VH_F_fat_R', .14, -.12, -.02, 1.16, 1.28)]);
+ assert.ok(seated.coreCoveredCells > 100 && seated.coreGapMedianM < -0.01 && seated.coreGapMedianM > -0.04);
+ assert.ok(detached.coreGapMedianM > 0.03, 'A forward-shifted envelope must fail the geometric front-gap band');
 });
 
 test('canonical compressed chunks reproduce raw payloads and source-based triangle totals', () => {
