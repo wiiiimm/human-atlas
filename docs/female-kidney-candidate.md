@@ -6,7 +6,7 @@ The registration experiments, including the new constrained surface fit, remain 
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/female_kidney_candidate.py --output-dir /tmp/female-kidney-surface-refinement
 ```
 
-NumPy is the only third-party dependency. The output directory must resolve outside this repository, including through symlinks. `report.json` records `enabled: false`, input hashes, the complete inventory, transforms, measurements, and artifact hashes. Each `{L,R}-{translation,similarity_icp,affine_bounds_diagnostic,surface_affine_constrained}.npz` contains transformed internals and capsule plus unchanged target kidney and ureter context. These are review artifacts, not a viewer manifest.
+NumPy is the only third-party dependency. The output directory must be a real directory outside this repository. Symbolic-link path components are rejected before resolution, and existing artifact destinations must not be symbolic links. `report.json` records `enabled: false`, input hashes, the complete inventory, transforms, measurements, and artifact hashes. Each `{L,R}-{translation,similarity_icp,affine_bounds_diagnostic,surface_affine_constrained}.npz` contains transformed internals and capsule plus unchanged target kidney and ureter context. These are review artifacts, not a viewer manifest.
 
 ## Source and inventory
 

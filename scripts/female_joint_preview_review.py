@@ -125,7 +125,14 @@ def self_test():
     tri=np.array([[[0.,0.,0.],[1.,0.,0.],[0.,1.,0.]]])
     assert segment_hits(np.array([[.2,.2,-1.]]),np.array([[.2,.2,1.]]),tri)[0]
     assert not segment_hits(np.array([[2.,2.,-1.]]),np.array([[2.,2.,1.]]),tri)[0]
-    print('Closed-cube parity and triangle segment hit/miss tests passed.')
+    blade=np.array([[.2,-.5,.2],[.2,.5,.2],[.8,0.,.2]]);blade_f=np.array([[0,1,2]])
+    crossed=crossings(blade,blade_f,v,f)
+    assert crossed['tissueTrianglesWithNoncoplanarSurfaceCrossing']==1
+    assert crossed['intersectingTrianglePairs']==2
+    apart=crossings(blade+np.array([0.,0.,5.]),blade_f,v,f)
+    assert apart['tissueTrianglesWithNoncoplanarSurfaceCrossing']==0
+    assert apart['intersectingTrianglePairs']==0
+    print('Closed-cube parity, triangle segment hit/miss and crossing counts passed.')
 
 
 if __name__=='__main__':

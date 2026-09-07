@@ -114,6 +114,21 @@ def containment_votes(points, vertices, faces):
     return votes
 
 
+def require_output_directory(output):
+    output = Path(output)
+    if not output.is_absolute():
+        output = Path.cwd() / output
+    current = Path(output.anchor)
+    for part in output.parts[1:]:
+        current = current / part
+        if current.is_symlink():
+            raise ValueError('Output directory must not contain symbolic-link path components.')
+    output = current.resolve()
+    if ROOT == output or ROOT in output.parents:
+        raise ValueError('Review artifacts must be outside the repository; use a /tmp output directory.')
+    return output
+
+
 def write_npz(path, arrays):
     # Fixed ZIP timestamps and sorted names make the review geometry reproducible.
     with zipfile.ZipFile(path, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
@@ -124,9 +139,7 @@ def write_npz(path, arrays):
 
 
 def run(output):
-    output = output.resolve()
-    if ROOT == output or ROOT in output.parents:
-        raise ValueError('Review artifacts must be outside the repository; use a /tmp output directory.')
+    output = require_output_directory(output)
     output.mkdir(parents=True, exist_ok=True)
     filenames = ['report.json'] + [f'{side}-{fit}.npz' for side in ['L', 'R'] for fit in ['translation', 'similarity_icp', 'affine_bounds_diagnostic', 'surface_affine_constrained']]
     if any((output/name).is_symlink() for name in filenames):

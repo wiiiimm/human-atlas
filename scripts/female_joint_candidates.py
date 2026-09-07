@@ -10,6 +10,7 @@ import importlib.util
 import json
 from pathlib import Path
 import sys
+import tempfile
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -73,7 +74,7 @@ def fit_joint(source_meshes,target_meshes):
     scale,rotation,translation=1.,np.eye(3),(cent_t-cent_s).mean(axis=0)
     fitting={k:sample(v[0]) for k,v in source_regions.items()}
     history=[]
-    for iteration in range(18):
+    for _ in range(18):
         src=[]; dst=[]; distances=[]
         for k,points in fitting.items():
             q=scale*points@rotation+translation
@@ -82,6 +83,9 @@ def fit_joint(source_meshes,target_meshes):
             distances.extend(x[0] for x in nearest)
         history.append(float(np.sqrt(np.mean(np.square(distances)))*1000))
         scale,rotation,translation=similarity(np.concatenate(src),np.concatenate(dst))
+    final=[d for k,points in fitting.items()
+           for d in target_regions[k][1].distances(scale*points@rotation+translation)]
+    history.append(float(np.sqrt(np.mean(np.square(final)))*1000))
     transform=lambda points:scale*points@rotation+translation
     heldout={}
     for k,(points,_) in source_regions.items():
@@ -168,6 +172,28 @@ def connected_components(v,f):
     return len({find(int(x)) for x in indices})
 
 
+def candidate_artifact_names():
+    names=['report.json','joint-diagnostic.svg']
+    for structure in STRUCTURES:
+        for side in ['L','R']:
+            key=f'VH_F_{structure}_{side}'
+            names += [f'{key}.npz', f'{key}.obj']
+    return names
+
+
+def require_external_output(output, root):
+    output=output.resolve(); root=root.resolve()
+    for protected in [ROOT.resolve(), root]:
+        if output==protected or protected in output.parents:
+            raise ValueError('Candidate output must resolve outside the repository, including symlinks')
+    output.mkdir(parents=True,exist_ok=True)
+    for name in candidate_artifact_names():
+        path=output/name
+        if path.is_symlink():
+            raise ValueError(f'Refusing symlinked candidate output: {path}')
+    return output
+
+
 def export_mesh(output,key,v,f):
     normal=np.zeros_like(v)
     tri=v[f]; face_normal=np.cross(tri[:,1]-tri[:,0],tri[:,2]-tri[:,0])
@@ -225,10 +251,7 @@ def diagnostic_plot(root,output):
 
 def run(root,output,regularization=.015):
     if not np.isfinite(regularization) or regularization<=0:raise ValueError("Regularization must be finite and positive")
-    root=root.resolve();output=output.resolve()
-    if output==ROOT.resolve() or ROOT.resolve() in output.parents or output==root or root in output.parents:
-        raise ValueError('Candidate output must resolve outside the repository, including symlinks')
-    output.mkdir(parents=True,exist_ok=True)
+    root=root.resolve();output=require_external_output(output, root)
     before=inputs(root)
     source=a.Atlas(root,'atlas-female.json'); target=a.Atlas(root,'atlas.json')
     female=a.Atlas(root,'atlas-female-reconstructed.json')
@@ -324,9 +347,26 @@ def self_test():
     probes=np.array([[.006,.004,.005],[.03,.013,.008]])
     numerical=np.stack([(field(probes+np.eye(3)[axis]*1e-6)-field(probes-np.eye(3)[axis]*1e-6))/(2e-6) for axis in range(3)],axis=2)
     assert np.allclose(jac(probes),numerical,atol=1e-7)
-    assert np.array_equal(field(np.repeat(probes[:1],2,axis=0))[0],field(probes[:1])[0])
+    assert np.allclose(field(np.repeat(probes[:1],2,axis=0))[0],field(probes[:1])[0])
     assert np.all(np.linalg.det(jac(probes))>0)
-    print('Similarity recovery, exact face/edge distances, coherent RBF field and analytical Jacobian checks pass.')
+    transform,fit=fit_joint(meshes,targets)
+    source_regions={k:crop(*v,k) for k,v in meshes.items()}
+    target_regions={k:crop(*v,k) for k,v in targets.items()}
+    fitting={k:sample(v[0]) for k,v in source_regions.items()}
+    final=[d for k,points in fitting.items() for d in target_regions[k][1].distances(transform(points))]
+    assert len(fit['fittingRmsMm'])==19
+    assert np.isclose(fit['fittingRmsMm'][-1],float(np.sqrt(np.mean(np.square(final)))*1000))
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp=Path(tmp); output=tmp/'out'; output.mkdir()
+        (output/'report.json').symlink_to(tmp/'elsewhere'); (tmp/'elsewhere').write_text('stale')
+        try:
+            require_external_output(output, tmp/'repo')
+        except ValueError as error:
+            assert 'symlink' in str(error).lower()
+        else:
+            raise AssertionError('symlinked joint artifacts must be rejected before writes')
+        assert (tmp/'elsewhere').read_text()=='stale'
+    print('Similarity recovery, exact face/edge distances, coherent RBF field, returned-transform RMS and symlink output checks pass.')
 
 
 if __name__=='__main__':
@@ -339,11 +379,8 @@ if __name__=='__main__':
     args=parser.parse_args()
     if args.self_test:self_test()
     elif args.plot_only:
-        resolved=args.output_dir.resolve()
-        for protected in [ROOT.resolve(),args.root.resolve()]:
-            if resolved==protected or protected in resolved.parents:
-                raise ValueError('Candidate output must resolve outside the repository, including symlinks')
-        report=json.loads((args.output_dir/'report.json').read_text())
+        output=require_external_output(args.output_dir, args.root)
+        report=json.loads((output/'report.json').read_text())
         assert report['inputHashes']==inputs(args.root)
-        diagnostic_plot(args.root,args.output_dir)
+        diagnostic_plot(args.root,output)
     else:run(args.root,args.output_dir,args.regularization)

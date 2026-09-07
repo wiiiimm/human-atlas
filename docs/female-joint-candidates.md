@@ -63,7 +63,7 @@ The current script adds 16 independent local similarity ICP iterations for each 
 
 All control source coordinates, requested displacements and fitted coefficients are in `report.json`. Soft-tissue vertices and attachment-proximity patches are **not** fit inputs. The disjoint source bone holdout samples and the same soft-tissue source patches therefore provide independent evaluation of the automatic fitting constraints, though none is a clinically reviewed landmark set.
 
-The refined candidate is available at `/tmp/female-joint-refined-candidates`. The existing default CLI generates this refined method too. The original similarity candidate remains at `/tmp/female-joint-candidates` until explicitly regenerated; the refined report also recomputes and retains its similarity baseline for direct comparison.
+The default CLI writes this refined candidate to `/tmp/female-joint-candidates`, matching the command above. That report also recomputes and retains the similarity baseline under `sides.*.fit` for direct comparison. Historical similarity-only numbers in the previous section are recorded measurements, not a second output directory. The stronger-regularization preview uses `/tmp/female-joint-preview-candidates`.
 
 | Sampled holdout p95 | Left baseline → refined | Right baseline → refined |
 |---|---:|---:|

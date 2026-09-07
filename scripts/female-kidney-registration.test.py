@@ -2,8 +2,10 @@
 """Analytic checks for kidney surface proposals; no atlas writes."""
 import importlib.util
 from pathlib import Path
+import tempfile
 import unittest
 import numpy as np
+from female_kidney_candidate import require_output_directory, run as kidney_run
 from female_kidney_registration import radial_outer_patch, constrain_matrix, weighted_affine, fit_surface_affine
 
 spec = importlib.util.spec_from_file_location('surface_audit', Path(__file__).with_name('pelvis-surface-audit.py'))
@@ -55,6 +57,27 @@ class KidneyRegistrationTests(unittest.TestCase):
         self.assertLess(float(audit.Surface(moved, faces).distances(target).max()), 1e-10)
         self.assertGreater(np.linalg.det(matrix), .35)
         self.assertEqual(len(report['seeds']), 5)
+
+
+class KidneyOutputDirectoryTests(unittest.TestCase):
+    def test_symbolic_link_output_directory_is_rejected_before_resolution(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            real = tmp / 'real'
+            real.mkdir()
+            link = tmp / 'link'
+            link.symlink_to(real, target_is_directory=True)
+            with self.assertRaisesRegex(ValueError, 'symbolic-link path components'):
+                require_output_directory(link)
+            with self.assertRaisesRegex(ValueError, 'symbolic-link path components'):
+                kidney_run(link)
+            self.assertFalse((real / 'report.json').exists())
+            self.assertEqual(list(real.iterdir()), [])
+
+    def test_ordinary_external_directory_still_resolves(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / 'candidate'
+            self.assertEqual(require_output_directory(output), output.resolve())
 
 
 if __name__ == '__main__': unittest.main()
