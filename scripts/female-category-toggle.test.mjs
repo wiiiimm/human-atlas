@@ -22,14 +22,20 @@ const show = (p, state) => {
  return direct;
 };
 
-test('the reviewed fixture covers exactly all 62 inserted IDs and both regenerated envelopes', () => {
+test('the reviewed fixture covers exactly all 62 inserted IDs and all 16 source-based contoured breast meshes', () => {
  assert.equal(ids.length, 62);
  assert.equal(Object.values(fixture.expected).flat().length, 62, 'Expected groups must not duplicate an ID.');
  assert.deepEqual([...fit.added.map(p => p.id)].sort(), [...ids].sort());
  const inserted = atlas.parts.filter(p => p.provenance?.source !== 'BodyParts3D 4.0').map(p => p.id);
  assert.deepEqual(inserted.sort(), [...ids].sort(), 'No inserted source mesh may escape this audit.');
- assert.deepEqual([...fit.regenerated].sort(), [...fixture.regeneratedEnvelopes].sort());
- for (const id of fixture.regeneratedEnvelopes) assert.equal(expected.get(id), 'mammary');
+ assert.deepEqual(fit.regenerated, []);
+ assert.deepEqual([...fit.contoured].sort(), [...fixture.contouredBreastParts].sort());
+ assert.deepEqual([...fixture.contouredBreastParts].sort(), [...fixture.expected.mammary, ...fixture.expected.integumentary].sort());
+ for (const id of fixture.adiposeEnvelopes) assert.equal(expected.get(id), 'mammary');
+ for (const id of fixture.contouredBreastParts) {
+  assert.equal(parts.get(id).vertexCount, sourceParts.get(id).vertexCount, id);
+  assert.equal(parts.get(id).indexCount, sourceParts.get(id).indexCount, id);
+ }
 });
 
 test('each inserted structure has its reviewed category and a real active control-panel system', () => {
@@ -67,7 +73,7 @@ test('chest presets reveal 10 tissue or 8 gland/support pieces, then hide all 16
  const glands = {...base, breastView:'cutaway', visible:['mammary','muscular']};
  const pectorals = {...base, breastView:'muscle', visible:['muscular']};
  assert.deepEqual(breasts.filter(id => show(parts.get(id), tissue)).sort(), [...fixture.expected.mammary].sort());
- assert.deepEqual(breasts.filter(id => show(parts.get(id), glands)).sort(), fixture.expected.mammary.filter(id => !fixture.regeneratedEnvelopes.includes(id)).sort());
+ assert.deepEqual(breasts.filter(id => show(parts.get(id), glands)).sort(), fixture.expected.mammary.filter(id => !fixture.adiposeEnvelopes.includes(id)).sort());
  for (const id of breasts) assert.equal(show(parts.get(id), pectorals), false, id);
  for (const p of atlas.parts.filter(p => p.system === 'muscular')) assert.equal(show(p, pectorals), true, p.id);
  for (const mode of ['cutaway','muscle']) {
