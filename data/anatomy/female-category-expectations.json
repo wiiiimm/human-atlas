@@ -75,7 +75,7 @@
   },
   "notes": [
     "All 16 breast meshes retain HRA source topology under a shared per-side contour and translation; none are regenerated envelopes. They are already members of the 62 inserted structures.",
-    "Breast suspensory supports remain in the mammary assembly even though their rendering material uses the connective-tissue color.",
+    "Breast suspensory supports remain in the mammary assembly and share the plain reproductive-tissue rendering material used by all 16 breast structures.",
     "Ovaries remain in the reproductive assembly despite having endocrine functions. Uterine/ovarian ligaments and peritoneal folds remain associated with reproductive anatomy.",
     "Uterovesical pouch is an organ-associated peritoneal recess, not a urinary organ. Its reproductive assembly assignment does not classify it as glandular or contractile tissue.",
     "Nipple, areola and areolar tubercles are optional surface structures under Body surface; they are not contractile skeletal muscles."
