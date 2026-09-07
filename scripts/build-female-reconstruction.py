@@ -15,7 +15,7 @@ Parameters and source hashes are recorded in the fit report. Source topology is
 preserved; placement and proportions remain experimental and unreviewed anatomy.
 """
 from pathlib import Path
-import argparse, copy, glob, gzip, hashlib, json, os, re
+import argparse, copy, glob, gzip, hashlib, json, os, re, subprocess
 import numpy as np
 import hra_breast_contour as breast_contour
 
@@ -218,6 +218,9 @@ for m in meshes:
     minimum_breast_jacobian=min(minimum_breast_jacobian,minimum)
 breast_report['minimumVertexJacobian']=minimum_breast_jacobian
 
+def _breast_chest_clearance(chunks_dir):
+    return json.loads(subprocess.check_output(['node',str(ROOT/'scripts/breast-chest-clearance.mjs'),str(chunks_dir)],cwd=ROOT))
+
 # ---------------------------------------------------------------- write atlas
 for stale in glob.glob(str(OUT/'female-base-*.bin*')):os.remove(stale)
 atlas=copy.deepcopy(male)
@@ -276,9 +279,12 @@ landmarks=dict(
  headWidth=span(['Left parietal bone','Right parietal bone'],0),
  chestDepth=extent('Body of sternum',2),
 )
-report=dict(method='BodyParts3D framework and fitted HRA non-breast structures follow the body morph; 16 original HRA breast meshes receive a separate contour and final-frame translation',reviewStatus='Experimental; proportions estimated, organ placement unreviewed',transforms=transforms,morph=MORPH,breastContour=breast_report,regenerated=[],contoured=contoured,replacements=replacements,landmarks=landmarks,retained=[p['id'] for p in retained],added=[dict(id=p['id'],name=p['name'],system=p['system'],transform='breastContour' if p['group']=='mammary' else p['group']) for p in added],excluded=excluded,checks=dict(retainedGeometryUnchanged=False,limbProportionsUnchanged=False,minimumMorphJacobian=min_det,minimumMorphJacobianByField=min_dets,minimumTransformDeterminant=float(min(np.prod(t['scale']) for t in transforms.values())),minimumBreastVertexJacobian=minimum_breast_jacobian,breastSourceTopologyPreserved=True),parts=len(atlas['parts']),concepts=len(atlas['concepts']),triangles=atlas['triangles'])
+added_entries=[dict(id=p['id'],name=p['name'],system=p['system'],transform='breastContour' if p['group']=='mammary' else p['group']) for p in added]
 for p in atlas['parts']:p.pop('group',None)
 (OUT/'atlas-female-reconstructed.json').write_text(json.dumps(atlas,separators=(',',':')))
+clearance=_breast_chest_clearance(OUT)
+breast_report['chestClearance']=dict(method='xy-grid z difference: adipose posterior (min z) minus pectoralis anterior (max z) on a 4 mm cell, inner 60% ellipse of each fat envelope. Positive is a front gap; negative is intersection. Geometric screening only.',pectoralis='muscular parts whose names match /pectoralis/i')
+report=dict(method='BodyParts3D framework and fitted HRA non-breast structures follow the body morph; 16 original HRA breast meshes receive a separate contour and final-frame translation',reviewStatus='Experimental; proportions estimated, organ placement unreviewed',transforms=transforms,morph=MORPH,breastContour=breast_report,regenerated=[],contoured=contoured,replacements=replacements,landmarks=landmarks,retained=[p['id'] for p in retained],added=added_entries,excluded=excluded,checks=dict(retainedGeometryUnchanged=False,limbProportionsUnchanged=False,minimumMorphJacobian=min_det,minimumMorphJacobianByField=min_dets,minimumTransformDeterminant=float(min(np.prod(t['scale']) for t in transforms.values())),minimumBreastVertexJacobian=minimum_breast_jacobian,breastSourceTopologyPreserved=True,breastChestCoreCoveredCells=clearance['coreCoveredCells'],breastChestCoreGapMinM=clearance['coreGapMinM'],breastChestCoreGapMedianM=clearance['coreGapMedianM'],breastChestCoreGapMaxM=clearance['coreGapMaxM']),parts=len(atlas['parts']),concepts=len(atlas['concepts']),triangles=atlas['triangles'])
 (OUT/'female-fit-report.json').write_text(json.dumps(report,indent=2))
 print(json.dumps({k:report[k] for k in ['checks','landmarks','parts','concepts','triangles']},indent=2))
 print('Retained',len(retained),'base meshes; added',len(added),'female meshes; excluded',len(excluded),'base meshes')
