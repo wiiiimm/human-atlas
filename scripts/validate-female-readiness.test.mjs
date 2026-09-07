@@ -46,7 +46,7 @@ test('a missing or concept-only target needs an explicit reviewed scope exclusio
 });
 
 
-test('CSS and route-entry changes invalidate an otherwise complete review with unchanged geometry', t => {
+test('CSS, search groups and route-entry changes invalidate an otherwise complete review with unchanged geometry', t => {
  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'female-readiness-digest-'));
  t.after(() => fs.rmSync(root, {recursive: true, force: true}));
  const files = {
@@ -54,6 +54,7 @@ test('CSS and route-entry changes invalidate an otherwise complete review with u
   'public/models/fixture.bin': 'unchanged synthetic geometry',
   'public/models/female-fit-report.json': '{}',
   'app/anatomy.ts': 'export const description = "fixture";',
+  'app/anatomy-search.ts': 'export const groups = [];',
   'app/page.tsx': 'export default function Page() {}',
   'app/scene.tsx': 'export default function Scene() {}',
   'app/globals.css': '.scene { display: block; }',
@@ -68,7 +69,7 @@ test('CSS and route-entry changes invalidate an otherwise complete review with u
  const {review, context} = fixture();
  review.modelDigest = baseline.modelDigest;
  assert.equal(evaluateReadiness(review, {...context, modelDigest: baseline.modelDigest}).ready, true);
- for (const [name, changed] of [['app/globals.css', '.scene { display: none; }'], ['web/main.tsx', 'const model = "male";']]) {
+ for (const [name, changed] of [['app/anatomy-search.ts', 'export const groups = ["changed"];'], ['app/globals.css', '.scene { display: none; }'], ['web/main.tsx', 'const model = "male";']]) {
   fs.writeFileSync(path.join(root, name), changed);
   const current = collectContext(root);
   assert.notEqual(current.modelDigest, baseline.modelDigest, `${name} must invalidate the reviewed revision`);

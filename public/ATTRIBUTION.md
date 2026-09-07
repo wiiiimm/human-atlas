@@ -30,14 +30,20 @@ This is a reference assembly with whole-body surface and selected organs, includ
 
 ## Female study prototype
 
-`atlas-female-reconstructed.json` retains 2,181 BodyParts3D 4.0 meshes (source topology unchanged) and adds 62 adapted HRA female meshes (8 pelvis, 38 reproductive, 16 breast). Both sources retain the CC BY 4.0 attribution above. The original male and HRA female atlases remain available separately.
+`atlas-female-reconstructed.json` retains 2,181 BodyParts3D 4.0 meshes (source topology unchanged) and adds 64 adapted HRA female meshes (8 pelvis, 38 reproductive, 16 breast, 2 knee ligaments). Both sources retain the CC BY 4.0 attribution above. The original male and HRA female atlases remain available separately.
 
 Adaptations: the HRA female pelvis (compact bone shells, sacrum, coccyx) is affinely fitted to the male hip bone envelope and replaces the male pelvis; female reproductive geometry is affinely placed using the HRA and BodyParts3D bladder bounds as alignment proxies. Retained BodyParts3D and fitted pelvic/reproductive meshes are reshaped by a shared whole-body field toward estimated female proportions, with a torso-limited waist refinement and an explicitly scoped posterior/inferior contour for bilateral gluteus maximus and inferior gluteal vein meshes.
 
 The 16 HRA breast-related meshes retain source topology and base coverage. A local field reduces anterior projection and slightly lifts the lower front; all tissues within each breast share the same adjustment and placement in final body coordinates. The breast source approach was inspired by [Female Atlas by Mahendra Beniwal](https://github.com/HiMahendraBeniwal/female-atlas/tree/b0a20fa3a009ca5f6bfa07b7479312e04c862af2). We use the HRA assets already bundled here, with original adaptation code; no outer skin mesh or other composite geometry is imported from that project. Normals use inverse-transpose Jacobians, bounds are recomputed, and geometry is packed into `female-base-*.bin` chunks. Male-specific geometry and selected pelvic-floor structures are excluded from the manifest. Breast presentation uses a plain tissue material; it does not depict measured firmness or muscle fibers.
+
+The two HRA anterolateral knee ligaments retain their source topology. They receive a recorded bone-constrained local deformation followed by the existing female body morph; normals are recomputed and the two meshes are packed into a separate additive chunk. Their source IDs and estimated placement are recorded in the `jointAdditions` section of the fit report. All previously displayed body and breast geometry is retained.
 
 This is an experimental study model with estimated proportions, not independently validated female anatomy. Original source IDs and adaptation notes are preserved on every part. Morph parameters, breast contour parameters, placement transforms, landmarks, and exclusions are recorded in `models/female-fit-report.json`; the builder is `scripts/build-female-reconstruction.py`.
 
 ## Coverage audit source metadata
 
 `data/anatomy/sources` contains pinned BodyParts3D English IS-A name/element tables and an index of official OBJ header identities. BodyParts3D, © The Database Center for Life Science licensed under CC Attribution 4.0 International. Source URLs, retrieval date and SHA-256 hashes are in `provenance.json`. The original archive retains historical license text in its OBJ headers; the current official license page specifies CC BY 4.0. Blank source names remain blank rather than being inferred.
+
+## Viewer interaction ideas
+
+Cursor-centred zoom and familiar muscle-group search shortcuts were inspired by [Female Atlas by Mahendra Beniwal](https://github.com/HiMahendraBeniwal/female-atlas/tree/b0a20fa3a009ca5f6bfa07b7479312e04c862af2). This implementation uses original interaction/search code and existing source mesh IDs. Search groups are viewer selections, not additional source anatomy or muscle-activation simulations.

@@ -9,7 +9,8 @@ Female anatomy is a derived study model, not a scanned reference like the male a
 - 53 source meshes omitted or replaced: male reproductive structures and associated vessels, the male urethra, the male skin/hair envelope, and selected pelvic-floor structures requiring separate redesign.
 - 38 HRA female reproductive meshes fitted into the pelvis.
 - 16 HRA breast meshes retain their source vertex counts and triangle topology under a shared per-side contour field and translation onto the chest. The six nipple, areola, and areolar-tubercle meshes remain in the optional Body surface layer, hidden by default. The two adipose envelopes use the original HRA base geometry instead of generated concentric-ring shells. Their source base footprint is unscaled; anterior projection is reduced and the lower anterior tissue lifted. These adjustments and placement are artistic estimates, not measurements of a female subject.
-- 2,243 selectable meshes, 4,246 searchable concepts, and 2,436,412 triangles in total.
+- 2 HRA anterolateral knee ligaments fitted to retained joint surfaces, with source topology preserved and Connective tissue controls.
+- 2,245 selectable meshes, 4,248 searchable concepts, and 2,437,148 triangles in total.
 
 ## Build pipeline
 
@@ -80,3 +81,5 @@ The tissue distinction follows the [US National Cancer Institute SEER anatomy mo
 Run `npm run validate:female-readiness` separately from a development build. **The current model is expected to fail this gate.** It requires passing atlas integrity checks, current named-target coverage or independently reviewed teaching-scope exclusions, and revision-bound evidence for anatomical landmarks, attachments, sectional relationships, tissue presentation and representative poses. Final scope needs independent anatomist and movement-educator reviews.
 
 The [review checklist](../data/anatomy/female-review-checklist.json) records unresolved requirements. [Evidence instructions](../data/anatomy/reviews/README.md) describe reviewer roles, artifact hashes and the model fingerprint. Geometry or presentation changes invalidate an older fingerprint. Automated checks verify evidence completeness and freshness, not the truth of a professional judgment. Passing unit tests or building the viewer cannot mark SWR-519 or the female milestone complete; independent review remains outstanding.
+
+The enhancement branch adds the left and right HRA anterolateral knee ligaments to the same `/female` atlas under **Connective tissue**. They use a recorded local bone-constrained fit followed by the existing body morph. Existing body/breast geometry is unchanged. These are estimated static placements; shallow insertion overlap is documented in the joint fitting report. Other knee structures, spinal cord and kidney internals remain offline candidates.

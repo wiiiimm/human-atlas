@@ -11,11 +11,14 @@ Pipeline
    retain the base footprint, reduce anterior projection, and lift lower-front tissue.
    Breast meshes do not receive the body morph or the former drape/inset machinery.
 
+5. Append the recorded bilateral anterolateral knee ligament fit, retaining all
+   existing model buffers. The candidate recipe is pinned in data/anatomy/joint-additions.
+
 Parameters and source hashes are recorded in the fit report. Source topology is
 preserved; placement and proportions remain experimental and unreviewed anatomy.
 """
 from pathlib import Path
-import argparse, copy, glob, gzip, hashlib, json, os, re, subprocess
+import argparse, copy, glob, gzip, hashlib, json, os, re, subprocess, shutil, sys, tempfile
 import numpy as np
 import hra_breast_contour as breast_contour
 
@@ -208,6 +211,7 @@ for m in meshes:
 
 # ---------------------------------------------------------------- 4. source-derived breast contour
 breast_report=breast_contour.describe(fp)
+breast_report['chestClearance']=dict(method='xy-grid z difference: adipose posterior (min z) minus pectoralis anterior (max z) on a 4 mm cell, inner 60% ellipse of each fat envelope. Positive is a front gap; negative is intersection. Geometric screening only.',pectoralis='muscular parts whose names match /pectoralis/i')
 breast_report['sourceManifestSha256']=hashlib.sha256((INPUT/'atlas-female.json').read_bytes()).hexdigest()
 breast_report['sourceChunks']={female['chunks'][i]['url']:hashlib.sha256(source_buffers[i]).hexdigest() for i in sorted({fp[key]['chunk'] for key in contoured})}
 minimum_breast_jacobian=float('inf')
@@ -283,9 +287,23 @@ added_entries=[dict(id=p['id'],name=p['name'],system=p['system'],transform='brea
 for p in atlas['parts']:p.pop('group',None)
 (OUT/'atlas-female-reconstructed.json').write_text(json.dumps(atlas,separators=(',',':')))
 clearance=_breast_chest_clearance(OUT)
-breast_report['chestClearance']=dict(method='xy-grid z difference: adipose posterior (min z) minus pectoralis anterior (max z) on a 4 mm cell, inner 60% ellipse of each fat envelope. Positive is a front gap; negative is intersection. Geometric screening only.',pectoralis='muscular parts whose names match /pectoralis/i')
 report=dict(method='BodyParts3D framework and fitted HRA non-breast structures follow the body morph; 16 original HRA breast meshes receive a separate contour and final-frame translation',reviewStatus='Experimental; proportions estimated, organ placement unreviewed',transforms=transforms,morph=MORPH,breastContour=breast_report,regenerated=[],contoured=contoured,replacements=replacements,landmarks=landmarks,retained=[p['id'] for p in retained],added=added_entries,excluded=excluded,checks=dict(retainedGeometryUnchanged=False,limbProportionsUnchanged=False,minimumMorphJacobian=min_det,minimumMorphJacobianByField=min_dets,minimumTransformDeterminant=float(min(np.prod(t['scale']) for t in transforms.values())),minimumBreastVertexJacobian=minimum_breast_jacobian,breastSourceTopologyPreserved=True,breastChestCoreCoveredCells=clearance['coreCoveredCells'],breastChestCoreGapMinM=clearance['coreGapMinM'],breastChestCoreGapMedianM=clearance['coreGapMedianM'],breastChestCoreGapMaxM=clearance['coreGapMaxM']),parts=len(atlas['parts']),concepts=len(atlas['concepts']),triangles=atlas['triangles'])
 (OUT/'female-fit-report.json').write_text(json.dumps(report,indent=2))
+# The published ligament recipe is evaluated against the freshly rebuilt base.
+# The helper verifies source pins, the joint field and unchanged base buffers.
+with tempfile.TemporaryDirectory(prefix='female-joint-rebuild-') as temporary:
+    staged=Path(temporary)
+    subprocess.run([sys.executable,str(ROOT/'scripts/publish-female-joint-additions.py'),
+                    '--candidate-dir',str(ROOT/'data/anatomy/joint-additions'),
+                    '--base-models-dir',str(OUT),'--source-models-dir',str(INPUT),
+                    '--output-dir',str(staged)],check=True)
+    enriched=json.loads((staged/'atlas-female-reconstructed.json').read_text())
+    for chunk in enriched['chunks'][len(chunks):]:
+        for field in ['url','gzip']:
+            name=Path(chunk[field]).name;shutil.copyfile(staged/name,OUT/name)
+    for name in ['atlas-female-reconstructed.json','female-fit-report.json']:
+        shutil.copyfile(staged/name,OUT/name)
+    atlas=enriched;chunks=atlas['chunks'];report=json.loads((OUT/'female-fit-report.json').read_text())
 print(json.dumps({k:report[k] for k in ['checks','landmarks','parts','concepts','triangles']},indent=2))
-print('Retained',len(retained),'base meshes; added',len(added),'female meshes; excluded',len(excluded),'base meshes')
+print('Retained',len(retained),'base meshes; added',len(added)+len(report['jointAdditions']['ids']),'female meshes; excluded',len(excluded),'base meshes')
 print('Compressed MB',sum(c['gzipBytes'] for c in chunks)/1e6)

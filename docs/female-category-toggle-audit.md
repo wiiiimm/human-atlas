@@ -1,8 +1,8 @@
 # Inserted female structures: category-toggle audit
 
-All **62 inserted HRA-derived structures** have an existing, active control-panel category and respond to that category's visibility toggle. No missing toggle or concrete wrong primary-category assignment was found. This is a category/visibility audit, not validation of the model's geometry or completeness.
+All **64 inserted HRA-derived structures** have an existing, active control-panel category and respond to that category's visibility toggle. No missing toggle or concrete wrong primary-category assignment was found. This is a category/visibility audit, not validation of the model's geometry or completeness.
 
-All 16 contoured breast meshes preserve their HRA source topology and are included within those 62 structures. No breast envelope is regenerated. Exact independent expectations are recorded in [female-category-expectations.json](../data/anatomy/female-category-expectations.json).
+All 16 contoured breast meshes preserve their HRA source topology and are included within those 64 structures. No breast envelope is regenerated. Exact independent expectations are recorded in [female-category-expectations.json](../data/anatomy/female-category-expectations.json).
 
 | Control-panel toggle | Inserted pieces | Scope |
 | --- | ---: | --- |
@@ -10,6 +10,7 @@ All 16 contoured breast meshes preserve their HRA source topology and are includ
 | Reproductive | 38 | Ovaries, uterine tubes, uterus/cervix, vagina, and associated supports/folds/recess |
 | Breast tissue | 10 | Two contoured HRA adipose envelopes, two lobe assemblies, two main-duct assemblies, two sinus assemblies, two suspensory-support assemblies |
 | Body surface | 6 | Bilateral nipples, areolae, and areolar tubercles |
+| Connective tissue | 2 | Left and right anterolateral knee ligaments |
 
 ## Category interpretation
 
@@ -37,7 +38,7 @@ No inserted female pelvic-floor muscles or female urethra exist in this model ye
 
 The Glands view deliberately includes duct, sinus and support pieces, not only gland lobes. Tissue/Glands/Pectorals are chest presets, not substitutes for the system list. Switching to Tissue or Glands enables Breast tissue and Muscles and disables Body surface; switching to Pectorals disables both breast categories and enables Muscles. Other system switches retain their state.
 
-By default, all 56 non-surface inserted structures are enabled and the six nipple/areola surface structures are optional. Clicking the Body surface category or enabling its switch returns the chest preset to Tissue so these six can be seen. Selecting a hidden structure through search, or isolating it, intentionally reveals it even if its category is off; clearing that selection restores category and chest filtering. The system handlers clear existing selection/isolation so disabling a category works as expected.
+By default, all 58 non-surface inserted structures are enabled and the six nipple/areola surface structures are optional. Clicking the Body surface category or enabling its switch returns the chest preset to Tissue so these six can be seen. Selecting a hidden structure through search, or isolating it, intentionally reveals it even if its category is off; clearing that selection restores category and chest filtering. The system handlers clear existing selection/isolation so disabling a category works as expected.
 
 ## Validation
 
@@ -48,7 +49,7 @@ node --experimental-strip-types --test scripts/female-category-toggle.test.mjs s
 node --test scripts/hra-breast-contour.test.mjs
 ```
 
-**All 19 category, chest-visibility and breast-contour tests pass against the promoted canonical assets.** The category suite contains six focused cases plus seven chest-visibility cases. Coverage includes the exact 62-ID inventory, all 16 source-topology-preserving breast meshes, all reviewed categories and active controls, every inserted piece against every system toggle, defaults, all three chest modes, every inserted piece under selection/isolation, and unchanged male behavior. The expected category fixture is independent of the generated atlas's actual `system` field, so an erroneous reassignment cannot pass by reproducing itself in the test. Six additional breast-contour tests verify source indices, the recorded shape field, normals, reviewed geometry bytes, unchanged nonbreast meshes, canonical compressed payloads, and the adipose/pectoralis geometric clearance screen.
+**All 19 category, chest-visibility and breast-contour tests pass against the promoted canonical assets.** The category suite contains six focused cases plus seven chest-visibility cases. Coverage includes the exact 64-ID inventory, all 16 source-topology-preserving breast meshes, all reviewed categories and active controls, every inserted piece against every system toggle, defaults, all three chest modes, every inserted piece under selection/isolation, and unchanged male behavior. The expected category fixture is independent of the generated atlas's actual `system` field, so an erroneous reassignment cannot pass by reproducing itself in the test. Six additional breast-contour tests verify source indices, the recorded shape field, normals, reviewed geometry bytes, unchanged nonbreast meshes, canonical compressed payloads, and the adipose/pectoralis geometric clearance screen.
 
 The previous browser audit used manifest `9b6f0fc90c80e4cd50a7ec65fa9d43ddeb0d6e5d79b6d1b9a78105443610730b`, before source-based breast promotion. Its category counts were Reproductive 38, Breast tissue 10 and Body surface 6, and each toggled to zero and back; Skeleton included all eight inserted pelvic pieces. Those observations are historical UI evidence. Current geometry and category-test results must be checked against the promoted manifest rather than inferred from that earlier browser session.
 Current automated-audit manifest SHA-256: `4134384790ef6be9526105466ab946f4291afdc0e8237145dd0d64cd5809ffa8`.
@@ -119,3 +120,5 @@ Current automated-audit manifest SHA-256: `4134384790ef6be9526105466ab946f4291af
 | `VH_F_cervix` | uterine cervix | Reproductive |
 | `VH_F_internal_cervical_os` | internal cervical os | Reproductive |
 | `VH_F_external_cervical_os` | external cervical os | Reproductive |
+
+The left and right anterolateral knee ligaments are explicitly assigned to **Connective tissue**, included in the 64-ID fixture, and tested against every system toggle plus selection/isolation. Their added geometry is validated separately from the unchanged breast/body baseline.

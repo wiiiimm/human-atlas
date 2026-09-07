@@ -5,6 +5,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 import {gunzipSync} from 'node:zlib';
+import {JOINT_ADDITION_IDS} from './validate-female-joint-additions.mjs';
 import {measureAdiposePectoralisClearance, measureAtlasBreastChestClearance} from './breast-chest-clearance.mjs';
 const root = new URL('../public/models/', import.meta.url);
 const read = name => fs.readFileSync(new URL(name, root));
@@ -111,14 +112,14 @@ test('all 2227 nonbreast meshes and original concepts match the main baseline ex
  // every position, normal, triangle index and semantic part field must not.
  const digest = createHash('sha256'); let count = 0;
  for (const p of atlas.parts) {
-  if (breastIds.has(p.id)) continue;
+  if (breastIds.has(p.id)||JOINT_ADDITION_IDS.includes(p.id)) continue;
   count++;
   digest.update(JSON.stringify({id:p.id, name:p.name, conceptId:p.conceptId, system:p.system, vertexCount:p.vertexCount, indexCount:p.indexCount, bounds:p.bounds, provenance:p.provenance})+'\n');
   for (const bytes of meshBytes(atlas, p)) digest.update(bytes);
  }
  assert.equal(count, 2227);
  assert.equal(digest.digest('hex'), '212aa73e0094e24e55511fc49dcc6105182aa566d588c90c0da7fa520d68f9ff');
- assert.equal(hash(JSON.stringify(atlas.concepts)), '268333fda59e06ff28644cb9d509da2cd63611a6a500366766d990af690678cd');
+ assert.equal(hash(JSON.stringify(atlas.concepts.filter(c=>!c.elements.some(id=>JOINT_ADDITION_IDS.includes(id))))), '268333fda59e06ff28644cb9d509da2cd63611a6a500366766d990af690678cd');
 });
 
 test('adipose posterior stays in a geometric pectoralis-core band', () => {
@@ -147,7 +148,7 @@ test('canonical compressed chunks reproduce raw payloads and source-based triang
   assert.equal(raw.length, c.bytes); assert.equal(compressed.length, c.gzipBytes);
   assert.deepEqual(gunzipSync(compressed), raw);
  }
- assert.equal(atlas.parts.length, 2243);
- assert.equal(atlas.triangles, 2436412);
+ assert.equal(atlas.parts.length, 2245);
+ assert.equal(atlas.triangles, 2437148);
  assert.equal(atlas.triangles, atlas.parts.reduce((sum, part) => sum+part.indexCount/3, 0));
 });

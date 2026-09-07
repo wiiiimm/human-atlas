@@ -1,5 +1,5 @@
 {
-  "scope": "Primary control-panel category for all 62 inserted HRA-derived structures in the canonical female model, including all 16 source-topology-preserving contoured breast meshes.",
+  "scope": "Primary control-panel category for all 64 inserted HRA-derived structures in the canonical female model, including all 16 source-topology-preserving contoured breast meshes. The bilateral anterolateral knee ligaments use Connective tissue.",
   "policy": "Categories group anatomical assemblies, not every tissue function. Each mesh has one primary system toggle; chest presets and explicit selection further affect visibility.",
   "expected": {
     "skeletal": [
@@ -71,6 +71,10 @@
       "VH_F_cervix",
       "VH_F_internal_cervical_os",
       "VH_F_external_cervical_os"
+    ],
+    "connective": [
+      "VH_F_anterolateral_ligament_of_knee_L",
+      "VH_F_anterolateral_ligament_of_knee_R"
     ]
   },
   "notes": [

@@ -100,6 +100,45 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
    if(found<0&&amount>.45)found=findTarget(e.clientX-rect.left,e.clientY-rect.top,e.pointerType==='touch'?24:16);if(found>=0){hover.hidden=true;select.current(atlas.parts[found].id);}
   };
   renderer.domElement.addEventListener('pointerdown',down);renderer.domElement.addEventListener('pointermove',move);renderer.domElement.addEventListener('pointerup',up);renderer.domElement.addEventListener('pointercancel',cancel);
+  // Keep the anatomy beneath the cursor fixed while dollying, including view offsets.
+  // Capture replaces OrbitControls' wheel handler; its touch/pinch controls stay intact.
+  const wheelPlane=new T.Plane(),wheelDirection=new T.Vector3(),wheelAnchor=new T.Vector3(),wheelProjection=new T.Vector3();
+  const wheelRaycaster=new T.Raycaster(),wheelPointer=new T.Vector2();
+  const wheel=(e:WheelEvent)=>{
+   if(!controls.enabled||!controls.enableZoom)return;
+   e.preventDefault();e.stopImmediatePropagation();
+   if(!ready||!Number.isFinite(e.deltaY)||e.deltaY===0)return;
+   const rect=renderer.domElement.getBoundingClientRect();if(rect.width<=0||rect.height<=0)return;
+   const unit=e.deltaMode===WheelEvent.DOM_DELTA_LINE?16:e.deltaMode===WheelEvent.DOM_DELTA_PAGE?rect.height:1;
+   const delta=T.MathUtils.clamp(e.deltaY*unit*(e.ctrlKey?2.5:1),-300,300);
+   const distance=camera.position.distanceTo(controls.target);if(!Number.isFinite(distance)||distance<=0)return;
+   const nextDistance=T.MathUtils.clamp(distance*Math.exp(delta*.0018*controls.zoomSpeed),controls.minDistance,controls.maxDistance);
+   const factor=nextDistance/distance;if(!Number.isFinite(factor)||Math.abs(factor-1)<1e-10)return;
+   camera.updateMatrixWorld();
+   wheelPointer.set((e.clientX-rect.left)/rect.width*2-1,-(e.clientY-rect.top)/rect.height*2+1);
+   wheelRaycaster.setFromCamera(wheelPointer,camera);
+   const s=latest.current,lookups={visible:new Set(s.visible),selected:new Set(s.selected)};
+   // Check both the rendered visibility texture and current state during layer transitions.
+   const visible=atlas.parts.map((p,i)=>!!pickers[i]&&data[i*4+3]>.5&&partIsVisible(p,s,lookups));
+   const hasSolid=atlas.parts.some((p,i)=>visible[i]&&!isBodySurface(p));
+   let nearest=Infinity,found=false;
+   pickers.forEach((mesh,i)=>{
+    if(!mesh||!visible[i]||(hasSolid&&isBodySurface(atlas.parts[i])))return;
+    worldBox.copy(bounds[i]).translate(mesh.position);if(!wheelRaycaster.ray.intersectBox(worldBox,hitPoint))return;
+    const hit=wheelRaycaster.intersectObject(mesh,false)[0];if(!hit||hit.distance>=nearest)return;
+    wheelProjection.copy(hit.point).project(camera);if(wheelProjection.z< -1||wheelProjection.z>1)return;
+    nearest=hit.distance;wheelAnchor.copy(hit.point);found=true;
+   });
+   if(!found){
+    camera.getWorldDirection(wheelDirection);wheelPlane.setFromNormalAndCoplanarPoint(wheelDirection,controls.target);
+    if(!wheelRaycaster.ray.intersectPlane(wheelPlane,wheelAnchor))return;
+   }
+   camera.position.sub(wheelAnchor).multiplyScalar(factor).add(wheelAnchor);
+   controls.target.sub(wheelAnchor).multiplyScalar(factor).add(wheelAnchor);
+   camera.updateMatrixWorld();hover.hidden=true;dirty=true;
+   // The animation loop updates OrbitControls once, avoiding extra damping/auto-rotation per event.
+  };
+  renderer.domElement.addEventListener('wheel',wheel,{passive:false,capture:true});
   const clock=new T.Clock();let lastExtent=-1;
   const animate=()=>{
    if(disposed)return;frame=requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05),s=latest.current;
@@ -134,7 +173,7 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
 
   };animate();
   const contextLost=(e:Event)=>{e.preventDefault();onError('The 3D session was paused by your device. Reload to continue.');};renderer.domElement.addEventListener('webglcontextlost',contextLost);
-  return()=>{disposed=true;abort.abort();cancelAnimationFrame(frame);observer.disconnect();controls.dispose();geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());scene.traverse(o=>{if(o instanceof T.Mesh&&!geometries.includes(o.geometry)){o.geometry.dispose();const ms=Array.isArray(o.material)?o.material:[o.material];ms.forEach(m=>m.dispose());}});env.dispose();partTexture.dispose();selectionTexture.dispose();markerGeometry.dispose();markerMaterial.dispose();hover.remove();renderer.dispose();renderer.domElement.remove();};
+  return()=>{disposed=true;abort.abort();cancelAnimationFrame(frame);observer.disconnect();renderer.domElement.removeEventListener('wheel',wheel,true);controls.dispose();geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());scene.traverse(o=>{if(o instanceof T.Mesh&&!geometries.includes(o.geometry)){o.geometry.dispose();const ms=Array.isArray(o.material)?o.material:[o.material];ms.forEach(m=>m.dispose());}});env.dispose();partTexture.dispose();selectionTexture.dispose();markerGeometry.dispose();markerMaterial.dispose();hover.remove();renderer.dispose();renderer.domElement.remove();};
  },[atlas]);
  return <div className="scene" ref={host}/>;
 }
