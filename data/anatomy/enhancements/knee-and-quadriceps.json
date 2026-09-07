@@ -1,0 +1,1496 @@
+{
+  "schemaVersion": 1,
+  "enabled": false,
+  "status": "candidate-only; attachment annotations unreviewed",
+  "inputHashes": {
+    "public/models/atlas-female-reconstructed.json": "4134384790ef6be9526105466ab946f4291afdc0e8237145dd0d64cd5809ffa8",
+    "public/models/atlas-female.json": "1525c07d2ed46263c086d1c6b2e52eb9b8f8985746e9a8259036bd6e1d9a1ced",
+    "public/models/atlas.json": "c359f4bcd2cba90b7411d66d5e9fc04dc81294d46cd5c1e8b212c824f2e5bbee",
+    "public/models/body-0.bin": "b33b2b5aac20f35fbf6871f916607bf3c4d386321c8c0fdadcca6b5d24e3641e",
+    "public/models/body-1.bin": "aa077a4675f0d0dd3c9b0af39dc8cf6bcb348c3bf7d283478d4206ce30a5a0de",
+    "public/models/body-10.bin": "4a959d998acd35cf88518a0f2f8ab99b42d9f69c7ce0d6a814df315eeac807ac",
+    "public/models/body-11.bin": "e8c1afe7f30fe710ad164ec9cd2287a32881606e7eb590af47d76b3f84405027",
+    "public/models/body-12.bin": "61a6c8da89bb20df50c575964ac81aa4090eabfc2cb27ad2155aea325f31c6c0",
+    "public/models/body-13.bin": "4c51b6be85d5b705d2b52b79b9ad1cdae0b65ad03c9402a2f2673c7633fd94f3",
+    "public/models/body-14.bin": "58604526a0cd9e7dca4d8587cd9a42f9dd03ec6c4ebbc22a9bf017b31246f7e7",
+    "public/models/body-2.bin": "4b3acfc35b91e4427eaca0e3be897d33f144354342ae0e52a2328b582ca8bdbe",
+    "public/models/body-3.bin": "6febb76b50423331f66802a63bb43f04f99ce08129837015910eed43d0719268",
+    "public/models/body-4.bin": "0509e6c996fe5b935ace770a5dbf2d83a474330b7e541a844052a080bbf814bb",
+    "public/models/body-5.bin": "32a967198ffed45839968228898f3d246c67f86fb26892c3ae270be30e2f1149",
+    "public/models/body-6.bin": "1c98dae807210cc51a4abc806134727c9544155cad0cc328cf2e1ae1f954d3ff",
+    "public/models/body-7.bin": "06340f48478eb989cec117a558290c0cd54eeead9641b565cbb8aab255b4e56b",
+    "public/models/body-8.bin": "18beacfdeadc8ad483d692672aae165f4323704cd7a9bfcbebbd703f5e268e25",
+    "public/models/body-9.bin": "0aa8aa09a379a2d759872659a2ef68fc4510ee37e435c4ebc63ee679722a4547",
+    "public/models/female-0.bin": "d4dc9a6daa7f720d581f914c10d2d1bba02b64eadd2a5de22b1588b81fd09a0d",
+    "public/models/female-1.bin": "c20a0c492992b44d5e03fe61c6363fa9341b00ec9a255659285ef98b98f3e337",
+    "public/models/female-2.bin": "7adeaf94028489b7192ade457f8217cc629c457263cd004e5ea84d248d9402e6",
+    "public/models/female-3.bin": "ad1e1f6a5d44d4de62d8cdaf7db8aeb0591d92ee9aff241d6278e7c3663ffc3c",
+    "public/models/female-4.bin": "770e35500d09b74941686c515524961c6540fa15db4192dee987fa5c49b19fbd",
+    "public/models/female-5.bin": "b2f5790193688d20ba240b10ccf5d89d56f46d034071170167afa369c327f7fb",
+    "public/models/female-6.bin": "8b9d1c038bf4b7951bc19a0e30dd3c7c65c29af3f2bd9f605b8048204c66ee40",
+    "public/models/female-7.bin": "36e45735f6ff00dc799109a7789acf7caa7d2d9bd7a4c20bdd0b6177cf14af17",
+    "public/models/female-8.bin": "9505b45b629f3fedd69b49b0cff6cef9d5c86431aa0903529c5cc09faa7200e4",
+    "public/models/female-9.bin": "b1988cec93d65044af32fd7da78852a4582fde6f4439470f430d0ef07936decb",
+    "public/models/female-base-0.bin": "5dfc3c73c8f61befe07ae60687ed410669631e298275d0150c04a0e9433b3483",
+    "public/models/female-base-1.bin": "00f0351b3c5fa57b27f538042a03ea4cd60cbd192e3b9a475d92c5155ad0d0f1",
+    "public/models/female-base-10.bin": "e70882234e036f15f93241712a2b17d7add5f95f73c8a551efba3bef9609e84a",
+    "public/models/female-base-11.bin": "6fd3a25230b662c8dbfd325594c85315a6b4a5aa26774f28f37ad05857163eb7",
+    "public/models/female-base-12.bin": "203bbe2ac78e8d37573bb3aa1da65b7fe2969ed0aa297d312abb3fc50e814e0d",
+    "public/models/female-base-13.bin": "368e4c15bf75b215680977aaac43c93325c5cf6d9693915bbe09427971667f0f",
+    "public/models/female-base-14.bin": "277a4b410294252eeb36f846cc4da9cd1a183fbf0c34190815ec75dd268b83cd",
+    "public/models/female-base-15.bin": "2c62d3128b711ed75c0b82df577a2580fbba0763e8306d2d028f1b6afa959100",
+    "public/models/female-base-2.bin": "0d4289e979f625e052338021367eceba5a006d25157d82cf7c487991df8af44a",
+    "public/models/female-base-3.bin": "a6a947583ce0b827ba0ffda88ab987720ae586133d3e16fc3b8ebdaa5a72ac13",
+    "public/models/female-base-4.bin": "bed6821db2d0106fcd855ae44a0fb95990d238541f12c02ad96ed4add49b04f5",
+    "public/models/female-base-5.bin": "5a4d814da6451c5570b4d5c85a382d3b3cd9bc1b80644e441db99ffbe8e195f7",
+    "public/models/female-base-6.bin": "4cbff6414581dbe1c7f153a81a2f82e8f65e52681417920e82746e804b7c2a2f",
+    "public/models/female-base-7.bin": "dc9e930e256ec98c4f709eae1c7f4e1bc9e181ed4046875016639e1de7a12f4f",
+    "public/models/female-base-8.bin": "da5a0f2784dce630ed11f27dcdc2534e99109dc7012643a03eeb2d2cad582f3c",
+    "public/models/female-base-9.bin": "b035540bb05fad41cb81129d8ae6ca86e59a198cb54b5f1dd771a88586e2abb5",
+    "public/models/female-fit-report.json": "19dc10bc7b4e651373b2ac160dba576a72e5f0cdd5d392d8d6791c24d9c737ed"
+  },
+  "method": {
+    "registration": "18-iteration bone-balanced point-to-triangle similarity ICP in pre-morph frame",
+    "sourceFrame": "Bundled Y-up meters; +Z anterior; no axis flip",
+    "surfaceCrops": "Femur includes its 15 source compound leaves excluding cartilage. All patella triangles; femur bottom 90 mm; tibia top 80 mm; crops are not anatomical landmarks",
+    "scaleBounds": [
+      0.85,
+      1.2
+    ],
+    "attachmentPatchThresholdMm": 3,
+    "sampling": "Sampled surface fitting and holdout only, not complete collision validation. 72 even-index source region vertices/bone fit; up to96 odd-index holdout; deterministic evenly spaced indices",
+    "morph": "Apply existing fit-report morph once after registration; body is unchanged",
+    "normalMethod": "Area-weighted normals recomputed from candidate triangles",
+    "limitations": [
+      "One-way surface ICP can have local minima; fitting regions and attachment patches are unreviewed.",
+      "Unsigned distances do not establish tissue containment, intersection absence, or functional attachment.",
+      "HRA knees are approximately mirrored assembly parts; this is not a validated female-specific joint fit."
+    ]
+  },
+  "candidates": {
+    "knee": {
+      "enabled": false,
+      "status": "blocked: joint fit and attachment placement require refinement",
+      "partIds": [
+        "VH_F_anterior_cruciate_ligament_of_knee_L",
+        "VH_F_posterior_cruciate_ligament_of_knee_L",
+        "VH_F_anterolateral_ligament_of_knee_L",
+        "VH_F_meniscus_L",
+        "VH_F_anterior_cruciate_ligament_of_knee_R",
+        "VH_F_posterior_cruciate_ligament_of_knee_R",
+        "VH_F_anterolateral_ligament_of_knee_R",
+        "VH_F_meniscus_R"
+      ],
+      "blockers": [
+        "Target attachment landmarks are not reviewed; residuals are geometric proximity evidence only.",
+        "Meniscus two-component labels and ligament footprint placement require joint section review before enabling."
+      ]
+    },
+    "quadricepsTendons": {
+      "enabled": false,
+      "status": "blocked: patellar interface does not fit",
+      "partIds": [
+        "VH_F_tendon_of_quadriceps_femoris_L",
+        "VH_F_tendon_of_quadriceps_femoris_R"
+      ],
+      "blockers": [
+        "Depends on accepted knee fit.",
+        "Existing target quadriceps may already contain distal tendinous geometry; duplication and four-head junction remain unreviewed."
+      ]
+    }
+  },
+  "sides": {
+    "L": {
+      "sourceBoneRegionIds": {
+        "femur": [
+          "VH_F_anterior_cruciate_enthesis_L",
+          "VH_F_distal_most_point_of_medial_condyle_L",
+          "VH_F_femur_L",
+          "VH_F_intercondylar_fossa_L",
+          "VH_F_lateral_condyle_of_femur_frontal_L",
+          "VH_F_lateral_condyle_of_femur_inf_L",
+          "VH_F_lateral_condyle_of_femur_sup_L",
+          "VH_F_lateral_epicondylar_enthesis_L",
+          "VH_F_lateral_perichondular_surface_L",
+          "VH_F_medial_condyle_of_left_femur_inf",
+          "VH_F_medial_condyle_of_left_femur_sup",
+          "VH_F_medial_epicondylar_enthesis_L",
+          "VH_F_medial_perichondular_surface_L",
+          "VH_F_posterior_cruciate_enthesis_L",
+          "VH_F_trochlear_groove_L"
+        ],
+        "tibia": [
+          "VH_F_tibia_L"
+        ],
+        "patella": [
+          "VH_F_patella_L"
+        ]
+      },
+      "targetBoneIds": {
+        "femur": "FJ3259",
+        "tibia": "FJ3282",
+        "patella": "FJ3275"
+      },
+      "fit": {
+        "scale": 0.85,
+        "rotationRowVectors": [
+          [
+            0.9935659934265929,
+            -0.10192681340700921,
+            0.049371463568755825
+          ],
+          [
+            0.10326478583023219,
+            0.9943308970760709,
+            -0.025346619643131507
+          ],
+          [
+            -0.04650807148941599,
+            0.03028187293728657,
+            0.9984588161049742
+          ]
+        ],
+        "translationM": [
+          -0.0632866832004483,
+          0.10835556143753233,
+          0.0454768165874803
+        ],
+        "determinant": 0.614125000000001,
+        "iterations": 18,
+        "fittingRmsMm": [
+          9.64423284650997,
+          6.083627987461165,
+          5.831404774806568,
+          5.793362998627903,
+          5.774446249824614,
+          5.761882441612668,
+          5.75567363576033,
+          5.7531068101242955,
+          5.751766251945612,
+          5.7502238117997955,
+          5.7494036530452695,
+          5.749040490144006,
+          5.748813004292202,
+          5.748717041559825,
+          5.748676126147253,
+          5.748657633739716,
+          5.7486475206282455,
+          5.7486422991721815
+        ],
+        "heldOutSourceToTargetSurface": {
+          "femur": {
+            "minMm": 0.0283,
+            "p05Mm": 0.1725,
+            "medianMm": 2.7124,
+            "p95Mm": 7.1884,
+            "maxMm": 7.9894
+          },
+          "tibia": {
+            "minMm": 0.0338,
+            "p05Mm": 0.4378,
+            "medianMm": 4.3765,
+            "p95Mm": 12.1452,
+            "maxMm": 13.4456
+          },
+          "patella": {
+            "minMm": 0.0611,
+            "p05Mm": 0.8223,
+            "medianMm": 5.676,
+            "p95Mm": 12.7419,
+            "maxMm": 14.2112
+          }
+        },
+        "sourceCropVertexCounts": {
+          "femur": 948,
+          "tibia": 191,
+          "patella": 204
+        }
+      },
+      "parts": [
+        {
+          "id": "VH_F_anterior_cruciate_ligament_of_knee_L",
+          "name": "Left anterior cruciate ligament",
+          "candidate": "knee",
+          "export": {
+            "npz": "VH_F_anterior_cruciate_ligament_of_knee_L.npz",
+            "obj": "VH_F_anterior_cruciate_ligament_of_knee_L.obj",
+            "vertices": 229,
+            "triangles": 454,
+            "positionsSha256": "c7ce0430aaabb434601827923f7f7c7dd9aeb4dcd42ebfb4c0ae2eb1bd17776a",
+            "indicesSha256": "7beb1dc16815a7fe260e340d2020b4bde852ab515ee65c5b8965ea8ad5bf06d2",
+            "boundsM": [
+              [
+                0.059929339140436286,
+                0.42168428241550127,
+                -0.03822153839676555
+              ],
+              [
+                0.08057553696619045,
+                0.4409387490000101,
+                -0.006733151618602839
+              ]
+            ]
+          },
+          "topologyPreserved": true,
+          "connectedComponents": 1,
+          "boneScreens": {
+            "femur": {
+              "sourceAllVertices": {
+                "minMm": 0.0196,
+                "p05Mm": 0.1207,
+                "medianMm": 1.8935,
+                "p95Mm": 5.956,
+                "maxMm": 6.6995
+              },
+              "candidateAllVertices": {
+                "minMm": 0.3463,
+                "p05Mm": 1.0876,
+                "medianMm": 6.3583,
+                "p95Mm": 8.621,
+                "maxMm": 8.928
+              },
+              "sourceProximityPatchVertexCount": 142,
+              "sourcePatch": {
+                "minMm": 0.0196,
+                "p05Mm": 0.0684,
+                "medianMm": 0.8136,
+                "p95Mm": 2.7744,
+                "maxMm": 2.9976
+              },
+              "candidateSamePatch": {
+                "minMm": 0.3463,
+                "p05Mm": 0.9432,
+                "medianMm": 5.5809,
+                "p95Mm": 8.2632,
+                "maxMm": 8.9123
+              },
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "tibia": {
+              "sourceAllVertices": {
+                "minMm": 0.0022,
+                "p05Mm": 0.2048,
+                "medianMm": 2.6874,
+                "p95Mm": 20.3031,
+                "maxMm": 21.1903
+              },
+              "candidateAllVertices": {
+                "minMm": 0.0801,
+                "p05Mm": 0.2993,
+                "medianMm": 2.7714,
+                "p95Mm": 16.4682,
+                "maxMm": 17.1458
+              },
+              "sourceProximityPatchVertexCount": 124,
+              "sourcePatch": {
+                "minMm": 0.0022,
+                "p05Mm": 0.0545,
+                "medianMm": 1.0469,
+                "p95Mm": 2.8353,
+                "maxMm": 2.9833
+              },
+              "candidateSamePatch": {
+                "minMm": 0.0801,
+                "p05Mm": 0.167,
+                "medianMm": 2.2011,
+                "p95Mm": 5.1383,
+                "maxMm": 5.6959
+              },
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "patella": {
+              "sourceAllVertices": {
+                "minMm": 28.978,
+                "p05Mm": 30.1839,
+                "medianMm": 37.6948,
+                "p95Mm": 56.9596,
+                "maxMm": 57.4758
+              },
+              "candidateAllVertices": {
+                "minMm": 10.1407,
+                "p05Mm": 11.0704,
+                "medianMm": 18.5644,
+                "p95Mm": 40.2688,
+                "maxMm": 41.0906
+              },
+              "sourceProximityPatchVertexCount": 0,
+              "sourcePatch": null,
+              "candidateSamePatch": null,
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            }
+          }
+        },
+        {
+          "id": "VH_F_posterior_cruciate_ligament_of_knee_L",
+          "name": "Left posterior cruciate ligament",
+          "candidate": "knee",
+          "export": {
+            "npz": "VH_F_posterior_cruciate_ligament_of_knee_L.npz",
+            "obj": "VH_F_posterior_cruciate_ligament_of_knee_L.obj",
+            "vertices": 242,
+            "triangles": 480,
+            "positionsSha256": "50513b36a6ad13857e825ca6d124b709991a4158d83902cf939e93db0b799a9a",
+            "indicesSha256": "0c8f99b7c3186b4759ed61689052dc0be42db221cbe9eb196c893083adec6fd2",
+            "boundsM": [
+              [
+                0.0628234533762154,
+                0.41477954009656726,
+                -0.04497539632712924
+              ],
+              [
+                0.08231263396997388,
+                0.44636235590526363,
+                -0.028724121652636016
+              ]
+            ]
+          },
+          "topologyPreserved": true,
+          "connectedComponents": 1,
+          "boneScreens": {
+            "femur": {
+              "sourceAllVertices": {
+                "minMm": 0.007,
+                "p05Mm": 0.2096,
+                "medianMm": 9.801,
+                "p95Mm": 21.553,
+                "maxMm": 23.6827
+              },
+              "candidateAllVertices": {
+                "minMm": 2.3522,
+                "p05Mm": 3.2396,
+                "medianMm": 11.7454,
+                "p95Mm": 21.7703,
+                "maxMm": 23.3541
+              },
+              "sourceProximityPatchVertexCount": 71,
+              "sourcePatch": {
+                "minMm": 0.007,
+                "p05Mm": 0.0749,
+                "medianMm": 0.5221,
+                "p95Mm": 2.2572,
+                "maxMm": 2.926
+              },
+              "candidateSamePatch": {
+                "minMm": 2.3522,
+                "p05Mm": 2.7498,
+                "medianMm": 4.3359,
+                "p95Mm": 6.1484,
+                "maxMm": 6.9173
+              },
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "tibia": {
+              "sourceAllVertices": {
+                "minMm": 0.0381,
+                "p05Mm": 0.2883,
+                "medianMm": 4.5388,
+                "p95Mm": 23.3071,
+                "maxMm": 24.1154
+              },
+              "candidateAllVertices": {
+                "minMm": 1.4535,
+                "p05Mm": 2.48,
+                "medianMm": 5.632,
+                "p95Mm": 19.3566,
+                "maxMm": 20.475
+              },
+              "sourceProximityPatchVertexCount": 108,
+              "sourcePatch": {
+                "minMm": 0.0381,
+                "p05Mm": 0.1759,
+                "medianMm": 1.101,
+                "p95Mm": 2.6034,
+                "maxMm": 2.7908
+              },
+              "candidateSamePatch": {
+                "minMm": 1.4535,
+                "p05Mm": 1.7415,
+                "medianMm": 4.2848,
+                "p95Mm": 6.0439,
+                "maxMm": 6.6674
+              },
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "patella": {
+              "sourceAllVertices": {
+                "minMm": 46.1877,
+                "p05Mm": 46.7943,
+                "medianMm": 58.0088,
+                "p95Mm": 71.7402,
+                "maxMm": 72.5936
+              },
+              "candidateAllVertices": {
+                "minMm": 31.8036,
+                "p05Mm": 32.3779,
+                "medianMm": 37.1493,
+                "p95Mm": 47.2272,
+                "maxMm": 47.6837
+              },
+              "sourceProximityPatchVertexCount": 0,
+              "sourcePatch": null,
+              "candidateSamePatch": null,
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            }
+          }
+        },
+        {
+          "id": "VH_F_anterolateral_ligament_of_knee_L",
+          "name": "anterolateral ligament of knee",
+          "candidate": "knee",
+          "export": {
+            "npz": "VH_F_anterolateral_ligament_of_knee_L.npz",
+            "obj": "VH_F_anterolateral_ligament_of_knee_L.obj",
+            "vertices": 186,
+            "triangles": 368,
+            "positionsSha256": "a12440620599964db678dae16497068ceac1fcabfd54c92833653e51117b70e3",
+            "indicesSha256": "4141801e11c8330cad9e7f624da62c8d7d23f21ab2f367cbf14aef880794e01f",
+            "boundsM": [
+              [
+                0.10245127463851929,
+                0.40506971681072995,
+                -0.029557478740878693
+              ],
+              [
+                0.1073808030320296,
+                0.45126637802037733,
+                -0.017144669018391172
+              ]
+            ]
+          },
+          "topologyPreserved": true,
+          "connectedComponents": 1,
+          "boneScreens": {
+            "femur": {
+              "sourceAllVertices": {
+                "minMm": 0.0036,
+                "p05Mm": 0.6067,
+                "medianMm": 7.5377,
+                "p95Mm": 25.065,
+                "maxMm": 25.8367
+              },
+              "candidateAllVertices": {
+                "minMm": 0.0254,
+                "p05Mm": 0.5616,
+                "medianMm": 6.8007,
+                "p95Mm": 24.4725,
+                "maxMm": 25.0024
+              },
+              "sourceProximityPatchVertexCount": 63,
+              "sourcePatch": {
+                "minMm": 0.0036,
+                "p05Mm": 0.1896,
+                "medianMm": 1.7785,
+                "p95Mm": 2.8175,
+                "maxMm": 2.9638
+              },
+              "candidateSamePatch": {
+                "minMm": 0.0254,
+                "p05Mm": 0.2116,
+                "medianMm": 1.6454,
+                "p95Mm": 3.3216,
+                "maxMm": 3.8065
+              },
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "tibia": {
+              "sourceAllVertices": {
+                "minMm": 0.0617,
+                "p05Mm": 0.7972,
+                "medianMm": 12.8379,
+                "p95Mm": 39.5594,
+                "maxMm": 40.3428
+              },
+              "candidateAllVertices": {
+                "minMm": 0.0333,
+                "p05Mm": 0.2948,
+                "medianMm": 4.729,
+                "p95Mm": 24.024,
+                "maxMm": 24.7896
+              },
+              "sourceProximityPatchVertexCount": 49,
+              "sourcePatch": {
+                "minMm": 0.0617,
+                "p05Mm": 0.3708,
+                "medianMm": 1.9345,
+                "p95Mm": 2.7932,
+                "maxMm": 2.9123
+              },
+              "candidateSamePatch": {
+                "minMm": 0.094,
+                "p05Mm": 0.1915,
+                "medianMm": 2.4082,
+                "p95Mm": 4.1817,
+                "maxMm": 4.414
+              },
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "patella": {
+              "sourceAllVertices": {
+                "minMm": 39.1395,
+                "p05Mm": 40.0631,
+                "medianMm": 48.6779,
+                "p95Mm": 61.4606,
+                "maxMm": 62.0099
+              },
+              "candidateAllVertices": {
+                "minMm": 31.2544,
+                "p05Mm": 32.2957,
+                "medianMm": 37.3072,
+                "p95Mm": 41.3895,
+                "maxMm": 42.6705
+              },
+              "sourceProximityPatchVertexCount": 0,
+              "sourcePatch": null,
+              "candidateSamePatch": null,
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            }
+          }
+        },
+        {
+          "id": "VH_F_meniscus_L",
+          "name": "Articular disk of knee joint",
+          "candidate": "knee",
+          "export": {
+            "npz": "VH_F_meniscus_L.npz",
+            "obj": "VH_F_meniscus_L.obj",
+            "vertices": 473,
+            "triangles": 938,
+            "positionsSha256": "fc6ce0d2ad02461ea578e837307feb5ff0b3958707fe74683b6717996b3a5140",
+            "indicesSha256": "efb2363035a16373ba58a36c0756e598c232358fabbab7baf29a7692339d80b5",
+            "boundsM": [
+              [
+                0.0419769643515263,
+                0.41345266628286437,
+                -0.04946801598278121
+              ],
+              [
+                0.10174527612165933,
+                0.4287720311394095,
+                -0.0034917801911094944
+              ]
+            ]
+          },
+          "topologyPreserved": true,
+          "connectedComponents": 2,
+          "boneScreens": {
+            "femur": {
+              "sourceAllVertices": {
+                "minMm": 0.1007,
+                "p05Mm": 1.8294,
+                "medianMm": 6.4942,
+                "p95Mm": 18.5892,
+                "maxMm": 19.7495
+              },
+              "candidateAllVertices": {
+                "minMm": 3.0855,
+                "p05Mm": 4.4095,
+                "medianMm": 9.6231,
+                "p95Mm": 18.7168,
+                "maxMm": 21.9716
+              },
+              "sourceProximityPatchVertexCount": 85,
+              "sourcePatch": {
+                "minMm": 0.1007,
+                "p05Mm": 0.591,
+                "medianMm": 2.2544,
+                "p95Mm": 2.8936,
+                "maxMm": 2.983
+              },
+              "candidateSamePatch": {
+                "minMm": 3.0855,
+                "p05Mm": 3.7084,
+                "medianMm": 5.2237,
+                "p95Mm": 7.8168,
+                "maxMm": 8.3458
+              },
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "tibia": {
+              "sourceAllVertices": {
+                "minMm": 0.0051,
+                "p05Mm": 0.1411,
+                "medianMm": 1.3548,
+                "p95Mm": 5.68,
+                "maxMm": 7.8249
+              },
+              "candidateAllVertices": {
+                "minMm": 0.0103,
+                "p05Mm": 0.2083,
+                "medianMm": 2.2909,
+                "p95Mm": 7.5714,
+                "maxMm": 9.9957
+              },
+              "sourceProximityPatchVertexCount": 340,
+              "sourcePatch": {
+                "minMm": 0.0051,
+                "p05Mm": 0.1079,
+                "medianMm": 0.7939,
+                "p95Mm": 2.6536,
+                "maxMm": 2.9971
+              },
+              "candidateSamePatch": {
+                "minMm": 0.0103,
+                "p05Mm": 0.2047,
+                "medianMm": 2.1954,
+                "p95Mm": 7.0057,
+                "maxMm": 9.8263
+              },
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "patella": {
+              "sourceAllVertices": {
+                "minMm": 27.7793,
+                "p05Mm": 31.6219,
+                "medianMm": 51.6251,
+                "p95Mm": 74.6851,
+                "maxMm": 77.9335
+              },
+              "candidateAllVertices": {
+                "minMm": 8.1984,
+                "p05Mm": 13.2573,
+                "medianMm": 31.1191,
+                "p95Mm": 49.6169,
+                "maxMm": 54.0296
+              },
+              "sourceProximityPatchVertexCount": 0,
+              "sourcePatch": null,
+              "candidateSamePatch": null,
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            }
+          }
+        },
+        {
+          "id": "VH_F_tendon_of_quadriceps_femoris_L",
+          "name": "Tendon of left quadriceps femoris",
+          "candidate": "quadricepsTendons",
+          "export": {
+            "npz": "VH_F_tendon_of_quadriceps_femoris_L.npz",
+            "obj": "VH_F_tendon_of_quadriceps_femoris_L.obj",
+            "vertices": 174,
+            "triangles": 321,
+            "positionsSha256": "7ffdaafb80e38234a55faf5d1e1f160ff0d6b1c16eac9eed04baca1c72a64c5f",
+            "indicesSha256": "c8014f2ed605e938415043c1adfda243e4174b8dbacc07fdc60a897090af6435",
+            "boundsM": [
+              [
+                0.07754602098956806,
+                0.45626043463597726,
+                0.023144597648078417
+              ],
+              [
+                0.09131115297360391,
+                0.5022311517096345,
+                0.030675588312097983
+              ]
+            ]
+          },
+          "topologyPreserved": true,
+          "connectedComponents": 1,
+          "boneScreens": {
+            "femur": {
+              "sourceAllVertices": {
+                "minMm": 23.3832,
+                "p05Mm": 24.2767,
+                "medianMm": 28.9649,
+                "p95Mm": 33.506,
+                "maxMm": 34.7367
+              },
+              "candidateAllVertices": {
+                "minMm": 13.5432,
+                "p05Mm": 14.3116,
+                "medianMm": 18.6114,
+                "p95Mm": 21.0826,
+                "maxMm": 21.85
+              },
+              "sourceProximityPatchVertexCount": 0,
+              "sourcePatch": null,
+              "candidateSamePatch": null,
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "tibia": {
+              "sourceAllVertices": {
+                "minMm": 59.654,
+                "p05Mm": 60.2891,
+                "medianMm": 71.3494,
+                "p95Mm": 108.4411,
+                "maxMm": 110.7934
+              },
+              "candidateAllVertices": {
+                "minMm": 39.7401,
+                "p05Mm": 40.1526,
+                "medianMm": 49.3796,
+                "p95Mm": 80.5455,
+                "maxMm": 82.6497
+              },
+              "sourceProximityPatchVertexCount": 0,
+              "sourcePatch": null,
+              "candidateSamePatch": null,
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "patella": {
+              "sourceAllVertices": {
+                "minMm": 0.0845,
+                "p05Mm": 0.4778,
+                "medianMm": 9.6813,
+                "p95Mm": 48.1658,
+                "maxMm": 50.4609
+              },
+              "candidateAllVertices": {
+                "minMm": 8.7773,
+                "p05Mm": 9.5364,
+                "medianMm": 18.938,
+                "p95Mm": 48.938,
+                "maxMm": 50.8554
+              },
+              "sourceProximityPatchVertexCount": 59,
+              "sourcePatch": {
+                "minMm": 0.0845,
+                "p05Mm": 0.2023,
+                "medianMm": 1.5397,
+                "p95Mm": 2.7065,
+                "maxMm": 2.9889
+              },
+              "candidateSamePatch": {
+                "minMm": 8.7773,
+                "p05Mm": 9.086,
+                "medianMm": 11.1728,
+                "p95Mm": 13.7924,
+                "maxMm": 14.2495
+              },
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            }
+          },
+          "quadricepsInterface": {
+            "targetIds": [
+              "FJ1433M",
+              "FJ1441M",
+              "FJ1442M",
+              "FJ1443M"
+            ],
+            "sourceRectusAllVertices": {
+              "minMm": 0.0,
+              "p05Mm": 0.0,
+              "medianMm": 38.9305,
+              "p95Mm": 52.6217,
+              "maxMm": 53.0646
+            },
+            "candidateQuadricepsAllVertices": {
+              "minMm": 0.0371,
+              "p05Mm": 0.3229,
+              "medianMm": 3.6402,
+              "p95Mm": 9.631,
+              "maxMm": 10.2517
+            },
+            "sourceNearRectusCount": 28,
+            "candidateSamePatch": {
+              "minMm": 0.0996,
+              "p05Mm": 0.3623,
+              "medianMm": 1.2609,
+              "p95Mm": 2.3177,
+              "maxMm": 2.3303
+            },
+            "candidateVerticesWithin1Mm": 30,
+            "candidateVerticesWithin3Mm": 80,
+            "duplicationConclusion": "Proximity alone cannot distinguish intended joining from duplicate embedded distal tendon; visual/semantic review required"
+          }
+        }
+      ]
+    },
+    "R": {
+      "sourceBoneRegionIds": {
+        "femur": [
+          "VH_F_anterior_cruciate_enthesis_R",
+          "VH_F_distal_most_point_of_medial_condyle_R",
+          "VH_F_femur_R",
+          "VH_F_intercondylar_fossa_R",
+          "VH_F_lateral_condyle_of_femur_frontal_R",
+          "VH_F_lateral_condyle_of_femur_inf_R",
+          "VH_F_lateral_condyle_of_femur_sup_R",
+          "VH_F_lateral_epicondylar_enthesis_R",
+          "VH_F_lateral_perichondular_surface_R",
+          "VH_F_medial_condyle_of_right_femur_inf",
+          "VH_F_medial_condyle_of_right_femur_sup",
+          "VH_F_medial_epicondylar_enthesis_R",
+          "VH_F_medial_perichondular_surface_R",
+          "VH_F_posterior_cruciate_enthesis_R",
+          "VH_F_trochlear_groove_R"
+        ],
+        "tibia": [
+          "VH_F_tibia_R"
+        ],
+        "patella": [
+          "VH_F_patella_R"
+        ]
+      },
+      "targetBoneIds": {
+        "femur": "FJ3365",
+        "tibia": "FJ3387",
+        "patella": "FJ3381"
+      },
+      "fit": {
+        "scale": 0.85,
+        "rotationRowVectors": [
+          [
+            0.9937174249420864,
+            0.10395672867472402,
+            -0.04145694067002134
+          ],
+          [
+            -0.10543013683170949,
+            0.993807347516686,
+            -0.035091911738946324
+          ],
+          [
+            0.037552171896107434,
+            0.03924225509698537,
+            0.9985238503915601
+          ]
+        ],
+        "translationM": [
+          0.08191384069756281,
+          0.11113678647581204,
+          0.04640465355864234
+        ],
+        "determinant": 0.6141249999999985,
+        "iterations": 18,
+        "fittingRmsMm": [
+          9.745896792594452,
+          5.929948035481945,
+          5.802709537229013,
+          5.7874662462022295,
+          5.775706612137809,
+          5.766554550422441,
+          5.762274196837282,
+          5.760104728807078,
+          5.758558129715455,
+          5.75779188186421,
+          5.757386540568177,
+          5.757152333809288,
+          5.756607985347336,
+          5.7563264083907555,
+          5.756086307099565,
+          5.755831643088303,
+          5.755670669179622,
+          5.7555610033581415
+        ],
+        "heldOutSourceToTargetSurface": {
+          "femur": {
+            "minMm": 0.0463,
+            "p05Mm": 0.4662,
+            "medianMm": 2.1773,
+            "p95Mm": 6.1335,
+            "maxMm": 8.0749
+          },
+          "tibia": {
+            "minMm": 0.1079,
+            "p05Mm": 0.1874,
+            "medianMm": 3.4605,
+            "p95Mm": 11.5571,
+            "maxMm": 12.7202
+          },
+          "patella": {
+            "minMm": 0.0237,
+            "p05Mm": 0.5874,
+            "medianMm": 5.7652,
+            "p95Mm": 13.4409,
+            "maxMm": 15.0572
+          }
+        },
+        "sourceCropVertexCounts": {
+          "femur": 951,
+          "tibia": 184,
+          "patella": 204
+        }
+      },
+      "parts": [
+        {
+          "id": "VH_F_anterior_cruciate_ligament_of_knee_R",
+          "name": "Right anterior cruciate ligament",
+          "candidate": "knee",
+          "export": {
+            "npz": "VH_F_anterior_cruciate_ligament_of_knee_R.npz",
+            "obj": "VH_F_anterior_cruciate_ligament_of_knee_R.obj",
+            "vertices": 232,
+            "triangles": 460,
+            "positionsSha256": "8830ee58ec0bdb2a54376810af4740efe9742b627f2b90f0d80c7cf9150eb4e6",
+            "indicesSha256": "a6bd92a794390568f0e7ea183d217d94d8107febd13d9482b5e8c9c3ef8fcdb0",
+            "boundsM": [
+              [
+                -0.07959722189614628,
+                0.42191481467860464,
+                -0.03785931589605279
+              ],
+              [
+                -0.05907862269198263,
+                0.4408860395287702,
+                -0.006081118768683188
+              ]
+            ]
+          },
+          "topologyPreserved": true,
+          "connectedComponents": 1,
+          "boneScreens": {
+            "femur": {
+              "sourceAllVertices": {
+                "minMm": 0.0305,
+                "p05Mm": 0.1207,
+                "medianMm": 1.9635,
+                "p95Mm": 5.9525,
+                "maxMm": 6.6995
+              },
+              "candidateAllVertices": {
+                "minMm": 0.7216,
+                "p05Mm": 1.3917,
+                "medianMm": 6.3811,
+                "p95Mm": 8.7926,
+                "maxMm": 9.3011
+              },
+              "sourceProximityPatchVertexCount": 145,
+              "sourcePatch": {
+                "minMm": 0.0305,
+                "p05Mm": 0.0696,
+                "medianMm": 0.9038,
+                "p95Mm": 2.8175,
+                "maxMm": 2.9976
+              },
+              "candidateSamePatch": {
+                "minMm": 0.7216,
+                "p05Mm": 1.3059,
+                "medianMm": 5.7145,
+                "p95Mm": 7.991,
+                "maxMm": 8.2037
+              },
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "tibia": {
+              "sourceAllVertices": {
+                "minMm": 0.0071,
+                "p05Mm": 0.151,
+                "medianMm": 2.4114,
+                "p95Mm": 20.2394,
+                "maxMm": 21.2183
+              },
+              "candidateAllVertices": {
+                "minMm": 0.0162,
+                "p05Mm": 0.2258,
+                "medianMm": 2.6369,
+                "p95Mm": 15.9779,
+                "maxMm": 16.7498
+              },
+              "sourceProximityPatchVertexCount": 127,
+              "sourcePatch": {
+                "minMm": 0.0071,
+                "p05Mm": 0.0786,
+                "medianMm": 1.0024,
+                "p95Mm": 2.6006,
+                "maxMm": 2.9562
+              },
+              "candidateSamePatch": {
+                "minMm": 0.0162,
+                "p05Mm": 0.3538,
+                "medianMm": 2.0058,
+                "p95Mm": 4.8811,
+                "maxMm": 5.4314
+              },
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "patella": {
+              "sourceAllVertices": {
+                "minMm": 28.978,
+                "p05Mm": 30.1997,
+                "medianMm": 37.9525,
+                "p95Mm": 56.7148,
+                "maxMm": 57.4758
+              },
+              "candidateAllVertices": {
+                "minMm": 9.9251,
+                "p05Mm": 10.8855,
+                "medianMm": 18.3465,
+                "p95Mm": 39.952,
+                "maxMm": 40.8955
+              },
+              "sourceProximityPatchVertexCount": 0,
+              "sourcePatch": null,
+              "candidateSamePatch": null,
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            }
+          }
+        },
+        {
+          "id": "VH_F_posterior_cruciate_ligament_of_knee_R",
+          "name": "Right posterior cruciate ligament",
+          "candidate": "knee",
+          "export": {
+            "npz": "VH_F_posterior_cruciate_ligament_of_knee_R.npz",
+            "obj": "VH_F_posterior_cruciate_ligament_of_knee_R.obj",
+            "vertices": 242,
+            "triangles": 480,
+            "positionsSha256": "b0c05e4e3582ac0f1f7b37bb5c0d29e12b868bbbd7d9553aadf8327745f1df82",
+            "indicesSha256": "f7e8e461a8fa79a8dd8fafecf2a1f284d166d828736d8ee6e22f3be2d5a181f2",
+            "boundsM": [
+              [
+                -0.08123159354970765,
+                0.41466893429799523,
+                -0.04437741557657245
+              ],
+              [
+                -0.061922094545391375,
+                0.446384055357655,
+                -0.0282853916594046
+              ]
+            ]
+          },
+          "topologyPreserved": true,
+          "connectedComponents": 1,
+          "boneScreens": {
+            "femur": {
+              "sourceAllVertices": {
+                "minMm": 0.007,
+                "p05Mm": 0.2186,
+                "medianMm": 9.6704,
+                "p95Mm": 21.553,
+                "maxMm": 23.6827
+              },
+              "candidateAllVertices": {
+                "minMm": 1.3678,
+                "p05Mm": 2.5055,
+                "medianMm": 11.7213,
+                "p95Mm": 21.3845,
+                "maxMm": 23.7171
+              },
+              "sourceProximityPatchVertexCount": 72,
+              "sourcePatch": {
+                "minMm": 0.007,
+                "p05Mm": 0.0756,
+                "medianMm": 0.526,
+                "p95Mm": 2.2454,
+                "maxMm": 2.926
+              },
+              "candidateSamePatch": {
+                "minMm": 1.3678,
+                "p05Mm": 1.7143,
+                "medianMm": 3.5336,
+                "p95Mm": 5.8563,
+                "maxMm": 6.5495
+              },
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "tibia": {
+              "sourceAllVertices": {
+                "minMm": 0.013,
+                "p05Mm": 0.2728,
+                "medianMm": 4.6314,
+                "p95Mm": 23.198,
+                "maxMm": 24.1991
+              },
+              "candidateAllVertices": {
+                "minMm": 0.9927,
+                "p05Mm": 1.9578,
+                "medianMm": 5.544,
+                "p95Mm": 19.341,
+                "maxMm": 20.5007
+              },
+              "sourceProximityPatchVertexCount": 108,
+              "sourcePatch": {
+                "minMm": 0.013,
+                "p05Mm": 0.1618,
+                "medianMm": 1.141,
+                "p95Mm": 2.6751,
+                "maxMm": 2.9954
+              },
+              "candidateSamePatch": {
+                "minMm": 0.9927,
+                "p05Mm": 1.5288,
+                "medianMm": 4.0435,
+                "p95Mm": 5.9363,
+                "maxMm": 6.5075
+              },
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "patella": {
+              "sourceAllVertices": {
+                "minMm": 46.1877,
+                "p05Mm": 46.7943,
+                "medianMm": 58.0088,
+                "p95Mm": 71.7142,
+                "maxMm": 72.5936
+              },
+              "candidateAllVertices": {
+                "minMm": 31.3228,
+                "p05Mm": 31.9558,
+                "medianMm": 36.7801,
+                "p95Mm": 46.6533,
+                "maxMm": 47.1319
+              },
+              "sourceProximityPatchVertexCount": 0,
+              "sourcePatch": null,
+              "candidateSamePatch": null,
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            }
+          }
+        },
+        {
+          "id": "VH_F_anterolateral_ligament_of_knee_R",
+          "name": "anterolateral ligament of knee",
+          "candidate": "knee",
+          "export": {
+            "npz": "VH_F_anterolateral_ligament_of_knee_R.npz",
+            "obj": "VH_F_anterolateral_ligament_of_knee_R.obj",
+            "vertices": 186,
+            "triangles": 368,
+            "positionsSha256": "5d1b1ed7206005a41f5e8bd48a0aba6912a70e172bef9e220b7155620f0c98a8",
+            "indicesSha256": "ac651b8f42496c185ccdadc052a1ef9a853d770ca7b2f24a0e471f143ca225c2",
+            "boundsM": [
+              [
+                -0.10651199244239469,
+                0.4050847752556754,
+                -0.02946336339171704
+              ],
+              [
+                -0.10157687745984902,
+                0.45124766463365207,
+                -0.01671146473396983
+              ]
+            ]
+          },
+          "topologyPreserved": true,
+          "connectedComponents": 1,
+          "boneScreens": {
+            "femur": {
+              "sourceAllVertices": {
+                "minMm": 0.0036,
+                "p05Mm": 0.6067,
+                "medianMm": 7.7413,
+                "p95Mm": 25.065,
+                "maxMm": 25.8366
+              },
+              "candidateAllVertices": {
+                "minMm": 0.0045,
+                "p05Mm": 0.4484,
+                "medianMm": 6.4435,
+                "p95Mm": 24.388,
+                "maxMm": 24.9064
+              },
+              "sourceProximityPatchVertexCount": 66,
+              "sourcePatch": {
+                "minMm": 0.0036,
+                "p05Mm": 0.224,
+                "medianMm": 1.7827,
+                "p95Mm": 2.8844,
+                "maxMm": 2.9639
+              },
+              "candidateSamePatch": {
+                "minMm": 0.0045,
+                "p05Mm": 0.2779,
+                "medianMm": 1.9048,
+                "p95Mm": 4.0371,
+                "maxMm": 4.3536
+              },
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "tibia": {
+              "sourceAllVertices": {
+                "minMm": 0.0101,
+                "p05Mm": 0.3244,
+                "medianMm": 11.6561,
+                "p95Mm": 39.4357,
+                "maxMm": 40.2274
+              },
+              "candidateAllVertices": {
+                "minMm": 0.0078,
+                "p05Mm": 0.2833,
+                "medianMm": 3.8982,
+                "p95Mm": 24.0126,
+                "maxMm": 24.7555
+              },
+              "sourceProximityPatchVertexCount": 71,
+              "sourcePatch": {
+                "minMm": 0.0101,
+                "p05Mm": 0.1157,
+                "medianMm": 1.6792,
+                "p95Mm": 2.8394,
+                "maxMm": 2.9326
+              },
+              "candidateSamePatch": {
+                "minMm": 0.0078,
+                "p05Mm": 0.1304,
+                "medianMm": 1.6405,
+                "p95Mm": 3.7684,
+                "maxMm": 3.9485
+              },
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "patella": {
+              "sourceAllVertices": {
+                "minMm": 39.1395,
+                "p05Mm": 40.0631,
+                "medianMm": 48.7827,
+                "p95Mm": 61.4606,
+                "maxMm": 62.0099
+              },
+              "candidateAllVertices": {
+                "minMm": 30.2415,
+                "p05Mm": 31.5029,
+                "medianMm": 37.1517,
+                "p95Mm": 40.9898,
+                "maxMm": 42.4194
+              },
+              "sourceProximityPatchVertexCount": 0,
+              "sourcePatch": null,
+              "candidateSamePatch": null,
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            }
+          }
+        },
+        {
+          "id": "VH_F_meniscus_R",
+          "name": "Articular disk of knee joint",
+          "candidate": "knee",
+          "export": {
+            "npz": "VH_F_meniscus_R.npz",
+            "obj": "VH_F_meniscus_R.obj",
+            "vertices": 475,
+            "triangles": 942,
+            "positionsSha256": "fc3570aeded69b00d494e5169714f9346897c7f866327cd11892eff65ac861f2",
+            "indicesSha256": "db94406267baa6028dfeaf94336180ea3ee3a99b699501a4ab10566ff5644386",
+            "boundsM": [
+              [
+                -0.10073599319977795,
+                0.4133976247881545,
+                -0.04899669170388562
+              ],
+              [
+                -0.041045371128520615,
+                0.42891719501530506,
+                -0.002778671466501412
+              ]
+            ]
+          },
+          "topologyPreserved": true,
+          "connectedComponents": 2,
+          "boneScreens": {
+            "femur": {
+              "sourceAllVertices": {
+                "minMm": 0.1007,
+                "p05Mm": 1.8515,
+                "medianMm": 6.5034,
+                "p95Mm": 18.5879,
+                "maxMm": 19.7495
+              },
+              "candidateAllVertices": {
+                "minMm": 3.321,
+                "p05Mm": 4.0988,
+                "medianMm": 9.6461,
+                "p95Mm": 18.156,
+                "maxMm": 21.4007
+              },
+              "sourceProximityPatchVertexCount": 84,
+              "sourcePatch": {
+                "minMm": 0.1007,
+                "p05Mm": 0.5893,
+                "medianMm": 2.2779,
+                "p95Mm": 2.8842,
+                "maxMm": 2.983
+              },
+              "candidateSamePatch": {
+                "minMm": 3.321,
+                "p05Mm": 3.5762,
+                "medianMm": 4.9439,
+                "p95Mm": 8.3688,
+                "maxMm": 8.8948
+              },
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "tibia": {
+              "sourceAllVertices": {
+                "minMm": 0.0031,
+                "p05Mm": 0.1084,
+                "medianMm": 1.1987,
+                "p95Mm": 5.4634,
+                "maxMm": 7.5244
+              },
+              "candidateAllVertices": {
+                "minMm": 0.0198,
+                "p05Mm": 0.177,
+                "medianMm": 2.1245,
+                "p95Mm": 7.2748,
+                "maxMm": 9.7185
+              },
+              "sourceProximityPatchVertexCount": 334,
+              "sourcePatch": {
+                "minMm": 0.0031,
+                "p05Mm": 0.0811,
+                "medianMm": 0.7417,
+                "p95Mm": 2.5533,
+                "maxMm": 2.9976
+              },
+              "candidateSamePatch": {
+                "minMm": 0.0198,
+                "p05Mm": 0.1413,
+                "medianMm": 2.1288,
+                "p95Mm": 6.8663,
+                "maxMm": 9.2833
+              },
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "patella": {
+              "sourceAllVertices": {
+                "minMm": 27.7793,
+                "p05Mm": 31.6229,
+                "medianMm": 51.6098,
+                "p95Mm": 74.6786,
+                "maxMm": 77.9335
+              },
+              "candidateAllVertices": {
+                "minMm": 8.0678,
+                "p05Mm": 12.9906,
+                "medianMm": 30.3935,
+                "p95Mm": 48.3839,
+                "maxMm": 52.908
+              },
+              "sourceProximityPatchVertexCount": 0,
+              "sourcePatch": null,
+              "candidateSamePatch": null,
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            }
+          }
+        },
+        {
+          "id": "VH_F_tendon_of_quadriceps_femoris_R",
+          "name": "Tendon of right quadriceps femoris",
+          "candidate": "quadricepsTendons",
+          "export": {
+            "npz": "VH_F_tendon_of_quadriceps_femoris_R.npz",
+            "obj": "VH_F_tendon_of_quadriceps_femoris_R.obj",
+            "vertices": 174,
+            "triangles": 321,
+            "positionsSha256": "1fe56dbd79f26103d0e3b12bc322c53e2b3dc4a005d77373bde579850a5a53f3",
+            "indicesSha256": "ee3af94e1ed04a1f3241b4753ba261bcb0345d01c04ff9501764cec30bccccb1",
+            "boundsM": [
+              [
+                -0.09106123114114194,
+                0.4567598991521772,
+                0.023220414639955722
+              ],
+              [
+                -0.07720364049865294,
+                0.5027468263393405,
+                0.030413713922236994
+              ]
+            ]
+          },
+          "topologyPreserved": true,
+          "connectedComponents": 1,
+          "boneScreens": {
+            "femur": {
+              "sourceAllVertices": {
+                "minMm": 23.3832,
+                "p05Mm": 24.1797,
+                "medianMm": 28.9008,
+                "p95Mm": 33.2731,
+                "maxMm": 34.7178
+              },
+              "candidateAllVertices": {
+                "minMm": 13.3472,
+                "p05Mm": 14.1756,
+                "medianMm": 18.5998,
+                "p95Mm": 20.5964,
+                "maxMm": 21.4079
+              },
+              "sourceProximityPatchVertexCount": 0,
+              "sourcePatch": null,
+              "candidateSamePatch": null,
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "tibia": {
+              "sourceAllVertices": {
+                "minMm": 59.7822,
+                "p05Mm": 60.3829,
+                "medianMm": 71.5297,
+                "p95Mm": 108.3247,
+                "maxMm": 110.7082
+              },
+              "candidateAllVertices": {
+                "minMm": 40.1688,
+                "p05Mm": 40.6006,
+                "medianMm": 49.9688,
+                "p95Mm": 80.9969,
+                "maxMm": 83.1307
+              },
+              "sourceProximityPatchVertexCount": 0,
+              "sourcePatch": null,
+              "candidateSamePatch": null,
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            },
+            "patella": {
+              "sourceAllVertices": {
+                "minMm": 0.0845,
+                "p05Mm": 0.4972,
+                "medianMm": 9.6041,
+                "p95Mm": 48.1658,
+                "maxMm": 50.4609
+              },
+              "candidateAllVertices": {
+                "minMm": 9.0796,
+                "p05Mm": 9.927,
+                "medianMm": 19.2768,
+                "p95Mm": 49.4086,
+                "maxMm": 51.245
+              },
+              "sourceProximityPatchVertexCount": 59,
+              "sourcePatch": {
+                "minMm": 0.0845,
+                "p05Mm": 0.2023,
+                "medianMm": 1.5397,
+                "p95Mm": 2.7065,
+                "maxMm": 2.9889
+              },
+              "candidateSamePatch": {
+                "minMm": 9.0796,
+                "p05Mm": 9.401,
+                "medianMm": 11.7449,
+                "p95Mm": 14.429,
+                "maxMm": 14.9192
+              },
+              "note": "Source vertices within 3 mm of this bone; not reviewed insertion/enthesis vertices"
+            }
+          },
+          "quadricepsInterface": {
+            "targetIds": [
+              "FJ1433",
+              "FJ1441",
+              "FJ1442",
+              "FJ1443"
+            ],
+            "sourceRectusAllVertices": {
+              "minMm": 0.0,
+              "p05Mm": 0.0,
+              "medianMm": 39.9394,
+              "p95Mm": 52.6217,
+              "maxMm": 53.0646
+            },
+            "candidateQuadricepsAllVertices": {
+              "minMm": 0.0274,
+              "p05Mm": 0.4204,
+              "medianMm": 3.6402,
+              "p95Mm": 9.4457,
+              "maxMm": 10.1661
+            },
+            "sourceNearRectusCount": 27,
+            "candidateSamePatch": {
+              "minMm": 0.0883,
+              "p05Mm": 0.2235,
+              "medianMm": 1.4394,
+              "p95Mm": 2.1692,
+              "maxMm": 2.3542
+            },
+            "candidateVerticesWithin1Mm": 27,
+            "candidateVerticesWithin3Mm": 80,
+            "duplicationConclusion": "Proximity alone cannot distinguish intended joining from duplicate embedded distal tendon; visual/semantic review required"
+          }
+        }
+      ]
+    }
+  },
+  "existingAtlasByteIdentityVerified": true,
+  "diagnosticPlot": "joint-diagnostic.svg"
+}

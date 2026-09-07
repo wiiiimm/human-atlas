@@ -79,3 +79,5 @@ Import this repository into Vercel as a Vite project. The included `vercel.json`
 Original application code is released under the [MIT License](LICENSE). **The anatomy data has its own CC BY 4.0 license**; preserve the attribution when redistributing it. Third-party dependencies retain their respective licenses.
 
 Issues and pull requests are welcome. Please include reproduction steps and browser/device details for interaction problems.
+
+Female anatomy enhancement experiments (spinal cord, knee structures, quadriceps tendons, and kidney internals) are documented in [the enhancement worklog](docs/female-enhancements.md). Run `npm run audit:female-enhancements -- --output-dir /tmp/female-enhancements` to generate fitting reports without changing the displayed model.

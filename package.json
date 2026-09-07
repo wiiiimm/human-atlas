@@ -13,7 +13,9 @@
     "audit:coverage": "node scripts/anatomy-coverage.mjs",
     "test:coverage": "node --test scripts/anatomy-coverage.test.mjs",
     "validate:female-readiness": "node scripts/validate-female-readiness.mjs",
-    "test:female-readiness": "node --test scripts/validate-female-readiness.test.mjs"
+    "test:female-readiness": "node --test scripts/validate-female-readiness.test.mjs",
+    "audit:female-enhancements": "python3 scripts/audit-female-enhancements.py",
+    "test:female-enhancements": "python3 scripts/female-enhancement-runner.test.py"
   },
   "dependencies": {
     "@base-ui/react": "1.7.0",
