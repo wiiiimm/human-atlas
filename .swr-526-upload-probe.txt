@@ -1,1 +1,1 @@
-probe
+@file:///tmp/human-atlas/package-lock.json
