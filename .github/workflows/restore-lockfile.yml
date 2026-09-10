@@ -1,0 +1,25 @@
+name: restore-lockfile
+on:
+  push:
+    branches: [feature/swr-526-three-r185]
+    paths:
+      - '.lockfile-parts/**'
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble and commit lockfile
+        run: |
+          set -euo pipefail
+          if [ ! -f .lockfile-parts/5 ]; then echo 'parts incomplete'; exit 0; fi
+          cat .lockfile-parts/0 .lockfile-parts/1 .lockfile-parts/2 .lockfile-parts/3 .lockfile-parts/4 .lockfile-parts/5 > package-lock.json
+          python3 -c "import hashlib; h=hashlib.sha256(open('package-lock.json','rb').read()).hexdigest(); print(h); assert h=='f00f1f489e81b348ff688be0a8ff67e8d2f58b6bf4718d743e41c964b676f066'"
+          rm -rf .lockfile-parts
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'chore(SWR-526): restore package-lock for three.js 0.185.0'
+          git push
