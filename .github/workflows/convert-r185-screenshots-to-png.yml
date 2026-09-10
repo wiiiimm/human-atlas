@@ -1,0 +1,51 @@
+name: convert-r185-screenshots-to-png
+
+on:
+  push:
+    branches:
+      - feature/swr-526-three-r185
+    paths:
+      - '.github/workflows/convert-r185-screenshots-to-png.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  convert:
+    if: github.repository == 'wiiiimm/human-atlas'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/swr-526-three-r185
+      - name: Convert RIFF/WebP files named .png to real PNG
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          shopt -s nullglob
+          files=(docs/verification/three-r185/*.png)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "no screenshots found" >&2
+            exit 1
+          fi
+          for f in "${files[@]}"; do
+            magic="$(od -An -N4 -tx1 "$f" | tr -d ' \n')"
+            if [ "$magic" = "52494646" ]; then
+              tmp="$(mktemp --suffix=.png)"
+              ffmpeg -hide_banner -loglevel error -y -i "$f" "$tmp"
+              mv "$tmp" "$f"
+            fi
+            png="$(od -An -N8 -tx1 "$f" | tr -d ' \n')"
+            if [ "$png" != "89504e470d0a1a0a" ]; then
+              echo "refusing to commit non-PNG: $f magic=$png" >&2
+              exit 1
+            fi
+            echo "ok $f"
+          done
+          rm -f .github/workflows/convert-r185-screenshots-to-png.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A docs/verification/three-r185 .github/workflows/convert-r185-screenshots-to-png.yml
+          git commit -m "docs(SWR-526): convert verification screenshots to real PNG"
+          git push
